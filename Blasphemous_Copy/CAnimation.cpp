@@ -60,7 +60,7 @@ void CAnimation::update()
 		{
 			if (m_iCurFrm == m_vecAnimFrm.size())
 			{
-				m_iCurFrm = m_vecAnimFrm.size() - 1;
+				m_iCurFrm = (int)m_vecAnimFrm.size() - 1;
 				m_bIsDone = true;
 			}
 		}

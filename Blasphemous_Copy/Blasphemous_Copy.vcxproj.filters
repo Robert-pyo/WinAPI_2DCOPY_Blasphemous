@@ -108,7 +108,7 @@
     <ClInclude Include="Resource.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="WIN_API_2D_Imitation.h">
+    <ClInclude Include="Blasphemous_Copy.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="CCore.h">
@@ -212,7 +212,7 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="WIN_API_2D_Imitation.cpp">
+    <ClCompile Include="Blasphemous_Copy.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="CCore.cpp">
@@ -301,7 +301,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="WIN_API_2D_Imitation.rc">
+    <ResourceCompile Include="Blasphemous_Copy.rc">
       <Filter>리소스 파일</Filter>
     </ResourceCompile>
   </ItemGroup>
@@ -309,7 +309,7 @@
     <Image Include="small.ico">
       <Filter>리소스 파일</Filter>
     </Image>
-    <Image Include="WIN_API_2D_Imitation.ico">
+    <Image Include="Blasphemous_Copy.ico">
       <Filter>리소스 파일</Filter>
     </Image>
   </ItemGroup>

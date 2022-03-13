@@ -1,8 +1,8 @@
-﻿// WIN_API_2D_Imitation.cpp : 애플리케이션에 대한 진입점을 정의합니다.
+﻿// Blasphemous_Copy.cpp : 애플리케이션에 대한 진입점을 정의합니다.
 //
 
 #include "framework.h"
-#include "WIN_API_2D_Imitation.h"
+#include "Blasphemous_Copy.h"
 #include <locale.h>
 
 #define MAX_LOADSTRING 100
@@ -37,7 +37,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
     // 전역 문자열을 초기화합니다.
     LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
-    LoadStringW(hInstance, IDC_WINAPI2DIMITATION, szWindowClass, MAX_LOADSTRING);
+    LoadStringW(hInstance, IDC_BLASPHEMOUSCOPY, szWindowClass, MAX_LOADSTRING);
     MyRegisterClass(hInstance);
 
     // 애플리케이션 초기화를 수행합니다:
@@ -46,7 +46,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         return FALSE;
     }
 
-    HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_WINAPI2DIMITATION));
+    HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_BLASPHEMOUSCOPY));
 
     // 기본 메시지 루프입니다:
     // 메세지 큐에서 메세지가 확인될 때까지 대기
@@ -103,7 +103,7 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
     wcex.cbClsExtra     = 0;
     wcex.cbWndExtra     = 0;
     wcex.hInstance      = hInstance;
-    wcex.hIcon          = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_WINAPI2DIMITATION));
+    wcex.hIcon          = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_BLASPHEMOUSCOPY));
     wcex.hCursor        = LoadCursor(nullptr, IDC_ARROW);
     wcex.hbrBackground  = (HBRUSH)(COLOR_WINDOW+1);
     wcex.lpszMenuName   = nullptr;

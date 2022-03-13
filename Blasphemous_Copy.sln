@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.32126.315
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WIN_API_2D_Imitation", "WIN_API_2D_Imitation\WIN_API_2D_Imitation.vcxproj", "{27CC62D4-C719-4396-B22F-ABF5ACEAB8D6}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Blasphemous_Copy", "Blasphemous_Copy\Blasphemous_Copy.vcxproj", "{27CC62D4-C719-4396-B22F-ABF5ACEAB8D6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

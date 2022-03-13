@@ -153,7 +153,6 @@ void CPlayer::update()
 void CPlayer::render(HDC hDC)
 {
 	/*fPoint fptRenderPos = CCameraManager::getInst()->GetRenderPos(GetCollider()->GetFinalPos());
-
 	Rectangle(hDC,
 		(int)(fptRenderPos.x - m_fptScale.x / 2.f),
 		(int)(fptRenderPos.y - m_fptScale.y / 2.f),

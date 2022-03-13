@@ -22,8 +22,9 @@
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
     <ProjectGuid>{27cc62d4-c719-4396-b22f-abf5aceab8d6}</ProjectGuid>
-    <RootNamespace>WINAPI2DImitation</RootNamespace>
+    <RootNamespace>BLASPHEMOUSCOPY</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.19041.0</WindowsTargetPlatformVersion>
+    <ProjectName>Blasphemous_Copy</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -184,7 +185,7 @@
     <ClInclude Include="SelectGDI.h" />
     <ClInclude Include="struct.h" />
     <ClInclude Include="targetver.h" />
-    <ClInclude Include="WIN_API_2D_Imitation.h" />
+    <ClInclude Include="Blasphemous_Copy.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CAnimation.cpp" />
@@ -221,17 +222,17 @@
     <ClCompile Include="CTimeManager.cpp" />
     <ClCompile Include="CUI.cpp" />
     <ClCompile Include="CUIManager.cpp" />
-    <ClCompile Include="WIN_API_2D_Imitation.cpp">
+    <ClCompile Include="Blasphemous_Copy.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="WIN_API_2D_Imitation.rc" />
+    <ResourceCompile Include="Blasphemous_Copy.rc" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="small.ico" />
-    <Image Include="WIN_API_2D_Imitation.ico" />
+    <Image Include="Blasphemous_Copy.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

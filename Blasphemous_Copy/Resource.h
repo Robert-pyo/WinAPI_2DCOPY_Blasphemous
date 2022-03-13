@@ -1,17 +1,17 @@
 ﻿//{{NO_DEPENDENCIES}}
 // Microsoft Visual C++에서 생성한 포함 파일입니다.
-// WIN_API_2D_Imitation.rc에서 사용되고 있습니다.
+// Blasphemous_Copy.rc에서 사용되고 있습니다.
 //
 #define IDC_MYICON                      2
 #define IDC_BUTTON_SIZE                 3
-#define IDD_WINAPI2DIMITATION_DIALOG    102
+#define IDD_BLASPHEMOUSCOPY_DIALOG		102
 #define IDS_APP_TITLE                   103
 #define IDD_ABOUTBOX                    103
 #define IDM_ABOUT                       104
 #define IDM_EXIT                        105
-#define IDI_WINAPI2DIMITATION           107
+#define IDI_BLASPHEMOUSCOPY				107
 #define IDI_SMALL                       108
-#define IDC_WINAPI2DIMITATION           109
+#define IDC_BLASPHEMOUSCOPY				109
 #define IDR_MAINFRAME                   128
 #define IDD_TILEBOX                     129
 #define IDC_EDIT_SIZEX                  1000

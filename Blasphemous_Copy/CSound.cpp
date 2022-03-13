@@ -60,6 +60,8 @@ bool CSound::IsPlaying()
 		return isPlaying;
 	}
 	assert(nullptr);
+
+	return isPlaying;
 }
 
 bool CSound::IsPaused()
@@ -71,6 +73,8 @@ bool CSound::IsPaused()
 		return isPaused;
 	}
 	assert(nullptr);
+
+	return isPaused;
 }
 
 void CSound::Load(const wstring& strFilePath)
