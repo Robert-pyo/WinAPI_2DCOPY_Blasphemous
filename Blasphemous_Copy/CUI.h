@@ -29,12 +29,12 @@ public:
 
 	virtual void update();
 	virtual void finalUpdate();
-	virtual void render(HDC hDC);
+	virtual void render();
 
 	// 계층구조를 위한 자식들의 update, finalUpdate, render
 	void update_child();
 	void finalUpdate_child();
-	void render_child(HDC hDC);
+	void render_child();
 
 	virtual void MouseOn();
 	virtual void MouseLBtnDown();

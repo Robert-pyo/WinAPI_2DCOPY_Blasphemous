@@ -25,13 +25,13 @@ void CAnimator::update()
 		m_pCurAnim->update();
 }
 
-void CAnimator::render(HDC hDC)
+void CAnimator::render()
 {
 	if (nullptr != m_pCurAnim)
-		m_pCurAnim->render(hDC);
+		m_pCurAnim->render();
 }
 
-void CAnimator::CreateAnimation(const wstring& strName, CTexture* pTex, fPoint leftTop, fPoint scale, 
+void CAnimator::CreateAnimation(const wstring& strName, CD2DImage* pImg, fPoint leftTop, fPoint scale,
 								fPoint step, float duration, UINT frmCount, bool isLoop)
 {
 	CAnimation* pAnim = FindAnimation(strName);
@@ -43,7 +43,7 @@ void CAnimator::CreateAnimation(const wstring& strName, CTexture* pTex, fPoint l
 
 	pAnim->SetName(strName);
 	pAnim->m_pAnimator = this;
-	pAnim->Create(pTex, leftTop, scale, step, duration, frmCount);
+	pAnim->Create(pImg, leftTop, scale, step, duration, frmCount);
 	pAnim->SetLoop(isLoop);
 
 	m_mapAnim.insert(make_pair(strName, pAnim));

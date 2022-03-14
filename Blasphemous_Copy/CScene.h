@@ -23,8 +23,8 @@ public:
 
 	virtual void update();
 	virtual void finalUpdate();
-	virtual void render(HDC hDC);
-	void render_tile(HDC hDC);
+	virtual void render();
+	void render_tile();
 
 	virtual void Enter() = 0;	// 씬 진입 시 행동 -> 씬 마다 행동이 다를 수 있으므로 순수가상함수로 처리
 	virtual void Exit() = 0;	// 씬 아웃 시 행동 -> 씬 마다 행동이 다를 수 있으므로 순수가상함수로 처리

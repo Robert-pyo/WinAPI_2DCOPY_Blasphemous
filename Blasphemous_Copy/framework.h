@@ -29,7 +29,9 @@ using namespace std;
 //========================================
 enum class GROUP_GAMEOBJ
 {
-	BACKGROUND,
+	BACKGROUND_BACK,
+	BACKGROUND_MIDDLE,
+	BACKGROUND_FRONT,
 	FLOOR,
 	TILE,
 	DEFAULT,
@@ -67,25 +69,6 @@ enum class TYPE_EVENT
 #include "CSingleton.h"
 #include "struct.h"
 
-//========================================
-//##		Core DC의 GDI 그룹			##
-//========================================
-enum class TYPE_BRUSH
-{
-	HOLLOW,
-
-	SIZE,
-};
-
-enum class TYPE_PEN
-{
-	RED,
-	GREEN,
-	BLUE,
-
-	SIZE
-};
-
 #include "CCore.h"
 #include "CPathManager.h"
 #include "CEventManager.h"
@@ -95,8 +78,9 @@ enum class TYPE_PEN
 #include "CSceneManager.h"		// Required CResourceManager
 #include "CCollisionManager.h"
 #include "CCameraManager.h"
-#include "CSoundManager.h"
 #include "CUIManager.h"
+#include "CSoundManager.h"
+#include "CRenderManager.h"
 
 //========================================
 //##			  디파인문				##

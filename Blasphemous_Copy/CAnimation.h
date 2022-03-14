@@ -1,6 +1,6 @@
 #pragma once
 class CAnimator;
-class CTexture;
+class CD2DImage;
 
 struct tAnimFrm
 {
@@ -17,12 +17,14 @@ class CAnimation
 private:
 	CAnimator*			m_pAnimator;		// 이 애니메이션을 재생할 애니메이터
 	wstring				m_strAnimName;		// 애니메이션 이름
-	CTexture*			m_pTex;				// 애니메이션을 그릴 텍스쳐
+	CD2DImage*			m_pImg;				// 애니메이션 이미지
 	vector<tAnimFrm>	m_vecAnimFrm;		// 모든 프레임의 자르기 영역 및 유지시간
 	int					m_iCurFrm;			// 현재 프레임
 	float				m_fAccTime;			// 현재 프레임의 축적 시간
 	bool				m_bIsLoop;
 	bool				m_bIsDone;
+
+	bool				m_bReverse;
 
 public:
 	CAnimation();
@@ -39,9 +41,9 @@ public:
 	bool GetAnimDone();
 
 	void update();
-	void render(HDC hDC);
+	void render();
 
 	// 애니메이션 생성
-	void Create(CTexture* pTex, fPoint leftTop, fPoint scale, fPoint step, float duration, UINT frmCount);
+	void Create(CD2DImage* pImg, fPoint leftTop, fPoint scale, fPoint step, float duration, UINT frmCount);
 };
 

@@ -3,14 +3,14 @@
 
 CTextObject::CTextObject()
 {
-	initObject(fPoint(0, 0), fPoint(0, 0));
+	InitObject(fPoint(0, 0), fPoint(0, 0));
 	swprintf_s(lpStr, TEXT(""));
 	strSize = 0;
 ;}
 
 CTextObject::CTextObject(const WCHAR str[128])
 {
-	initObject(fPoint(WINSIZE_X / 2 - 100, WINSIZE_Y / 2), fPoint(0, 0));
+	InitObject(fPoint(WINSIZE_X / 2 - 100, WINSIZE_Y / 2), fPoint(0, 0));
 	swprintf_s(lpStr, TEXT("%s"), str);
 	strSize = lstrlen(lpStr);
 }

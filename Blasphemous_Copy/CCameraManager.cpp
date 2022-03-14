@@ -10,7 +10,9 @@ CCameraManager::CCameraManager()
 
 	m_fTime = 2.f;
 	m_fAccTime = m_fTime;
-	m_fSpeed = 500.f;
+	m_fSpeed = 250.f;
+
+	m_pImg = nullptr;
 }
 
 CCameraManager::~CCameraManager()
@@ -19,20 +21,31 @@ CCameraManager::~CCameraManager()
 
 void CCameraManager::init()
 {
-	m_pTex = CResourceManager::getInst()->CreateTexture(L"CamTex", WINSIZE_X, WINSIZE_Y);
+	m_pImg = CResourceManager::getInst()->CreateTexture(L"CamTex", WINSIZE_X, WINSIZE_Y);
 }
 
 void CCameraManager::update()
 {
-	if (m_pTargetObj != nullptr)
+	if (m_bHasBoundary)
 	{
-		if (m_pTargetObj->IsDisabled())
+		CheckBoundary();
+	}
+	else 
+	{
+		if (m_pTargetObj != nullptr)
 		{
-			m_pTargetObj = nullptr;
-		}
-		else
-		{
-			SetLookAt(m_pTargetObj->GetPos());
+			if (m_pTargetObj->IsDisabled())
+			{
+				m_pTargetObj = nullptr;
+			}
+			else
+			{
+				if (m_bFollowX)
+					m_fptLookAt.x = m_pTargetObj->GetPos().x;
+
+				if (m_bFollowY)
+					m_fptLookAt.y = m_pTargetObj->GetPos().y;
+			}
 		}
 	}
 
@@ -70,28 +83,35 @@ void CCameraManager::render(HDC hDC)
 
 	AlphaBlend(hDC
 		, 0, 0
-		, (int)(m_pTex->GetBmpWidth())
-		, (int)(m_pTex->GetBmpHeight())
-		, m_pTex->GetDC()
+		, (int)(m_pImg->GetBmpWidth())
+		, (int)(m_pImg->GetBmpHeight())
+		, m_pImg->GetDC()
 		, 0, 0
-		, (int)(m_pTex->GetBmpWidth())
-		, (int)(m_pTex->GetBmpHeight())
+		, (int)(m_pImg->GetBmpWidth())
+		, (int)(m_pImg->GetBmpHeight())
 		, bf);
+}
+
+void CCameraManager::InitCameraPos(fPoint pos)
+{
+	m_fptPrevLookAt = pos;
 }
 
 void CCameraManager::SetLookAt(fPoint lookAt)
 {
 	m_fptLookAt = lookAt;
-	m_fptPrevLookAt = m_fptLookAt;
+	//m_fptPrevLookAt = m_fptLookAt;
 
 	float fMoveDist = (m_fptLookAt - m_fptPrevLookAt).Length();
 	m_fTime = fMoveDist / m_fSpeed;
 	m_fAccTime = 0;
 }
 
-void CCameraManager::FollowTargetObj(CGameObject* targetObj)
+void CCameraManager::FollowTargetObj(CGameObject* targetObj, bool flwX, bool flwY)
 {
 	m_pTargetObj = targetObj;
+	m_bFollowX = flwX;
+	m_bFollowY = flwY;
 }
 
 void CCameraManager::Scroll(fVector2D vec, float velocity)
@@ -101,6 +121,19 @@ void CCameraManager::Scroll(fVector2D vec, float velocity)
 
 	fPoint fptCenter = fPoint(WINSIZE_X / 2.f, WINSIZE_Y / 2.f);
 	m_fptDiff = m_fptCurLookAt - fptCenter;
+}
+
+void CCameraManager::SetBoundary(fPoint leftTop, fPoint rightBtm)
+{
+	m_bHasBoundary = true;
+
+	m_fptBoundaryLT = leftTop;
+	m_fptBoundaryRB = rightBtm;
+}
+
+void CCameraManager::SetBoundary(bool hasBoundary)
+{
+	m_bHasBoundary = hasBoundary;
 }
 
 fPoint CCameraManager::GetLookAt()
@@ -151,6 +184,42 @@ void CCameraManager::LerpDiff(fPoint targetPos)
 	float x = (targetPos.x - m_pTargetObj->GetPos().x) / 2.f;
 	float y = (targetPos.y - m_pTargetObj->GetPos().y) / 2.f;
 	m_fptLerpDiff = fPoint(x, y);
+}
+
+void CCameraManager::CheckBoundary()
+{
+	if (m_pTargetObj != nullptr)
+	{
+		if (m_bFollowX)
+			m_fptLookAt.x = m_pTargetObj->GetPos().x;
+
+		if (m_bFollowY)
+			m_fptLookAt.y = m_pTargetObj->GetPos().y;
+	}
+
+	if (m_fptLookAt.x - WINSIZE_X / 2.f < m_fptBoundaryLT.x)
+	{
+		m_fptLookAt.x = m_fptBoundaryLT.x + WINSIZE_X / 2.f;
+	}
+
+	if (m_fptLookAt.y - WINSIZE_Y / 2.f < m_fptBoundaryLT.y)
+	{
+		m_fptLookAt.y = m_fptBoundaryLT.y + WINSIZE_Y / 2.f;
+	}
+
+	if (m_fptLookAt.x + WINSIZE_X / 2.f > m_fptBoundaryRB.x)
+	{
+		m_fptLookAt.x = m_fptBoundaryRB.x - WINSIZE_X / 2.f;
+	}
+
+	if (m_fptLookAt.y + WINSIZE_Y / 2.f > m_fptBoundaryRB.y)
+	{
+		m_fptLookAt.y = m_fptBoundaryRB.y - WINSIZE_Y / 2.f;
+	}
+
+	float fMoveDist = (m_fptLookAt - m_fptPrevLookAt).Length();
+	m_fTime = fMoveDist / m_fSpeed;
+	m_fAccTime = 0;
 }
 
 fPoint CCameraManager::GetLerpPoint()

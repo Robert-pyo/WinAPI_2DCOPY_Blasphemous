@@ -22,9 +22,6 @@
     <Filter Include="Util">
       <UniqueIdentifier>{8a9933dc-dbfa-4b30-82cd-fd88d6814f1c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\Object">
-      <UniqueIdentifier>{9e958a1c-a626-4be4-8de2-59642d516a23}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Engine\Manager">
       <UniqueIdentifier>{f79868be-c6bf-46f8-862e-244d7ce351d4}</UniqueIdentifier>
     </Filter>
@@ -34,20 +31,8 @@
     <Filter Include="Engine\Manager\KeyManager">
       <UniqueIdentifier>{79cb5cf7-1155-41f4-9b41-100749bb52f3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\Scene">
-      <UniqueIdentifier>{0aaf5b87-3026-45be-bc35-9a564a9f0019}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Engine\Manager\SceneManager">
       <UniqueIdentifier>{4ea7c165-8ccf-4285-8daa-411c38f2d5eb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\Object\Text">
-      <UniqueIdentifier>{fee9297f-5bff-4358-bf79-df52b45c0cba}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\Object\Player">
-      <UniqueIdentifier>{0adc0876-04d6-4dc2-bf16-8836e7f6819a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\Object\Enemy">
-      <UniqueIdentifier>{09ed6554-43f4-41ac-a787-b4226eb3a9e2}</UniqueIdentifier>
     </Filter>
     <Filter Include="Resource">
       <UniqueIdentifier>{480b106c-b4d2-48f3-b9df-0788a7e8295b}</UniqueIdentifier>
@@ -85,17 +70,41 @@
     <Filter Include="Engine\Manager\CameraManager">
       <UniqueIdentifier>{100baeb5-a225-43af-abcf-6e5bfa967249}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\Object\Tile">
-      <UniqueIdentifier>{9c50eb17-a532-45b0-89b4-7ba29952f985}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\Object\UI">
-      <UniqueIdentifier>{b09f0863-ae12-40ea-ac37-f8ba442c8a7a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Engine\Manager\UIManager">
       <UniqueIdentifier>{b49216cc-8bdb-4e82-a198-719222148db7}</UniqueIdentifier>
     </Filter>
     <Filter Include="Engine\Manager\SoundManager">
       <UniqueIdentifier>{3b17dbce-fe7b-451e-b93f-9969ea622385}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object">
+      <UniqueIdentifier>{9e958a1c-a626-4be4-8de2-59642d516a23}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Player">
+      <UniqueIdentifier>{0adc0876-04d6-4dc2-bf16-8836e7f6819a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Enemy">
+      <UniqueIdentifier>{09ed6554-43f4-41ac-a787-b4226eb3a9e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Tile">
+      <UniqueIdentifier>{9c50eb17-a532-45b0-89b4-7ba29952f985}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\UI">
+      <UniqueIdentifier>{b09f0863-ae12-40ea-ac37-f8ba442c8a7a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Platform">
+      <UniqueIdentifier>{4690b2f9-7a8f-4064-b01d-35ed3f811a36}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene">
+      <UniqueIdentifier>{0aaf5b87-3026-45be-bc35-9a564a9f0019}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Background">
+      <UniqueIdentifier>{6facd5f2-25fb-4a53-8b4e-bae44adc0e3a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\CD2DImage">
+      <UniqueIdentifier>{9c63162f-4651-4e39-88a8-934a6c1fe96a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Manager\RenderManager">
+      <UniqueIdentifier>{c8a1289f-677a-4bd5-a78d-84d4f86697e5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -106,9 +115,6 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Resource.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Blasphemous_Copy.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="CCore.h">
@@ -124,7 +130,7 @@
       <Filter>Util</Filter>
     </ClInclude>
     <ClInclude Include="CGameObject.h">
-      <Filter>Engine\Object</Filter>
+      <Filter>Object</Filter>
     </ClInclude>
     <ClInclude Include="CTimeManager.h">
       <Filter>Engine\Manager\TimeManager</Filter>
@@ -136,22 +142,19 @@
       <Filter>Engine\Manager\TimeManager</Filter>
     </ClInclude>
     <ClInclude Include="CScene.h">
-      <Filter>Engine\Scene</Filter>
+      <Filter>Scene</Filter>
     </ClInclude>
     <ClInclude Include="CSceneManager.h">
       <Filter>Engine\Manager\SceneManager</Filter>
     </ClInclude>
-    <ClInclude Include="CTextObject.h">
-      <Filter>Engine\Object\Text</Filter>
-    </ClInclude>
     <ClInclude Include="CScene_Stage1.h">
-      <Filter>Engine\Scene</Filter>
+      <Filter>Scene</Filter>
     </ClInclude>
     <ClInclude Include="CPlayer.h">
-      <Filter>Engine\Object\Player</Filter>
+      <Filter>Object\Player</Filter>
     </ClInclude>
     <ClInclude Include="CEnemy.h">
-      <Filter>Engine\Object\Enemy</Filter>
+      <Filter>Object\Enemy</Filter>
     </ClInclude>
     <ClInclude Include="CResource.h">
       <Filter>Resource</Filter>
@@ -168,9 +171,6 @@
     <ClInclude Include="CCollider.h">
       <Filter>Engine\Component\Collider</Filter>
     </ClInclude>
-    <ClInclude Include="SelectGDI.h">
-      <Filter>Util</Filter>
-    </ClInclude>
     <ClInclude Include="CCollisionManager.h">
       <Filter>Engine\Manager\CollisionManager</Filter>
     </ClInclude>
@@ -178,7 +178,7 @@
       <Filter>Engine\Manager\EventManager</Filter>
     </ClInclude>
     <ClInclude Include="CScene_Tool.h">
-      <Filter>Engine\Scene</Filter>
+      <Filter>Scene</Filter>
     </ClInclude>
     <ClInclude Include="CAnimator.h">
       <Filter>Engine\Component\Animator</Filter>
@@ -190,19 +190,19 @@
       <Filter>Engine\Manager\CameraManager</Filter>
     </ClInclude>
     <ClInclude Include="CTile.h">
-      <Filter>Engine\Object\Tile</Filter>
+      <Filter>Object\Tile</Filter>
     </ClInclude>
     <ClInclude Include="CUI.h">
-      <Filter>Engine\Object\UI</Filter>
+      <Filter>Object\UI</Filter>
     </ClInclude>
     <ClInclude Include="CUIManager.h">
       <Filter>Engine\Manager\UIManager</Filter>
     </ClInclude>
     <ClInclude Include="CButtonUI.h">
-      <Filter>Engine\Object\UI</Filter>
+      <Filter>Object\UI</Filter>
     </ClInclude>
     <ClInclude Include="CPanelUI.h">
-      <Filter>Engine\Object\UI</Filter>
+      <Filter>Object\UI</Filter>
     </ClInclude>
     <ClInclude Include="CSound.h">
       <Filter>Resource\Sound</Filter>
@@ -210,16 +210,28 @@
     <ClInclude Include="CSoundManager.h">
       <Filter>Engine\Manager\SoundManager</Filter>
     </ClInclude>
+    <ClInclude Include="CPlatform.h">
+      <Filter>Object\Platform</Filter>
+    </ClInclude>
+    <ClInclude Include="Blasphemous_Copy.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="CBackground.h">
+      <Filter>Object\Background</Filter>
+    </ClInclude>
+    <ClInclude Include="CD2DImage.h">
+      <Filter>Resource\CD2DImage</Filter>
+    </ClInclude>
+    <ClInclude Include="CRenderManager.h">
+      <Filter>Engine\Manager\RenderManager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Blasphemous_Copy.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="CCore.cpp">
       <Filter>Engine\Core</Filter>
     </ClCompile>
     <ClCompile Include="CGameObject.cpp">
-      <Filter>Engine\Object</Filter>
+      <Filter>Object</Filter>
     </ClCompile>
     <ClCompile Include="CTimeManager.cpp">
       <Filter>Engine\Manager\TimeManager</Filter>
@@ -228,22 +240,19 @@
       <Filter>Engine\Manager\KeyManager</Filter>
     </ClCompile>
     <ClCompile Include="CScene.cpp">
-      <Filter>Engine\Scene</Filter>
+      <Filter>Scene</Filter>
     </ClCompile>
     <ClCompile Include="CSceneManager.cpp">
       <Filter>Engine\Manager\SceneManager</Filter>
     </ClCompile>
-    <ClCompile Include="CTextObject.cpp">
-      <Filter>Engine\Object\Text</Filter>
-    </ClCompile>
     <ClCompile Include="CScene_Stage1.cpp">
-      <Filter>Engine\Scene</Filter>
+      <Filter>Scene</Filter>
     </ClCompile>
     <ClCompile Include="CPlayer.cpp">
-      <Filter>Engine\Object\Player</Filter>
+      <Filter>Object\Player</Filter>
     </ClCompile>
     <ClCompile Include="CEnemy.cpp">
-      <Filter>Engine\Object\Enemy</Filter>
+      <Filter>Object\Enemy</Filter>
     </ClCompile>
     <ClCompile Include="CResource.cpp">
       <Filter>Resource</Filter>
@@ -267,7 +276,7 @@
       <Filter>Engine\Manager\EventManager</Filter>
     </ClCompile>
     <ClCompile Include="CScene_Tool.cpp">
-      <Filter>Engine\Scene</Filter>
+      <Filter>Scene</Filter>
     </ClCompile>
     <ClCompile Include="CAnimator.cpp">
       <Filter>Engine\Component\Animator</Filter>
@@ -279,25 +288,40 @@
       <Filter>Engine\Manager\CameraManager</Filter>
     </ClCompile>
     <ClCompile Include="CTile.cpp">
-      <Filter>Engine\Object\Tile</Filter>
+      <Filter>Object\Tile</Filter>
     </ClCompile>
     <ClCompile Include="CUI.cpp">
-      <Filter>Engine\Object\UI</Filter>
+      <Filter>Object\UI</Filter>
     </ClCompile>
     <ClCompile Include="CUIManager.cpp">
       <Filter>Engine\Manager\UIManager</Filter>
     </ClCompile>
     <ClCompile Include="CButtonUI.cpp">
-      <Filter>Engine\Object\UI</Filter>
+      <Filter>Object\UI</Filter>
     </ClCompile>
     <ClCompile Include="CPanelUI.cpp">
-      <Filter>Engine\Object\UI</Filter>
+      <Filter>Object\UI</Filter>
     </ClCompile>
     <ClCompile Include="CSound.cpp">
       <Filter>Resource\Sound</Filter>
     </ClCompile>
     <ClCompile Include="CSoundManager.cpp">
       <Filter>Engine\Manager\SoundManager</Filter>
+    </ClCompile>
+    <ClCompile Include="CPlatform.cpp">
+      <Filter>Object\Platform</Filter>
+    </ClCompile>
+    <ClCompile Include="Blasphemous_Copy.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="CBackground.cpp">
+      <Filter>Object\Background</Filter>
+    </ClCompile>
+    <ClCompile Include="CD2DImage.cpp">
+      <Filter>Resource\CD2DImage</Filter>
+    </ClCompile>
+    <ClCompile Include="CRenderManager.cpp">
+      <Filter>Engine\Manager\RenderManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

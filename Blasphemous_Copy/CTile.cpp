@@ -1,10 +1,10 @@
 #include "framework.h"
 #include "CTile.h"
-#include "CTexture.h"
+#include "CD2DImage.h"
 
 CTile::CTile()
 {
-	m_pTex = nullptr;
+	m_pImg = nullptr;
 	m_iIndex = 0;
 	SetScale(fPoint(SIZE_TILE, SIZE_TILE));
 }
@@ -22,12 +22,12 @@ void CTile::update()
 {
 }
 
-void CTile::render(HDC hDC)
+void CTile::render()
 {
-	if (nullptr == m_pTex) return;
+	if (nullptr == m_pImg) return;
 
-	UINT iWidth = m_pTex->GetBmpWidth();
-	UINT iHeight = m_pTex->GetBmpHeight();
+	UINT iWidth = m_pImg->GetWidth();
+	UINT iHeight = m_pImg->GetHeight();
 
 	UINT iMaxRow = iHeight / SIZE_TILE;
 	UINT iMaxCol = iWidth / SIZE_TILE;
@@ -37,20 +37,22 @@ void CTile::render(HDC hDC)
 
 	fPoint fptRenderPos = CCameraManager::getInst()->GetRenderPos(m_fptPos);
 
-	BitBlt(hDC,
-		(int)fptRenderPos.x,
-		(int)fptRenderPos.y,
-		(int)m_fptScale.x,
-		(int)m_fptScale.y,
-		m_pTex->GetDC(),
-		(int)iCurX * SIZE_TILE,
-		(int)iCurY * SIZE_TILE,
-		SRCCOPY);
+	CRenderManager::getInst()->RenderFrame(
+		m_pImg,
+		fptRenderPos.x,
+		fptRenderPos.y,
+		m_fptScale.x,
+		m_fptScale.y,
+		iCurX * m_fptScale.x,
+		iCurY * m_fptScale.y,
+		m_fptScale.x,
+		m_fptScale.y
+	);
 }
 
-void CTile::SetTexture(CTexture* pTex)
+void CTile::SetTexture(CD2DImage* pImg)
 {
-	m_pTex = pTex;
+	m_pImg = pImg;
 }
 
 void CTile::SetTileIndex(int index)

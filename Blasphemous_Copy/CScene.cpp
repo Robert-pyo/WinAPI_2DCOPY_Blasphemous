@@ -57,7 +57,7 @@ void CScene::finalUpdate()
 	}
 }
 
-void CScene::render(HDC hDC)
+void CScene::render()
 {
 	// 씬에 속한 모든 오브젝트들의 렌더링을 수행
 	for (int i = 0; i < (int)GROUP_GAMEOBJ::SIZE; ++i)
@@ -65,14 +65,14 @@ void CScene::render(HDC hDC)
 		if ((UINT)GROUP_GAMEOBJ::TILE == i)
 		{
 			// 보이는 영역 타일만 그려주기
-			render_tile(hDC);
+			render_tile();
 			continue;
 		}
 		for (vector<CGameObject*>::iterator iter = m_arrObj[i].begin(); iter != m_arrObj[i].end();)
 		{
 			if (!(*iter)->IsDisabled())
 			{
-				(*iter)->render(hDC);
+				(*iter)->render();
 				iter++;
 			}
 			else
@@ -81,7 +81,7 @@ void CScene::render(HDC hDC)
 	}
 }
 
-void CScene::render_tile(HDC hDC)
+void CScene::render_tile()
 {
 	const vector<CGameObject*>& vecTile = GetObjGroup(GROUP_GAMEOBJ::TILE);
 
@@ -105,7 +105,7 @@ void CScene::render_tile(HDC hDC)
 			if (row < 0 || m_iTileY <= (UINT)row || col < 0 || m_iTileX <= (UINT)col) continue;
 
 			int iIndex = col + row * m_iTileX;
-			vecTile[iIndex]->render(hDC);
+			vecTile[iIndex]->render();
 		}
 	}
 }
@@ -154,7 +154,7 @@ void CScene::CreateTile(UINT xSize, UINT ySize)
 	m_iTileX = xSize;
 	m_iTileY = ySize;
 
-	CTexture* pTileTex = CResourceManager::getInst()->LoadTexture(L"Tile", L"texture\\Land\\Tileset\\tilemap.bmp");
+	CD2DImage* pImg = CResourceManager::getInst()->LoadD2DImage(L"Tile", L"texture\\tile\\tilemap.bmp");
 
 	// Tile 생성
 	for (UINT i = 0; i < m_iTileY; ++i)
@@ -163,7 +163,7 @@ void CScene::CreateTile(UINT xSize, UINT ySize)
 		{
 			CTile* pTile = new CTile();
 			pTile->SetPos(fPoint((float)(j * CTile::SIZE_TILE), (float)(i * CTile::SIZE_TILE)));
-			pTile->SetTexture(pTileTex);
+			pTile->SetTexture(pImg);
 			AddObject(pTile, GROUP_GAMEOBJ::TILE);
 		}
 	}

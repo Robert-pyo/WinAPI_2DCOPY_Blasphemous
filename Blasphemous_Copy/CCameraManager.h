@@ -19,9 +19,15 @@ private:
 	fPoint m_fptPrevLookAt;		// 카메라가 이전에 보던 위치
 
 	CGameObject* m_pTargetObj;	// 추적할 게임 오브젝트
+	bool		 m_bFollowX;
+	bool		 m_bFollowY;
 
 	fPoint m_fptDiff;			// 실제 보고있는 위치랑 얼마만큼의 보정이 필요한지 저장
 	fPoint m_fptLerpDiff;		// 타겟 위치와 카메라가 바라보고있는 위치 보간
+
+	fPoint m_fptBoundaryLT;		// LeftTop 경계 -> 그 이상으로 갈 수 없음
+	fPoint m_fptBoundaryRB;		// RightBottom 경계 -> 그 이상으로 갈 수 없음
+	bool   m_bHasBoundary;
 
 	float m_fTime;				// 목적지를 따라가는 시간
 	float m_fAccTime;			// 목적지를 따라가는데 소요된 시간
@@ -31,7 +37,7 @@ private:
 	float m_fAccIncrement;		// 가속도의 증감폭
 
 	CAM_EFFECT	m_eEffect;
-	CTexture*	m_pTex;
+	CTexture*	m_pImg;
 	float		m_fEffectDuration;
 	float		m_fCurTime;
 
@@ -41,9 +47,13 @@ public:
 	void update();
 	void render(HDC hDC);
 
+	void InitCameraPos(fPoint pos);
 	void SetLookAt(fPoint lookAt);
-	void FollowTargetObj(CGameObject* targetObj);
+	void FollowTargetObj(CGameObject* targetObj, bool flwX, bool flwY);
 	void Scroll(fVector2D vec, float velocity);
+
+	void SetBoundary(fPoint leftTop, fPoint rightBtm);
+	void SetBoundary(bool hasBoundary);
 
 	fPoint	GetLookAt();						// 현재 카메라 위치
 	fPoint	GetRenderPos(fPoint objPos);		// 오브젝트가 그려져야할 위치 반환
@@ -54,5 +64,6 @@ public:
 	void FadeOut(float duration);
 
 	void LerpDiff(fPoint targetPos);
+	void CheckBoundary();
 };
 

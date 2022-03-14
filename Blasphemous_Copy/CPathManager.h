@@ -13,6 +13,6 @@ public:
 	void init();
 
 	const WCHAR* GetContentPath();
-	const WCHAR* GetContentRelativePath();
+	const WCHAR* GetRelativeContentPath();
 };
 

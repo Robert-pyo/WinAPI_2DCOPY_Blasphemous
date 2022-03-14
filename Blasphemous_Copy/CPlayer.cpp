@@ -7,9 +7,9 @@
 
 CPlayer::CPlayer()
 {
-	m_pTex = CResourceManager::getInst()->LoadTexture(L"Player", L"\\texture\\Player\\penitent_anim_merge.bmp");
+	m_pImg = CResourceManager::getInst()->LoadD2DImage(L"Player", L"\\texture\\Player\\penitent_anim_merge.bmp");
 	m_strName = L"Player";
-	initObject(fPoint(32.f, 0.f), fPoint(44.f, 96.f));
+	InitObject(fPoint(32.f, 0.f), fPoint(44.f, 96.f));
 	m_fVelocity = 300.f;
 	m_fAccel = 50.f;
 	m_fJumpPower = -550.f;
@@ -20,34 +20,34 @@ CPlayer::CPlayer()
 
 	CreateCollider();
 	GetCollider()->SetFinalPos(GetPos());
-	GetCollider()->SetOffsetPos(fPoint(32.f, 28.f));
-	GetCollider()->SetScale(GetScale());
+	GetCollider()->SetOffsetPos(fPoint(40.f, 28.f));
+	GetCollider()->SetScale(fPoint(GetScale().x - 10.f, GetScale().y));
 
 	CreateAnimator();
-	GetAnimator()->CreateAnimation(L"Player_Idle_Right", m_pTex, fPoint(0.f, 0.f), fPoint(71.f, 77.f), fPoint(71.f, 0.f), 0.1f, 13, true);
-	GetAnimator()->CreateAnimation(L"Player_Idle_Left", m_pTex, fPoint(29.f, 77.f), fPoint(71.f, 77.f), fPoint(71.f, 0.f), 0.1f, 13, true);
-	GetAnimator()->CreateAnimation(L"Player_Running_Right", m_pTex, fPoint(0.f, 154.f), fPoint(78.f, 77.f), fPoint(78.f, 0.f), 0.045f, 14, true);
-	GetAnimator()->CreateAnimation(L"Player_Running_Left", m_pTex, fPoint(18.f, 231.f), fPoint(78.f, 77.f), fPoint(78.f, 0.f), 0.045f, 14, true);
-	GetAnimator()->CreateAnimation(L"Player_StartRun_Right", m_pTex, fPoint(0.f, 308.f), fPoint(78.f, 77.f), fPoint(78.f, 0.f), 0.045f, 8, false);
-	GetAnimator()->CreateAnimation(L"Player_StartRun_Left", m_pTex, fPoint(0.f, 385.f), fPoint(78.f, 77.f), fPoint(78.f, 0.f), 0.045f, 8, false);
+	GetAnimator()->CreateAnimation(L"Player_Idle_Right", m_pImg, fPoint(0.f, 0.f), fPoint(71.f, 77.f), fPoint(71.f, 0.f), 0.1f, 13, true);
+	GetAnimator()->CreateAnimation(L"Player_Idle_Left", m_pImg, fPoint(29.f, 77.f), fPoint(71.f, 77.f), fPoint(71.f, 0.f), 0.1f, 13, true);
+	GetAnimator()->CreateAnimation(L"Player_Running_Right", m_pImg, fPoint(0.f, 154.f), fPoint(78.f, 77.f), fPoint(78.f, 0.f), 0.045f, 14, true);
+	GetAnimator()->CreateAnimation(L"Player_Running_Left", m_pImg, fPoint(18.f, 231.f), fPoint(78.f, 77.f), fPoint(78.f, 0.f), 0.045f, 14, true);
+	GetAnimator()->CreateAnimation(L"Player_StartRun_Right", m_pImg, fPoint(0.f, 308.f), fPoint(78.f, 77.f), fPoint(78.f, 0.f), 0.045f, 8, false);
+	GetAnimator()->CreateAnimation(L"Player_StartRun_Left", m_pImg, fPoint(0.f, 385.f), fPoint(78.f, 77.f), fPoint(78.f, 0.f), 0.045f, 8, false);
 
 	CAnimation* pAnim;
 	pAnim = GetAnimator()->FindAnimation(L"Player_Idle_Left");
 	for (int i = 0; i < 13; ++i)
 	{
-		pAnim->GetFrame(i).fptOffset.x += 55.f;
+		pAnim->GetFrame(i).fptOffset.x += 40.f;
 	}
 
 	pAnim = GetAnimator()->FindAnimation(L"Player_Running_Left");
 	for (int i = 0; i < 14; ++i)
 	{
-		pAnim->GetFrame(i).fptOffset.x += 62.f;
+		pAnim->GetFrame(i).fptOffset.x += 40.f;
 	}
 
 	pAnim = GetAnimator()->FindAnimation(L"Player_StartRun_Left");
 	for (int i = 0; i < 8; ++i)
 	{
-		pAnim->GetFrame(i).fptOffset.x += 62.f;
+		pAnim->GetFrame(i).fptOffset.x += 40.f;
 	}
 
 	GetAnimator()->Play(L"Player_Idle_Right");
@@ -150,7 +150,7 @@ void CPlayer::update()
 	GetAnimator()->update();
 }
 
-void CPlayer::render(HDC hDC)
+void CPlayer::render()
 {
 	/*fPoint fptRenderPos = CCameraManager::getInst()->GetRenderPos(GetCollider()->GetFinalPos());
 	Rectangle(hDC,
@@ -159,7 +159,7 @@ void CPlayer::render(HDC hDC)
 		(int)(fptRenderPos.x + m_fptScale.x / 2.f),
 		(int)(fptRenderPos.y + m_fptScale.y / 2.f));*/
 
-	component_render(hDC);
+	component_render();
 }
 
 void CPlayer::init()

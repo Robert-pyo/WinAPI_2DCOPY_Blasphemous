@@ -1,12 +1,12 @@
 #pragma once
 #include "CGameObject.h"
 
-class CTexture;
+class CD2DImage;
 
 class CPlayer : public CGameObject
 {
 private:
-	CTexture* m_pTex;
+	CD2DImage* m_pImg;
 
 	fVector2D m_fvDir;
 	fVector2D m_fvChangeXY;
@@ -25,7 +25,7 @@ public:
 	virtual CPlayer* Clone() override;
 
 	virtual void update() final;
-	virtual void render(HDC hDC);
+	virtual void render();
 
 	void init();
 	void Jump();

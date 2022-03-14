@@ -19,7 +19,7 @@ private:
 
 public:
 	void update();
-	void render(HDC hDC);
+	void render();
 	void init();
 
 	CScene* GetCurrentScene();

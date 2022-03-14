@@ -1,7 +1,6 @@
 #include "framework.h"
 #include "CCollider.h"
 #include "CGameObject.h"
-#include "SelectGDI.h"
 
 UINT CCollider::s_iUID = 0;
 
@@ -82,30 +81,22 @@ void CCollider::finalUpdate()
 	m_rtCollider.bottom = (LONG)(m_fptFinalPos.y + m_fptScale.y / 2.f);
 }
 
-void CCollider::render(HDC hDC)
+void CCollider::render()
 {
-	TYPE_PEN penType;
-
-	if (m_iCollisionCount > 0)
-	{
-		penType = TYPE_PEN::RED;
-	}
+	COLORREF rgb = RGB(0, 0, 0);
+	if (m_iCollisionCount)
+		rgb = RGB(255, 0, 0);
 	else
-	{
-		penType = TYPE_PEN::BLUE;
-	}
-
-	SelectGDI pen(hDC, penType);
-	SelectGDI brush(hDC, TYPE_BRUSH::HOLLOW);
+		rgb = RGB(0, 255, 0);
 
 	fPoint fptRenderPos = CCameraManager::getInst()->GetRenderPos(m_fptFinalPos);
 
-	Rectangle(hDC,
-		(int)(fptRenderPos.x - m_fptScale.x / 2.f),
-		(int)(fptRenderPos.y - m_fptScale.y / 2.f),
-		(int)(fptRenderPos.x + m_fptScale.x / 2.f),
-		(int)(fptRenderPos.y + m_fptScale.y / 2.f)
-	);
+	CRenderManager::getInst()->RenderRectangle(
+		fptRenderPos.x - m_fptScale.x / 2.f,
+		fptRenderPos.y - m_fptScale.y / 2.f,
+		fptRenderPos.x + m_fptScale.x / 2.f,
+		fptRenderPos.y + m_fptScale.y / 2.f,
+		rgb);
 }
 
 CGameObject* CCollider::GetOwnerObj()

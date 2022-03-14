@@ -1,6 +1,7 @@
 #pragma once
 class CGameObject;
 class CAnimation;
+class CD2DImage;
 
 class CAnimator
 {
@@ -16,9 +17,9 @@ public:
 	~CAnimator();
 
 	void update();
-	void render(HDC hDC);
+	void render();
 
-	void CreateAnimation(const wstring& strName, CTexture* pTex, fPoint leftTop, fPoint scale, 
+	void CreateAnimation(const wstring& strName, CD2DImage* pImg, fPoint leftTop, fPoint scale,
 						fPoint step, float duration, UINT frmCount, bool isLoop);
 	CAnimation* FindAnimation(const wstring& strName);
 	// 애니메이션 재생

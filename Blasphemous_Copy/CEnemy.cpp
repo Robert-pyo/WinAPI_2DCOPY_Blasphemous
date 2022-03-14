@@ -5,7 +5,7 @@
 
 CEnemy::CEnemy()
 {
-	initObject(fPoint(500, 100.f), fPoint(100.f, 100.f));
+	InitObject(fPoint(500, 100.f), fPoint(100.f, 100.f));
 	m_strName	= L"Enemy_01";
 	m_fVelocity = 500.0f;
 	targetBall	= nullptr;
@@ -30,17 +30,11 @@ void CEnemy::update()
 	MoveEnemyAI();
 }
 
-void CEnemy::render(HDC hDC)
+void CEnemy::render()
 {
 	fPoint fptRenderPos = CCameraManager::getInst()->GetRenderPos(m_fptPos);
 
-	Rectangle(hDC, 
-		(int)(fptRenderPos.x - m_fptScale.x / 2.f),
-		(int)(fptRenderPos.y - m_fptScale.y / 2.f),
-		(int)(fptRenderPos.x + m_fptScale.x / 2.f),
-		(int)(fptRenderPos.y + m_fptScale.y / 2.f));
-
-	component_render(hDC);
+	component_render();
 }
 
 void CEnemy::SetChaseTarget(CBall* target)

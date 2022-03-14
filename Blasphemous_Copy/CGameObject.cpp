@@ -11,8 +11,8 @@ void CGameObject::SetDisable()
 CGameObject::CGameObject()
 {
 	m_strName		= L"";
-	m_fptPos				= { 0.0f, 0.0f };
-	m_fptScale			= { 0.0f, 0.0f };
+	m_fptPos		= { 0.0f, 0.0f };
+	m_fptScale		= { 0.0f, 0.0f };
 	m_pCollider		= nullptr;
 	m_pAnimator		= nullptr;
 	m_bIsActive		= true;
@@ -58,16 +58,19 @@ void CGameObject::finalUpdate()
 		m_pCollider->finalUpdate();
 }
 
-void CGameObject::component_render(HDC hDC)
+void CGameObject::component_render()
 {
 	if (nullptr != m_pAnimator)
-		m_pAnimator->render(hDC);
-
+	{
+		m_pAnimator->render();
+	}
 	if (nullptr != m_pCollider)
-		m_pCollider->render(hDC);
+	{
+		m_pCollider->render();
+	}
 }
 
-void CGameObject::initObject(const fPoint m_fptPos, const fPoint m_fptScale)
+void CGameObject::InitObject(const fPoint m_fptPos, const fPoint m_fptScale)
 {
 	this->m_fptPos		= m_fptPos;
 	this->m_fptScale		= m_fptScale;

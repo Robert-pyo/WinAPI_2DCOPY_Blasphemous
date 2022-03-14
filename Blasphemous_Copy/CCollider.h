@@ -50,7 +50,7 @@ public:
 	void SetScale		(fPoint m_fptScale);
 
 	void finalUpdate();
-	void render(HDC hDC);
+	void render();
 
 	CGameObject* GetOwnerObj();
 

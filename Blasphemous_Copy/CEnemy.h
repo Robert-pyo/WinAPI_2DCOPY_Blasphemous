@@ -15,7 +15,7 @@ public:
 	virtual CEnemy* Clone();
 
 	virtual void update() final;
-	virtual void render(HDC hDC) final;
+	virtual void render() final;
 
 	void SetChaseTarget(CBall* target);
 	void MoveEnemyAI();

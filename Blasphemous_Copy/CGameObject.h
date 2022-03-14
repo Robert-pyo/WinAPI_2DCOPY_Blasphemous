@@ -43,11 +43,11 @@ public:
 	// 그러므로 충돌의 계산은 FinalUpdate()에서 진행한다.
 	virtual void finalUpdate();	// CGameObject를 상속받은 클래스가 오버라이딩 하는 것을 막기 위해 final 키워드 삽입
 
-	virtual void render(HDC hDC) = 0;
+	virtual void render() = 0;
 
-	virtual void component_render(HDC hDC);
+	virtual void component_render();
 
-	void initObject	(const fPoint m_fptPos, const fPoint m_fptScale);
+	void InitObject	(const fPoint m_fptPos, const fPoint m_fptScale);
 
 	wstring GetName();
 	fPoint	GetPos();
