@@ -37,10 +37,12 @@ private:
 	fVector2D m_fvPrevDir;
 
 	float m_fVelocity;
+	float m_fMaxVelocity;
 	float m_fAccelGravity;
 	float m_fJumpPower;
 	float m_fFrictionValue;
 
+	bool m_bIsActing;
 	bool m_bIsJumping;
 	bool m_bIsGrounded;
 

@@ -11,12 +11,14 @@ CPlayer::CPlayer()
 	InitObject(fPoint(700.f, 0.f), fPoint(44.f, 96.f));
 	m_strName		= L"Player";
 	m_fVelocity		= 0.f;
+	m_fMaxVelocity	= 400.f;
 	m_fAccelGravity	= 0.f;
-	m_fFrictionValue = 300.f;
+	m_fFrictionValue = 1000.f;
 	m_fJumpPower	= -550.f;
 	m_bIsJumping	= false;
 	m_bIsGrounded	= false;
-	m_fvCurDir		= {};
+	m_bIsActing		= false;
+	m_fvCurDir		= {1.0f, 0.f};
 	m_fvPrevDir		= {};
 
 	m_eCurState = PLAYER_STATE::IDLE;
@@ -68,12 +70,12 @@ CPlayer* CPlayer::Clone()
 
 void CPlayer::update()
 {
-	if (PRESS_KEY(VK_LBUTTON))
+	/*if (PRESS_KEY(VK_LBUTTON))
 	{
 		fPoint mousePos = CCameraManager::getInst()->GetRealPos(MOUSE_POS());
 		m_fAccelGravity = 0.f;
 		SetPos(mousePos);
-	}
+	}*/
 
 	update_move();
 	update_state();
@@ -92,6 +94,7 @@ void CPlayer::update_state()
 	if (PRESS_KEY_DOWN('A'))
 	{
 		m_fvCurDir.x = -1;
+		m_bIsActing = true;
 		m_eCurState = PLAYER_STATE::RUN;
 
 		CAnimation* pAnim = GetAnimator()->FindAnimation(L"Player_Running_Left");
@@ -101,13 +104,14 @@ void CPlayer::update_state()
 	if (PRESS_KEY_DOWN('D'))
 	{
 		m_fvCurDir.x = 1;
+		m_bIsActing = true;
 		m_eCurState = PLAYER_STATE::RUN;
 
 		CAnimation* pAnim = GetAnimator()->FindAnimation(L"Player_Running_Right");
 		pAnim->SetFrame(0);
 	}
 
-	if (m_fVelocity == 0.f)
+	if (m_fVelocity == 0.f && !m_bIsActing)
 	{
 		m_eCurState = PLAYER_STATE::IDLE;
 	}
@@ -117,12 +121,12 @@ void CPlayer::update_move()
 {
 	if (PRESS_KEY('A'))
 	{
-		m_fVelocity += 500.f * fDeltaTime;
+		m_fVelocity += 2000.f * fDeltaTime;
 	}
 	
 	if (PRESS_KEY('D'))
 	{
-		m_fVelocity += 500.f * fDeltaTime;
+		m_fVelocity += 2000.f * fDeltaTime;
 	}
 
 	if (PRESS_KEY_DOWN(VK_SPACE) && m_bIsGrounded)
@@ -132,26 +136,44 @@ void CPlayer::update_move()
 
 	float fFriction = m_fvCurDir.x * (-1) * m_fFrictionValue * fDeltaTime;
 
-	if (m_fVelocity <= fFriction)
+	if (m_fvCurDir.x > 0.f)
 	{
-		m_fVelocity = 0.f;
+		if (m_fVelocity <= abs(fFriction))
+		{
+			m_fVelocity = 0.f;
+			m_bIsActing = false;
+		}
+		else
+		{
+			m_fVelocity += fFriction;
+		}
 	}
 	else
 	{
-		m_fVelocity += fFriction;
+		if (m_fVelocity <= fFriction)
+		{
+			m_fVelocity = 0.f;
+			m_bIsActing = false;
+		}
+		else
+		{
+			m_fVelocity -= fFriction;
+		}
 	}
+	m_fptPos.x += (float)(m_fvCurDir.x * m_fVelocity * fDeltaTime);
+	m_fptPos.y += (float)(m_fAccelGravity * fDeltaTime);
 
 	m_fAccelGravity += (float)(GRAVITY * fDeltaTime);
 	if (m_fAccelGravity >= 1000.f)
 		m_fAccelGravity = 1000.f;
+	if (m_fVelocity >= m_fMaxVelocity)
+		m_fVelocity = m_fMaxVelocity;
 
-	m_fptPos.x += (float)(m_fvCurDir.x * m_fVelocity * fDeltaTime);
-	m_fptPos.y += (float)(m_fAccelGravity * fDeltaTime);
 }
 
 void CPlayer::update_animation()
 {
-	if (m_ePrevState == m_eCurState)
+	if (m_ePrevState == m_eCurState && m_fvPrevDir == m_fvCurDir)
 	{
 		return;
 	}
@@ -163,23 +185,29 @@ void CPlayer::update_animation()
 		if (-1 == m_fvCurDir.x)
 		{
 			GetAnimator()->Play(L"Player_Idle_Left");
+			Logger::debug(L"IDLE_LEFT");
 		}
 		else
 		{
 			GetAnimator()->Play(L"Player_Idle_Right");
+			Logger::debug(L"IDLE_RIGHT");
 		}
 	}
+		break;
 	case PLAYER_STATE::RUN:
 	{
 		if (-1 == m_fvCurDir.x)
 		{
 			GetAnimator()->Play(L"Player_Running_Left");
+			Logger::debug(L"RUN_LEFT");
 		}
 		else
 		{
 			GetAnimator()->Play(L"Player_Running_Right");
+			Logger::debug(L"RUN_RIGHT");
 		}
 	}
+		break;
 	}
 }
 
@@ -242,7 +270,7 @@ void CPlayer::OnCollision(CCollider* target)
 				// 플레이어가 벽보다 오른쪽에 있을 때
 				if (yDiff > xDiff && m_pCollider->GetBorderPos().right > target->GetBorderPos().right)
 				{
-					m_fptPos.x += (float)(target->GetBorderPos().right - m_pCollider->GetBorderPos().left);
+					m_fptPos.x += (float)(target->GetBorderPos().right - m_pCollider->GetBorderPos().left) * 10.f * fDeltaTime;
 				}
 			}
 		}
@@ -259,7 +287,7 @@ void CPlayer::OnCollision(CCollider* target)
 				if (yDiff > xDiff && m_pCollider->GetBorderPos().left < target->GetBorderPos().left
 					&& m_pCollider->GetBorderPos().right > target->GetBorderPos().left)
 				{
-					m_fptPos.x -= (float)(m_pCollider->GetBorderPos().right - target->GetBorderPos().left);
+					m_fptPos.x -= (float)(m_pCollider->GetBorderPos().right - target->GetBorderPos().left) * 10.f * fDeltaTime;
 				}
 			}
 		}
@@ -276,8 +304,7 @@ void CPlayer::OnCollision(CCollider* target)
 				if (yDiff < xDiff)
 				{
 					// 충돌시 착지한 경계면에서 뚫고 들어간 정도를 계산하여 현재 위치에 더해줌
-					m_fptPos.y += (float)(target->GetBorderPos().bottom - m_pCollider->GetBorderPos().top);
-					m_fJumpPower = 0.f;
+					m_fptPos.y += (float)(target->GetBorderPos().bottom - m_pCollider->GetBorderPos().top) * 10.f * fDeltaTime;
 				}
 
 			}
@@ -290,11 +317,10 @@ void CPlayer::OnCollision(CCollider* target)
 				if (yDiff < xDiff)
 				{
 					// 충돌시 착지한 경계면에서 뚫고 들어간 정도를 계산하여 현재 위치에 더해줌
-					m_fptPos.y -= (float)(m_pCollider->GetBorderPos().bottom - target->GetBorderPos().top);
+					m_fptPos.y -= (float)(m_pCollider->GetBorderPos().bottom - target->GetBorderPos().top) * 10.f * fDeltaTime;
 
 					m_bIsGrounded = true;
 
-					m_fJumpPower = -550.f;
 					m_fAccelGravity = 0.f;
 				}
 			}

@@ -6,7 +6,7 @@
 
 CCore::CCore()
 {
-	m_hDC			= {};
+	m_hDC = {};
 }
 
 CCore::~CCore()
@@ -15,6 +15,9 @@ CCore::~CCore()
 
 void CCore::update()
 {
+	// 만약 게임 윈도우가 선택된 윈도우가 아닐 경우
+	//if (hWnd != GetFocus()) return;
+
 	CEventManager::getInst()->update();		// 가장 먼저 이벤트에 관한 내용 처리
 
 	CTimeManager::getInst()->update();
@@ -22,12 +25,15 @@ void CCore::update()
 	CSoundManager::getInst()->update();
 	CSceneManager::getInst()->update();
 	CCameraManager::getInst()->update();
-	CCollisionManager::getInst()->update();
 	CUIManager::getInst()->update();
+	CCollisionManager::getInst()->update();
 }
 
 void CCore::render()
 {
+	// 만약 게임 윈도우가 선택된 윈도우가 아닐 경우
+	//if (hWnd != GetFocus()) return;
+
 	CRenderManager::getInst()->GetRenderTarget()->BeginDraw();
 
 	CRenderManager::getInst()->RenderFillRectangle(-1, -1, WINSIZE_X + 1, WINSIZE_Y + 1, RGB(255, 255, 255));
