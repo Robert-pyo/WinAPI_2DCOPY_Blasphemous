@@ -34,11 +34,13 @@ public:
 	void SetFrame(int frmIndex);
 	void SetLoop(bool isLoop);
 	void SetAnimDone(bool isDone);
+	void SetReverse(bool isReverse);
 
 	// 문자열의 경우 문자열의 특성때문에 원본을 반환하기 때문에 const 선언
 	const wstring& GetName();
 	tAnimFrm& GetFrame(int frmIndex);
 	bool GetAnimDone();
+	bool GetReverse();
 
 	void update();
 	void render();

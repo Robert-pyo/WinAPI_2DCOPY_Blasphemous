@@ -140,7 +140,17 @@ void CAnimation::SetAnimDone(bool isDone)
 	m_bIsDone = isDone;
 }
 
+void CAnimation::SetReverse(bool isReverse)
+{
+	m_bReverse = isReverse;
+}
+
 bool CAnimation::GetAnimDone()
 {
 	return m_bIsDone;
+}
+
+bool CAnimation::GetReverse()
+{
+	return m_bReverse;
 }

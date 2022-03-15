@@ -8,15 +8,18 @@
 CPlayer::CPlayer()
 {
 	m_pImg = CResourceManager::getInst()->LoadD2DImage(L"Player", L"\\texture\\Player\\penitent_anim_merge.png");
-	m_strName = L"Player";
 	InitObject(fPoint(700.f, 0.f), fPoint(44.f, 96.f));
-	m_fVelocity = 400.f;
-	m_fAccel = 50.f;
-	m_fJumpPower = -550.f;
-	m_bIsJumping = false;
-	m_bIsGrounded = false;
-	m_fvDir = {};
-	m_fvChangeXY = {};
+	m_strName		= L"Player";
+	m_fVelocity		= 0.f;
+	m_fAccelGravity	= 0.f;
+	m_fFrictionValue = 300.f;
+	m_fJumpPower	= -550.f;
+	m_bIsJumping	= false;
+	m_bIsGrounded	= false;
+	m_fvCurDir		= {};
+	m_fvPrevDir		= {};
+
+	m_eCurState = PLAYER_STATE::IDLE;
 
 	CreateCollider();
 	GetCollider()->SetFinalPos(GetPos());
@@ -68,88 +71,116 @@ void CPlayer::update()
 	if (PRESS_KEY(VK_LBUTTON))
 	{
 		fPoint mousePos = CCameraManager::getInst()->GetRealPos(MOUSE_POS());
-		m_fAccel = 0.f;
+		m_fAccelGravity = 0.f;
 		SetPos(mousePos);
 	}
 
-	if (PRESS_KEY_DOWN(VK_LEFT))
-	{
-		CAnimation* pAnim = GetAnimator()->FindAnimation(L"Player_StartRun_Left");
-		pAnim->SetFrame(0);
-
-		pAnim = GetAnimator()->FindAnimation(L"Player_Running_Left");
-		pAnim->SetFrame(0);
-	}
-	if (PRESS_KEY(VK_LEFT))
-	{
-		GetAnimator()->Play(L"Player_StartRun_Left");
-		if (GetAnimator()->FindAnimation(L"Player_StartRun_Left")->GetAnimDone())
-			GetAnimator()->Play(L"Player_Running_Left");
-		m_fvDir.x = -1;
-	}
-	if (PRESS_KEY_UP(VK_LEFT))
-	{
-		CAnimation* pAnim = GetAnimator()->FindAnimation(L"Player_StartRun_Left");
-		pAnim->SetAnimDone(false);
-		GetAnimator()->Play(L"Player_Idle_Left");
-		m_fvDir.x = 0;
-	}
-
-	if (PRESS_KEY_DOWN(VK_RIGHT))
-	{
-		CAnimation* pAnim = GetAnimator()->FindAnimation(L"Player_StartRun_Right");
-		pAnim->SetFrame(0);
-
-		pAnim = GetAnimator()->FindAnimation(L"Player_Running_Right");
-		pAnim->SetFrame(0);
-	}
-	if (PRESS_KEY(VK_RIGHT))
-	{
-		GetAnimator()->Play(L"Player_StartRun_Right");
-		if (GetAnimator()->FindAnimation(L"Player_StartRun_Right")->GetAnimDone())
-			GetAnimator()->Play(L"Player_Running_Right");
-		m_fvDir.x = 1;
-	}
-	if (PRESS_KEY_UP(VK_RIGHT))
-	{
-		CAnimation* pAnim = GetAnimator()->FindAnimation(L"Player_StartRun_Right");
-		pAnim->SetAnimDone(false);
-		GetAnimator()->Play(L"Player_Idle_Right");
-		m_fvDir.x = 0;
-	}
-
-	static fPoint fptCur = {};
-	static fPoint fptPrev = {};
-
-	fptPrev = fptCur;
-
-	m_fptPos.x += (float)(m_fvDir.x * m_fVelocity * fDeltaTime);
-	m_fptPos.y += (float)(m_fAccel * fDeltaTime);
-
-	fptCur = GetPos();
-
-	m_fvChangeXY = fVector2D(fptCur.x - fptPrev.x, fptPrev.y - fptCur.y);
-
-	// TODO : 점프를 하지 않고 바닥을 벗어났을 경우 IsGrounded가 아니므로 점프 못하게 해야하는데..
-	// 플레이어가 향하는 방향을 알면 떨어지고있을 때를 감지할 수 있지 않을까 -> x 변화량 / y 변화량 -> 기울기 -> 방향?
-	// -> 성공!
-	if (PRESS_KEY_DOWN(VK_SPACE) && !m_bIsJumping && m_bIsGrounded && m_fvChangeXY.y >= 0.f)
-	{
-		m_bIsJumping = true;
-		m_bIsGrounded = false;
-	}
-	if (m_bIsJumping)
-	{
-		Jump();
-	}
-
-	m_fAccel += (float)(GRAVITY * fDeltaTime);
-	if (m_fAccel >= 1000.f)
-		m_fAccel = 1000.f;
+	update_move();
+	update_state();
+	update_animation();
 
 	CCameraManager::getInst()->SetLookAt(GetPos());
 
 	GetAnimator()->update();
+
+	m_ePrevState = m_eCurState;
+	m_fvPrevDir = m_fvCurDir;
+}
+
+void CPlayer::update_state()
+{
+	if (PRESS_KEY_DOWN('A'))
+	{
+		m_fvCurDir.x = -1;
+		m_eCurState = PLAYER_STATE::RUN;
+
+		CAnimation* pAnim = GetAnimator()->FindAnimation(L"Player_Running_Left");
+		pAnim->SetFrame(0);
+	}
+
+	if (PRESS_KEY_DOWN('D'))
+	{
+		m_fvCurDir.x = 1;
+		m_eCurState = PLAYER_STATE::RUN;
+
+		CAnimation* pAnim = GetAnimator()->FindAnimation(L"Player_Running_Right");
+		pAnim->SetFrame(0);
+	}
+
+	if (m_fVelocity == 0.f)
+	{
+		m_eCurState = PLAYER_STATE::IDLE;
+	}
+}
+
+void CPlayer::update_move()
+{
+	if (PRESS_KEY('A'))
+	{
+		m_fVelocity += 500.f * fDeltaTime;
+	}
+	
+	if (PRESS_KEY('D'))
+	{
+		m_fVelocity += 500.f * fDeltaTime;
+	}
+
+	if (PRESS_KEY_DOWN(VK_SPACE) && m_bIsGrounded)
+	{
+		Jump();
+	}
+
+	float fFriction = m_fvCurDir.x * (-1) * m_fFrictionValue * fDeltaTime;
+
+	if (m_fVelocity <= fFriction)
+	{
+		m_fVelocity = 0.f;
+	}
+	else
+	{
+		m_fVelocity += fFriction;
+	}
+
+	m_fAccelGravity += (float)(GRAVITY * fDeltaTime);
+	if (m_fAccelGravity >= 1000.f)
+		m_fAccelGravity = 1000.f;
+
+	m_fptPos.x += (float)(m_fvCurDir.x * m_fVelocity * fDeltaTime);
+	m_fptPos.y += (float)(m_fAccelGravity * fDeltaTime);
+}
+
+void CPlayer::update_animation()
+{
+	if (m_ePrevState == m_eCurState)
+	{
+		return;
+	}
+
+	switch (m_eCurState)
+	{
+	case PLAYER_STATE::IDLE:
+	{
+		if (-1 == m_fvCurDir.x)
+		{
+			GetAnimator()->Play(L"Player_Idle_Left");
+		}
+		else
+		{
+			GetAnimator()->Play(L"Player_Idle_Right");
+		}
+	}
+	case PLAYER_STATE::RUN:
+	{
+		if (-1 == m_fvCurDir.x)
+		{
+			GetAnimator()->Play(L"Player_Running_Left");
+		}
+		else
+		{
+			GetAnimator()->Play(L"Player_Running_Right");
+		}
+	}
+	}
 }
 
 void CPlayer::render()
@@ -166,7 +197,8 @@ void CPlayer::render()
 
 void CPlayer::Jump()
 {
-	m_fptPos.y += (float)(m_fJumpPower * fDeltaTime);
+	m_bIsGrounded = false;
+	m_fAccelGravity += m_fJumpPower;
 }
 
 const float CPlayer::GetVelocity()
@@ -176,7 +208,7 @@ const float CPlayer::GetVelocity()
 
 const fVector2D& CPlayer::GetDirVector()
 {
-	return m_fvDir;
+	return m_fvCurDir;
 }
 
 void CPlayer::OnCollision(CCollider* target)
@@ -199,7 +231,7 @@ void CPlayer::OnCollision(CCollider* target)
 		// 플레이어 바닥 및 벽 충돌 처리
 
 		// 왼쪽 벽
-		if (m_fvDir.x < 0.f)
+		if (m_fvCurDir.x < 0.f)
 		{
 			// y축 위치가 맞지 않는 경우 무시
 			if (target->GetBorderPos().top < m_pCollider->GetBorderPos().bottom
@@ -215,7 +247,7 @@ void CPlayer::OnCollision(CCollider* target)
 			}
 		}
 		// 오른쪽 벽
-		if (m_fvDir.x > 0.f)
+		if (m_fvCurDir.x > 0.f)
 		{
 			// y축 위치가 맞지 않는 경우 무시
 			if (target->GetBorderPos().top < m_pCollider->GetBorderPos().bottom
@@ -233,7 +265,7 @@ void CPlayer::OnCollision(CCollider* target)
 		}
 
 		// 위쪽 / 아래쪽 벽
-		if (m_fAccel > 0.f)
+		if (m_fAccelGravity > 0.f)
 		{
 			// 위쪽
 			if (m_pCollider->GetBorderPos().bottom > target->GetBorderPos().bottom &&
@@ -261,10 +293,9 @@ void CPlayer::OnCollision(CCollider* target)
 					m_fptPos.y -= (float)(m_pCollider->GetBorderPos().bottom - target->GetBorderPos().top);
 
 					m_bIsGrounded = true;
-					m_bIsJumping = false;
 
 					m_fJumpPower = -550.f;
-					m_fAccel = 0.f;
+					m_fAccelGravity = 0.f;
 				}
 			}
 		}

@@ -30,7 +30,8 @@ void CRenderManager::init()
 
 	// 지정한 윈도우의 클라이언트 영역에 그림을 그리기 위한 Render Target을 생성
 	m_pFactory->CreateHwndRenderTarget(RenderTargetProperties(),
-		HwndRenderTargetProperties(hWnd, SizeU(rc.right, rc.bottom)),
+		HwndRenderTargetProperties(hWnd, SizeU(rc.right, rc.bottom),
+			D2D1_PRESENT_OPTIONS::D2D1_PRESENT_OPTIONS_IMMEDIATELY),
 		&m_pRenderTarget);
 
 	// WICImagingFactory 생성
@@ -109,7 +110,7 @@ void CRenderManager::RenderText(wstring str, float dstX, float dstY, float dstW,
 	ID2D1SolidColorBrush* brush;
 
 	m_pRenderTarget->CreateSolidColorBrush(
-		D2D1::ColorF(red / 2.f, green / 255.0f, blue / 255.0f), &brush);
+		D2D1::ColorF(red / 255.f, green / 255.0f, blue / 255.0f), &brush);
 	m_pRenderTarget->DrawTextW(str.c_str(), (UINT)str.size(), m_pTextFormat,
 		D2D1::RectF(dstX, dstY, dstW, dstH), brush);
 }
@@ -124,7 +125,7 @@ void CRenderManager::RenderRectangle(float dstX, float dstY, float dstW, float d
 	ID2D1SolidColorBrush* brush;
 
 	m_pRenderTarget->CreateSolidColorBrush(
-		D2D1::ColorF(red / 2.f, green / 255.0f, blue / 255.0f), &brush);
+		D2D1::ColorF(red / 255.f, green / 255.0f, blue / 255.0f), &brush);
 	m_pRenderTarget->DrawRectangle(m_imgRect, brush);
 }
 
@@ -138,7 +139,7 @@ void CRenderManager::RenderFillRectangle(float dstX, float dstY, float dstW, flo
 	ID2D1SolidColorBrush* brush;
 
 	m_pRenderTarget->CreateSolidColorBrush(
-		D2D1::ColorF(red / 2.f, green / 255.0f, blue / 255.0f), &brush);
+		D2D1::ColorF(red / 255.f, green / 255.0f, blue / 255.0f), &brush);
 	m_pRenderTarget->FillRectangle(m_imgRect, brush);
 }
 
@@ -152,7 +153,7 @@ void CRenderManager::RenderEllipse(float dstX, float dstY, float dstW, float dst
 	ID2D1SolidColorBrush* brush;
 
 	m_pRenderTarget->CreateSolidColorBrush(
-		D2D1::ColorF(red / 2.f, green / 255.0f, blue / 255.0f), &brush);
+		D2D1::ColorF(red / 255.f, green / 255.0f, blue / 255.0f), &brush);
 	m_pRenderTarget->DrawEllipse(m_imgRect, brush);
 }
 
@@ -166,7 +167,7 @@ void CRenderManager::RenderFillEllipse(float dstX, float dstY, float dstW, float
 	ID2D1SolidColorBrush* brush;
 
 	m_pRenderTarget->CreateSolidColorBrush(
-		D2D1::ColorF(red / 2.f, green / 255.0f, blue / 255.0f), &brush);
+		D2D1::ColorF(red / 255.f, green / 255.0f, blue / 255.0f), &brush);
 	m_pRenderTarget->FillEllipse(m_imgRect, brush);
 }
 

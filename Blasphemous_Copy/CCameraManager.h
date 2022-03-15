@@ -33,7 +33,7 @@ private:
 	float m_fAccTime;			// 목적지를 따라가는데 소요된 시간
 	float m_fSpeed;				// 목적지까지 따라가는 속력
 	float m_fPrevSpeed;			// 목적지까지 따라가던 속력
-	float m_fAccel;				// 목적지를 따라가는 가속도
+	float m_fAccelGravity;				// 목적지를 따라가는 가속도
 	float m_fAccIncrement;		// 가속도의 증감폭
 
 	CAM_EFFECT	m_eEffect;
