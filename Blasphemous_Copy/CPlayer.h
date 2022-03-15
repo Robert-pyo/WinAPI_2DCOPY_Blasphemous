@@ -27,7 +27,6 @@ public:
 	virtual void update() final;
 	virtual void render();
 
-	void init();
 	void Jump();
 
 	const float		 GetVelocity();

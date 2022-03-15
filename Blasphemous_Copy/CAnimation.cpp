@@ -83,8 +83,8 @@ void CAnimation::render()
 	{
 		CRenderManager::getInst()->RenderRevFrame(
 			m_pImg,
-			fptRenderPos.x - animFrm.fptTexScale.x / 2.f,
-			fptRenderPos.y - animFrm.fptTexScale.y / 2.f,
+			fptRenderPos.x - animFrm.fptTexScale.x,
+			fptRenderPos.y - animFrm.fptTexScale.y,
 			fptRenderPos.x + animFrm.fptTexScale.x,
 			fptRenderPos.y + animFrm.fptTexScale.y,
 			animFrm.fptLeftTop.x,
@@ -97,8 +97,8 @@ void CAnimation::render()
 	{
 		CRenderManager::getInst()->RenderFrame(
 			m_pImg,
-			fptRenderPos.x - animFrm.fptTexScale.x / 2.f,
-			fptRenderPos.y - animFrm.fptTexScale.y / 2.f,
+			fptRenderPos.x - animFrm.fptTexScale.x,
+			fptRenderPos.y - animFrm.fptTexScale.y,
 			fptRenderPos.x + animFrm.fptTexScale.x,
 			fptRenderPos.y + animFrm.fptTexScale.y,
 			animFrm.fptLeftTop.x,

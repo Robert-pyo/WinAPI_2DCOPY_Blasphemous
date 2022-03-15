@@ -106,6 +106,9 @@
     <Filter Include="Engine\Manager\RenderManager">
       <UniqueIdentifier>{c8a1289f-677a-4bd5-a78d-84d4f86697e5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Object\PrayStructure">
+      <UniqueIdentifier>{8285615a-3432-4ae2-946a-790a9128faf7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -225,6 +228,9 @@
     <ClInclude Include="CRenderManager.h">
       <Filter>Engine\Manager\RenderManager</Filter>
     </ClInclude>
+    <ClInclude Include="CPrayerTable.h">
+      <Filter>Object\PrayStructure</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CCore.cpp">
@@ -322,6 +328,9 @@
     </ClCompile>
     <ClCompile Include="CRenderManager.cpp">
       <Filter>Engine\Manager\RenderManager</Filter>
+    </ClCompile>
+    <ClCompile Include="CPrayerTable.cpp">
+      <Filter>Object\PrayStructure</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

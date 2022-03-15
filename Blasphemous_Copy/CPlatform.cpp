@@ -5,13 +5,14 @@
 
 CPlatform::CPlatform()
 {
-	m_pImg = CResourceManager::getInst()->LoadD2DImage(L"Platform_Floor", L"texture\\Map\\Village\\village_sprite_sheet.bmp");
+	m_pImg = CResourceManager::getInst()->LoadD2DImage(L"Platform_Floor", L"texture\\Map\\TutorialScene\\Floor\\brotherhood_floor.png");
 
-	InitObject(fPoint(190.f, 420.f), fPoint(190.f, 61.f));
+	InitObject(fPoint(627.f, 370.f), fPoint(403.f, 110.f));
 
 	CreateCollider();
 	GetCollider()->SetFinalPos(GetPos());
-	GetCollider()->SetScale(fPoint(GetScale().x * 2.f, GetScale().y * 2.f - 50.f));
+	GetCollider()->SetOffsetPos(fPoint(0.f, 60.f));
+	GetCollider()->SetScale(fPoint(GetScale().x * 2.f, GetScale().y - 10.f));
 }
 
 CPlatform::~CPlatform()
@@ -34,11 +35,11 @@ void CPlatform::render()
 	CRenderManager::getInst()->RenderFrame(
 		m_pImg,
 		fptRenderPos.x - GetScale().x,
-		fptRenderPos.y - GetScale().y,
+		fptRenderPos.y - GetScale().y * 1.3f,
 		fptRenderPos.x + GetScale().x,
 		fptRenderPos.y + GetScale().y,
-		341.f, 466.f,
-		GetScale().x + 341.f, GetScale().y + 466.f
+		0.f, 0.f,
+		GetScale().x, GetScale().y
 	);
 
 	component_render();
