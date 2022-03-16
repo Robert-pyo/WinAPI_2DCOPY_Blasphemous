@@ -35,18 +35,19 @@ void CTile::render()
 	UINT iCurX = (m_iIndex % iMaxCol);
 	UINT iCurY = (m_iIndex / iMaxCol) % iMaxRow;
 
-	fPoint fptRenderPos = CCameraManager::getInst()->GetRenderPos(m_fptPos);
+	fPoint fptRenderPos = CCameraManager::getInst()->GetRenderPos(GetPos());
+	fPoint fptScale = GetScale();
 
 	CRenderManager::getInst()->RenderFrame(
 		m_pImg,
 		fptRenderPos.x,
 		fptRenderPos.y,
-		m_fptScale.x,
-		m_fptScale.y,
-		iCurX * m_fptScale.x,
-		iCurY * m_fptScale.y,
-		m_fptScale.x,
-		m_fptScale.y
+		fptScale.x,
+		fptScale.y,
+		iCurX * fptScale.x,
+		iCurY * fptScale.y,
+		fptScale.x,
+		fptScale.y
 	);
 }
 

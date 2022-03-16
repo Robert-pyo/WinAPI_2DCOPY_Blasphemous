@@ -53,7 +53,7 @@ void CScene_Stage1::Enter()
 	floor1->SetPos(fPoint(background_bigDoor->GetPos().x + background_bigDoor->GetScale().x * 2.f + floor1->GetScale().x, floor1->GetPos().y));
 	AddObject(floor1, GROUP_GAMEOBJ::FLOOR);
 	CPlatform* floor2 = floor1->Clone();
-	floor2->SetPos(fPoint((floor1->GetPos().x + floor1->GetScale().x * 2.f), floor1->GetPos().y));
+	floor2->SetPos(fPoint((floor1->GetPos().x + floor1->GetScale().x * 2.f - 1.f), floor1->GetPos().y));
 	AddObject(floor2, GROUP_GAMEOBJ::FLOOR);
 	CPlatform* floor3 = floor1->Clone();
 	floor3->SetPos(fPoint(floor1->GetPos().x - floor3->GetScale().x * 2.f, floor1->GetPos().y));

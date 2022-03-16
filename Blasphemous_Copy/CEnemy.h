@@ -6,8 +6,6 @@ class CEnemy : public CGameObject
 {
 private:
 	float	m_fVelocity;
-	CBall*	targetBall;
-	UINT*	timeCount;
 
 public:
 	CEnemy();
@@ -17,9 +15,9 @@ public:
 	virtual void update() final;
 	virtual void render() final;
 
-	void SetChaseTarget(CBall* target);
-	void MoveEnemyAI();
-	void LinkTimeCount(UINT* timeCount);
+	void SetVelocity(float fVelocity);
+
+	float GetVelocity();
 
 	virtual void OnCollision(CCollider* target) override;
 	virtual void OnCollisionEnter(CCollider* target) override;

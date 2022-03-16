@@ -11,6 +11,7 @@ enum class PLAYER_STATE
 	RUN,
 	ATTACK,
 	JUMP,
+	JUMPOFF,
 	DEAD,
 };
 
@@ -41,10 +42,13 @@ private:
 	float m_fAccelGravity;
 	float m_fJumpPower;
 	float m_fFrictionValue;
+	bool  m_bIsActing;
+	bool  m_bIsGrounded;
 
-	bool m_bIsActing;
-	bool m_bIsJumping;
-	bool m_bIsGrounded;
+	float m_fAttackDelay;
+	UINT  m_iComboCount;
+	bool  m_bIsAttacking;
+
 
 public:
 	CPlayer();

@@ -78,6 +78,7 @@ void CAnimation::render()
 	fptDrawPos = fptDrawPos + animFrm.fptOffset;
 
 	fPoint fptRenderPos = CCameraManager::getInst()->GetRenderPos(fptDrawPos);
+	fPoint fptScale = pObj->GetScale();
 
 	if (m_bReverse)
 	{
