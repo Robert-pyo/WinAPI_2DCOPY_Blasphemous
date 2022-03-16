@@ -59,10 +59,10 @@ CAnimation* CAnimator::FindAnimation(const wstring& strName)
 	return iter->second;
 }
 
-void CAnimator::Play(const wstring& strName)
+void CAnimator::Play(const wstring& strName, bool bReverse)
 {
 	m_pCurAnim = FindAnimation(strName);
-	//m_pCurAnim->InitCurFrm();
+	m_pCurAnim->m_bReverse = bReverse;
 }
 
 CGameObject* CAnimator::GetOwnerObj()

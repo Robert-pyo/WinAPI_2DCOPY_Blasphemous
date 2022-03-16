@@ -23,7 +23,7 @@ public:
 						fPoint step, float duration, UINT frmCount, bool isLoop);
 	CAnimation* FindAnimation(const wstring& strName);
 	// 애니메이션 재생
-	void Play(const wstring& strName);
+	void Play(const wstring& strName, bool bReverse);
 
 	CGameObject* GetOwnerObj();
 };

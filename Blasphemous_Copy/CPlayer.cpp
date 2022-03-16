@@ -33,8 +33,9 @@ CPlayer::CPlayer()
 	GetAnimator()->CreateAnimation(L"Player_Idle_Left", m_pImg, fPoint(29.f, 77.f), fPoint(71.f, 77.f), fPoint(71.f, 0.f), 0.1f, 13, true);
 	GetAnimator()->CreateAnimation(L"Player_Running_Right", m_pImg, fPoint(0.f, 155.f), fPoint(77.f, 77.f), fPoint(78.f, 0.f), 0.045f, 14, true);
 	GetAnimator()->CreateAnimation(L"Player_Running_Left", m_pImg, fPoint(19.f, 236.f), fPoint(78.f, 77.f), fPoint(78.f, 0.f), 0.045f, 14, true);
-	GetAnimator()->CreateAnimation(L"Player_StartRun_Right", m_pImg, fPoint(0.f, 309.f), fPoint(77.f, 77.f), fPoint(78.f, 0.f), 0.045f, 8, false);
-	GetAnimator()->CreateAnimation(L"Player_StartRun_Left", m_pImg, fPoint(1.f, 386.f), fPoint(78.f, 77.f), fPoint(78.f, 0.f), 0.045f, 8, false);
+	//GetAnimator()->CreateAnimation(L"Player_StartRun_Right", m_pImg, fPoint(0.f, 309.f), fPoint(77.f, 77.f), fPoint(78.f, 0.f), 0.045f, 8, false);
+	//GetAnimator()->CreateAnimation(L"Player_StartRun_Left", m_pImg, fPoint(1.f, 386.f), fPoint(78.f, 77.f), fPoint(78.f, 0.f), 0.045f, 8, false);
+	GetAnimator()->CreateAnimation(L"Player_Jump", m_pImg, fPoint(640.f, 312.f), fPoint(48.f, 81.f), fPoint(48.f, 0.f), 0.1f, 5, false);
 
 	CAnimation* pAnim;
 	pAnim = GetAnimator()->FindAnimation(L"Player_Idle_Left");
@@ -49,13 +50,13 @@ CPlayer::CPlayer()
 		pAnim->GetFrame(i).fptOffset.x += 60.f;
 	}
 
-	pAnim = GetAnimator()->FindAnimation(L"Player_StartRun_Left");
+	/*pAnim = GetAnimator()->FindAnimation(L"Player_StartRun_Left");
 	for (int i = 0; i < 8; ++i)
 	{
 		pAnim->GetFrame(i).fptOffset.x += 60.f;
-	}
+	}*/
 
-	GetAnimator()->Play(L"Player_Idle_Right");
+	GetAnimator()->Play(L"Player_Idle_Right", false);
 }
 
 CPlayer::~CPlayer()
@@ -94,21 +95,39 @@ void CPlayer::update_state()
 	if (PRESS_KEY_DOWN('A'))
 	{
 		m_fvCurDir.x = -1;
-		m_bIsActing = true;
-		m_eCurState = PLAYER_STATE::RUN;
+		if (m_ePrevState == PLAYER_STATE::IDLE)
+		{
+			m_bIsActing = true;
+			m_eCurState = PLAYER_STATE::RUN;
 
-		CAnimation* pAnim = GetAnimator()->FindAnimation(L"Player_Running_Left");
-		pAnim->SetFrame(0);
+			CAnimation* pAnim = GetAnimator()->FindAnimation(L"Player_Running_Left");
+			pAnim->SetFrame(0);
+		}
 	}
 
 	if (PRESS_KEY_DOWN('D'))
 	{
 		m_fvCurDir.x = 1;
-		m_bIsActing = true;
-		m_eCurState = PLAYER_STATE::RUN;
+		if (m_ePrevState == PLAYER_STATE::IDLE)
+		{
+			m_bIsActing = true;
+			m_eCurState = PLAYER_STATE::RUN;
 
-		CAnimation* pAnim = GetAnimator()->FindAnimation(L"Player_Running_Right");
-		pAnim->SetFrame(0);
+			CAnimation* pAnim = GetAnimator()->FindAnimation(L"Player_Running_Right");
+			pAnim->SetFrame(0);
+		}
+	}
+
+	if (PRESS_KEY_DOWN(VK_SPACE))
+	{
+		if (m_ePrevState == PLAYER_STATE::IDLE || m_ePrevState == PLAYER_STATE::RUN)
+		{
+			m_bIsActing = true;
+			m_eCurState = PLAYER_STATE::JUMP;
+
+			CAnimation* pAnim = GetAnimator()->FindAnimation(L"Player_Jump");
+			pAnim->SetFrame(0);
+		}
 	}
 
 	if (m_fVelocity == 0.f && !m_bIsActing)
@@ -184,30 +203,43 @@ void CPlayer::update_animation()
 	{
 		if (-1 == m_fvCurDir.x)
 		{
-			GetAnimator()->Play(L"Player_Idle_Left");
+			GetAnimator()->Play(L"Player_Idle_Left", false);
 			Logger::debug(L"IDLE_LEFT");
 		}
 		else
 		{
-			GetAnimator()->Play(L"Player_Idle_Right");
+			GetAnimator()->Play(L"Player_Idle_Right", false);
 			Logger::debug(L"IDLE_RIGHT");
 		}
-	}
-		break;
+	}break;
+
 	case PLAYER_STATE::RUN:
 	{
 		if (-1 == m_fvCurDir.x)
 		{
-			GetAnimator()->Play(L"Player_Running_Left");
+			GetAnimator()->Play(L"Player_Running_Left", false);
 			Logger::debug(L"RUN_LEFT");
 		}
 		else
 		{
-			GetAnimator()->Play(L"Player_Running_Right");
+			GetAnimator()->Play(L"Player_Running_Right", false);
 			Logger::debug(L"RUN_RIGHT");
 		}
-	}
-		break;
+	}break;
+
+	case PLAYER_STATE::JUMP:
+	{
+		if (-1 == m_fvCurDir.x)
+		{
+			GetAnimator()->Play(L"Player_Jump", true);
+			Logger::debug(L"JUMP_LEFT");
+		}
+		else
+		{
+			GetAnimator()->Play(L"Player_Jump", false);
+			Logger::debug(L"JUMP_RIGHT");
+		}
+	}break;
 	}
 }
 
