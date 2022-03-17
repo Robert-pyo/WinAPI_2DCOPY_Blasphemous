@@ -68,6 +68,19 @@ enum class TYPE_EVENT
 	SIZE,
 };
 
+//========================================
+//##		  적 상태 타입 그룹			##
+//========================================
+enum class ENEMY_STATE
+{
+	IDLE,
+	PATROL,
+	TRACE,
+	ATTACK,
+	RUN,
+	DEAD,
+};
+
 #include "Logger.h"
 #include "CSingleton.h"
 #include "struct.h"

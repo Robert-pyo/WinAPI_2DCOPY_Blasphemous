@@ -1,26 +1,34 @@
 #pragma once
-#include "CRectangle.h"
-#include "CBall.h"
+#include "CGameObject.h"
+
+class AI;
 
 class CEnemy : public CGameObject
 {
 private:
-	float	m_fVelocity;
+	AI* m_pAI;
 
+	float	m_fVelocity;
+	float	m_fAccelGravity;
+
+	fVector2D m_fvCurDir;
+	fVector2D m_fvPrevDir;
+
+	bool	m_bIsGrounded;
 public:
 	CEnemy();
 	virtual ~CEnemy();
 	virtual CEnemy* Clone();
 
-	virtual void update() final;
-	virtual void render() final;
-
-	void SetVelocity(float fVelocity);
+	virtual void update();
+	virtual void render();
 
 	float GetVelocity();
 
+	void SetAI(AI* pAI);
+	void SetVelocity(float fVelocity);
+
 	virtual void OnCollision(CCollider* target) override;
 	virtual void OnCollisionEnter(CCollider* target) override;
-	virtual void OnCollisionExit(CCollider* target) override;
 };
 

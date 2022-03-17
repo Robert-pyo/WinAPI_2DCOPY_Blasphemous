@@ -118,6 +118,15 @@
     <Filter Include="Object\WarpPoint">
       <UniqueIdentifier>{35caece4-8c49-4eec-82fd-ca9a160d95b8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Object\AI">
+      <UniqueIdentifier>{a8815483-f064-426a-a2f8-81ba25343650}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\AI\State">
+      <UniqueIdentifier>{23737534-59b2-449e-bb1e-e3da756bbc09}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\AI\State\Idle">
+      <UniqueIdentifier>{161b35ad-5de9-4630-8519-2ee8f65a4979}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -249,6 +258,15 @@
     <ClInclude Include="CWarpPoint.h">
       <Filter>Object\WarpPoint</Filter>
     </ClInclude>
+    <ClInclude Include="CState.h">
+      <Filter>Object\AI\State</Filter>
+    </ClInclude>
+    <ClInclude Include="CState_Idle.h">
+      <Filter>Object\AI\State\Idle</Filter>
+    </ClInclude>
+    <ClInclude Include="AI.h">
+      <Filter>Object\AI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CCore.cpp">
@@ -358,6 +376,15 @@
     </ClCompile>
     <ClCompile Include="CWarpPoint.cpp">
       <Filter>Object\WarpPoint</Filter>
+    </ClCompile>
+    <ClCompile Include="AI.cpp">
+      <Filter>Object\AI</Filter>
+    </ClCompile>
+    <ClCompile Include="CState.cpp">
+      <Filter>Object\AI\State</Filter>
+    </ClCompile>
+    <ClCompile Include="CState_Idle.cpp">
+      <Filter>Object\AI\State\Idle</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

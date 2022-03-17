@@ -48,11 +48,6 @@ void CScene_Stage1::Enter()
 	background_bigDoor->SetTexLeftTop(fPoint(3.f, 3.f));
 	AddObject(background_bigDoor, GROUP_GAMEOBJ::BACKGROUND_FRONT);
 
-	// 플레이어 생성
-	CPlayer* player = new CPlayer;
-	player->InitAbility();
-	player->InitAnimation();
-	AddObject(player, GROUP_GAMEOBJ::PLAYER);
 
 	// 바닥 생성
 	CPlatform* floor1 = new CPlatform;
@@ -79,6 +74,17 @@ void CScene_Stage1::Enter()
 	warpPoint->SetPos(fPoint(floor2->GetPos().x, floor4->GetPos().y));
 	warpPoint->SetName(L"SceneChangePoint");
 	AddObject(warpPoint, GROUP_GAMEOBJ::DEFAULT);
+
+	// 플레이어 생성
+	CPlayer* player = new CPlayer;
+	player->InitAbility();
+	player->InitAnimation();
+	AddObject(player, GROUP_GAMEOBJ::PLAYER);
+
+	// 몬스터 생성
+	CEnemy* monster = new CEnemy;
+	monster->InitObject(player->GetPos() + fPoint(5.0f, 0.f), fPoint(100.f, 100.f));
+	AddObject(monster, GROUP_GAMEOBJ::ENEMY);
 
 	//CCameraManager::getInst()->FollowTargetObj(player, true, true);
 	CCameraManager::getInst()->InitCameraPos(fPoint(WINSIZE_X / 2.f, background->GetScale().y / 2.f));

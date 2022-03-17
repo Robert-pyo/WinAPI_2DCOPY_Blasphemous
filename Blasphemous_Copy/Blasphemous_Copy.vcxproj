@@ -150,6 +150,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="AI.h" />
     <ClInclude Include="CAnimation.h" />
     <ClInclude Include="CAnimator.h" />
     <ClInclude Include="CBackground.h" />
@@ -179,6 +180,8 @@
     <ClInclude Include="CSingleton.h" />
     <ClInclude Include="CSound.h" />
     <ClInclude Include="CSoundManager.h" />
+    <ClInclude Include="CState.h" />
+    <ClInclude Include="CState_Idle.h" />
     <ClInclude Include="CWarpPoint.h" />
     <ClInclude Include="CWeapon.h" />
     <ClInclude Include="CTexture.h" />
@@ -194,6 +197,7 @@
     <ClInclude Include="Blasphemous_Copy.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AI.cpp" />
     <ClCompile Include="CAnimation.cpp" />
     <ClCompile Include="CAnimator.cpp" />
     <ClCompile Include="CBackground.cpp" />
@@ -228,6 +232,8 @@
     <ClCompile Include="CScene_Tool.cpp" />
     <ClCompile Include="CSound.cpp" />
     <ClCompile Include="CSoundManager.cpp" />
+    <ClCompile Include="CState.cpp" />
+    <ClCompile Include="CState_Idle.cpp" />
     <ClCompile Include="CWarpPoint.cpp" />
     <ClCompile Include="CWeapon.cpp" />
     <ClCompile Include="CTexture.cpp" />
