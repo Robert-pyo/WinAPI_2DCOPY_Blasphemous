@@ -46,6 +46,7 @@ void CScene_Stage1::Enter()
 
 	// 플레이어 생성
 	CPlayer* player = new CPlayer;
+	player->InitAnimation();
 	AddObject(player, GROUP_GAMEOBJ::PLAYER);
 
 	// 바닥 생성

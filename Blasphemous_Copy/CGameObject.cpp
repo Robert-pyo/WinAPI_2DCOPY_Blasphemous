@@ -22,8 +22,8 @@ CGameObject::CGameObject()
 CGameObject::CGameObject(const CGameObject& other)
 {
 	m_strName	= other.m_strName;
-	m_fptPos			= other.m_fptPos;
-	m_fptScale		= other.m_fptScale;
+	m_fptPos	= other.m_fptPos;
+	m_fptScale	= other.m_fptScale;
 	m_bIsActive = true;
 	m_pCollider = nullptr;
 	m_pAnimator = nullptr;
@@ -73,7 +73,7 @@ void CGameObject::component_render()
 void CGameObject::InitObject(const fPoint m_fptPos, const fPoint m_fptScale)
 {
 	this->m_fptPos		= m_fptPos;
-	this->m_fptScale		= m_fptScale;
+	this->m_fptScale	= m_fptScale;
 }
 
 wstring CGameObject::GetName()

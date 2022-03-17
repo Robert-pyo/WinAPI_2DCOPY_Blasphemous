@@ -24,6 +24,8 @@ enum class PLAYER_ATTACK_STATE
 	JUMP_SLASH,
 
 	CROUCH_SLASH,
+	
+	NONE,
 };
 
 class CPlayer : public CGameObject
@@ -33,6 +35,9 @@ private:
 
 	PLAYER_STATE m_eCurState;		// 현재 플레이어의 상태
 	PLAYER_STATE m_ePrevState;		// 이전 플레이어의 상태
+
+	PLAYER_ATTACK_STATE m_eCurAttState; // 현재 플레이어 어택 상태
+	PLAYER_ATTACK_STATE m_ePreAttState; // 이전 플레이어 어택 상태
 
 	fVector2D m_fvCurDir;
 	fVector2D m_fvPrevDir;
@@ -62,6 +67,8 @@ public:
 	void update_animation();
 
 	virtual void render() final;
+
+	void InitAnimation();
 
 	void Jump();
 

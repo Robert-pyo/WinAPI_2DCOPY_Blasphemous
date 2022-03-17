@@ -109,6 +109,12 @@
     <Filter Include="Object\PrayStructure">
       <UniqueIdentifier>{8285615a-3432-4ae2-946a-790a9128faf7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Object\Weapon">
+      <UniqueIdentifier>{1a7a0d34-abc1-4fee-a399-6cb269a20a5f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Weapon\PlayerSword">
+      <UniqueIdentifier>{8e57a9dd-476d-4e27-93f1-dd18c61cda22}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -231,6 +237,9 @@
     <ClInclude Include="CPrayerTable.h">
       <Filter>Object\PrayStructure</Filter>
     </ClInclude>
+    <ClInclude Include="CSword.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CCore.cpp">
@@ -331,6 +340,9 @@
     </ClCompile>
     <ClCompile Include="CPrayerTable.cpp">
       <Filter>Object\PrayStructure</Filter>
+    </ClCompile>
+    <ClCompile Include="CSword.cpp">
+      <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

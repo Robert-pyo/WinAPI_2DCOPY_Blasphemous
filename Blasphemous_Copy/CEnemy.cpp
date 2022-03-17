@@ -8,10 +8,6 @@ CEnemy::CEnemy()
 	InitObject(fPoint(500, 100.f), fPoint(100.f, 100.f));
 	SetName(L"Enemy_01");
 	m_fVelocity = 500.0f;
-
-	CreateCollider();
-	GetCollider()->SetFinalPos(fPoint(GetPos().x, GetPos().y));
-	GetCollider()->SetScale(fPoint(90.f, 90.f));
 }
 
 CEnemy::~CEnemy()

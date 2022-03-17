@@ -32,7 +32,7 @@ void CAnimator::render()
 }
 
 void CAnimator::CreateAnimation(const wstring& strName, CD2DImage* pImg, fPoint leftTop, fPoint scale,
-								fPoint step, float duration, UINT frmCount, bool isLoop)
+								fPoint step, float duration, UINT frmCount, bool isLoop, bool bReverse)
 {
 	CAnimation* pAnim = FindAnimation(strName);
 
@@ -45,6 +45,7 @@ void CAnimator::CreateAnimation(const wstring& strName, CD2DImage* pImg, fPoint 
 	pAnim->m_pAnimator = this;
 	pAnim->Create(pImg, leftTop, scale, step, duration, frmCount);
 	pAnim->SetLoop(isLoop);
+	pAnim->m_bReverse = bReverse;
 
 	m_mapAnim.insert(make_pair(strName, pAnim));
 }
@@ -59,10 +60,9 @@ CAnimation* CAnimator::FindAnimation(const wstring& strName)
 	return iter->second;
 }
 
-void CAnimator::Play(const wstring& strName, bool bReverse)
+void CAnimator::Play(const wstring& strName)
 {
 	m_pCurAnim = FindAnimation(strName);
-	m_pCurAnim->m_bReverse = bReverse;
 }
 
 CGameObject* CAnimator::GetOwnerObj()

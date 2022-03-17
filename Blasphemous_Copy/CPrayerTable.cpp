@@ -12,8 +12,8 @@ CPrayerTable::CPrayerTable()
 	m_bIsActive = false;
 
 	CreateAnimator();
-	GetAnimator()->CreateAnimation(L"PrayerTable_Stand", m_pImg, fPoint(66.f, 111.f), fPoint(66.f, 145.f), fPoint(66.f, 0.f), 0.1f, 6, true);
-	GetAnimator()->Play(L"PrayerTable_Stand", false);
+	GetAnimator()->CreateAnimation(L"PrayerTable_Stand", m_pImg, fPoint(66.f, 111.f), fPoint(66.f, 145.f), fPoint(66.f, 0.f), 0.1f, 6, true, false);
+	GetAnimator()->Play(L"PrayerTable_Stand");
 
 	CreateCollider();
 	GetCollider()->SetFinalPos(GetPos());
