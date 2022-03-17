@@ -115,6 +115,9 @@
     <Filter Include="Object\Weapon\PlayerSword">
       <UniqueIdentifier>{8e57a9dd-476d-4e27-93f1-dd18c61cda22}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Object\WarpPoint">
+      <UniqueIdentifier>{35caece4-8c49-4eec-82fd-ca9a160d95b8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -237,8 +240,14 @@
     <ClInclude Include="CPrayerTable.h">
       <Filter>Object\PrayStructure</Filter>
     </ClInclude>
-    <ClInclude Include="CSword.h">
-      <Filter>헤더 파일</Filter>
+    <ClInclude Include="CWeapon.h">
+      <Filter>Object\Weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="CPlayerSword.h">
+      <Filter>Object\Weapon\PlayerSword</Filter>
+    </ClInclude>
+    <ClInclude Include="CWarpPoint.h">
+      <Filter>Object\WarpPoint</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -341,8 +350,14 @@
     <ClCompile Include="CPrayerTable.cpp">
       <Filter>Object\PrayStructure</Filter>
     </ClCompile>
-    <ClCompile Include="CSword.cpp">
-      <Filter>소스 파일</Filter>
+    <ClCompile Include="CWeapon.cpp">
+      <Filter>Object\Weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="CPlayerSword.cpp">
+      <Filter>Object\Weapon\PlayerSword</Filter>
+    </ClCompile>
+    <ClCompile Include="CWarpPoint.cpp">
+      <Filter>Object\WarpPoint</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

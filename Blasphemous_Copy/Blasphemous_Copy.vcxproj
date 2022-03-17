@@ -167,6 +167,7 @@
     <ClInclude Include="CPathManager.h" />
     <ClInclude Include="CPlatform.h" />
     <ClInclude Include="CPlayer.h" />
+    <ClInclude Include="CPlayerSword.h" />
     <ClInclude Include="CPrayerTable.h" />
     <ClInclude Include="CRenderManager.h" />
     <ClInclude Include="CResource.h" />
@@ -178,7 +179,8 @@
     <ClInclude Include="CSingleton.h" />
     <ClInclude Include="CSound.h" />
     <ClInclude Include="CSoundManager.h" />
-    <ClInclude Include="CSword.h" />
+    <ClInclude Include="CWarpPoint.h" />
+    <ClInclude Include="CWeapon.h" />
     <ClInclude Include="CTexture.h" />
     <ClInclude Include="CTile.h" />
     <ClInclude Include="CTimeManager.h" />
@@ -215,6 +217,7 @@
     <ClCompile Include="CPathManager.cpp" />
     <ClCompile Include="CPlatform.cpp" />
     <ClCompile Include="CPlayer.cpp" />
+    <ClCompile Include="CPlayerSword.cpp" />
     <ClCompile Include="CPrayerTable.cpp" />
     <ClCompile Include="CRenderManager.cpp" />
     <ClCompile Include="CResource.cpp" />
@@ -225,7 +228,8 @@
     <ClCompile Include="CScene_Tool.cpp" />
     <ClCompile Include="CSound.cpp" />
     <ClCompile Include="CSoundManager.cpp" />
-    <ClCompile Include="CSword.cpp" />
+    <ClCompile Include="CWarpPoint.cpp" />
+    <ClCompile Include="CWeapon.cpp" />
     <ClCompile Include="CTexture.cpp" />
     <ClCompile Include="CTile.cpp" />
     <ClCompile Include="CTimeManager.cpp" />

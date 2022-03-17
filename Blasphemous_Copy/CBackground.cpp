@@ -25,8 +25,11 @@ void CBackground::update()
 
 void CBackground::render()
 {
+	if (nullptr == m_pImg) return;
+
 	fPoint fptPos = GetPos();
 	fPoint fptScale = GetScale();
+	fPoint fptRenderPos = CCameraManager::getInst()->GetRenderPos(fptPos);
 
 	if (GetObjGroup() == GROUP_GAMEOBJ::BACKGROUND_BACK)
 	{
@@ -42,9 +45,24 @@ void CBackground::render()
 			m_fptTargetTexLT.y + fptScale.y
 		);
 	}
-	else if (GetObjGroup() == GROUP_GAMEOBJ::BACKGROUND_MIDDLE || GetObjGroup() == GROUP_GAMEOBJ::BUILDING)
+	else if (GetObjGroup() == GROUP_GAMEOBJ::BACKGROUND_MIDDLE)
 	{
-		fPoint fptRenderPos = CCameraManager::getInst()->GetRenderPos(fptPos);
+		fptRenderPos.x = fptPos.x + (fptRenderPos.x - fptPos.x) / 5.f;
+
+		CRenderManager::getInst()->RenderFrame(
+			m_pImg,
+			fptRenderPos.x,
+			fptRenderPos.y - WINSIZE_Y / 2.f,
+			fptRenderPos.x + fptScale.x * 2.f,
+			fptRenderPos.y + WINSIZE_Y / 1.5f,
+			m_fptTargetTexLT.x,
+			m_fptTargetTexLT.y,
+			m_fptTargetTexLT.x + fptScale.x,
+			m_fptTargetTexLT.y + fptScale.y
+		);
+	}
+	else if (GetObjGroup() == GROUP_GAMEOBJ::BACKGROUND_FRONT)
+	{
 		CRenderManager::getInst()->RenderFrame(
 			m_pImg,
 			fptRenderPos.x,

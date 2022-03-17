@@ -4,6 +4,8 @@
 #include "CCollider.h"
 #include "CAnimator.h"
 #include "CAnimation.h"
+#include "CPlayerSword.h"
+#include "CScene.h"
 
 CPlayer::CPlayer()
 {
@@ -18,6 +20,11 @@ CPlayer::CPlayer()
 	m_fFrictionValue = 1000.f;
 	m_fJumpPower	= -550.f;
 	m_bIsGrounded	= false;
+
+	m_pSword		= new CPlayerSword;
+	m_pSword->SetOwnerObj(this);
+	CScene* pCurScene = CSceneManager::getInst()->GetCurrentScene();
+	pCurScene->AddObject(m_pSword, GROUP_GAMEOBJ::WEAPON_FRONT);
 
 	m_fAttackDelay  = 0.3f;
 	m_iComboCount	= 0;
@@ -35,7 +42,6 @@ CPlayer::CPlayer()
 
 CPlayer::~CPlayer()
 {
-
 }
 
 CPlayer* CPlayer::Clone()
@@ -67,8 +73,18 @@ void CPlayer::update()
 
 void CPlayer::update_state()
 {
+	static float fTime = 0;
+	fTime += fDeltaTime;
+
 	if (m_fVelocity == 0.f)
 	{
+		if (m_fAttackDelay + 0.2f <= fTime)
+		{
+			m_bIsAttacking = false;
+			m_eCurAttState = PLAYER_ATTACK_STATE::NONE;
+			m_eCurState = PLAYER_STATE::IDLE;
+		}
+
 		if (m_eCurState != PLAYER_STATE::JUMP && m_eCurState != PLAYER_STATE::JUMPOFF &&
 			m_eCurState != PLAYER_STATE::ATTACK)
 		{
@@ -90,39 +106,21 @@ void CPlayer::update_state()
 	}
 
 	// A키 눌렀을 때 RUN 상태
-	if (PRESS_KEY_DOWN('A') && !m_bIsAttacking)
+	if (PRESS_KEY('A') && !m_bIsAttacking)
 	{
 		if (PLAYER_STATE::JUMP != m_eCurState)
 		{
 			m_eCurState = PLAYER_STATE::RUN;
-			m_fvCurDir.x = -1;
-			CAnimation* pAnim = GetAnimator()->FindAnimation(L"Player_Running_Left");
-			pAnim->SetFrame(0);
 		}
-	}
-	if (PRESS_KEY_UP('A') && m_eCurState != PLAYER_STATE::RUN && m_eCurState != PLAYER_STATE::JUMP && !m_bIsAttacking)
-	{
-		if (PRESS_KEY('D'))
-			m_fvCurDir.x = 1;
-		m_eCurState = PLAYER_STATE::RUN;
 	}
 
 	// D키 눌렀을 때 RUN 상태
-	if (PRESS_KEY_DOWN('D') && !m_bIsAttacking)
+	if (PRESS_KEY('D') && !m_bIsAttacking)
 	{
 		if (PLAYER_STATE::JUMP != m_eCurState)
 		{
 			m_eCurState = PLAYER_STATE::RUN;
-			m_fvCurDir.x = 1;
-			CAnimation* pAnim = GetAnimator()->FindAnimation(L"Player_Running_Right");
-			pAnim->SetFrame(0);
 		}
-	}
-	if (PRESS_KEY_UP('D') && m_eCurState != PLAYER_STATE::RUN && m_eCurState != PLAYER_STATE::JUMP && !m_bIsAttacking)
-	{
-		if (PRESS_KEY('A'))
-			m_fvCurDir.x = -1;
-		m_eCurState = PLAYER_STATE::RUN;
 	}
 
 	// space바 눌렀을 때 JUMP 상태
@@ -134,8 +132,6 @@ void CPlayer::update_state()
 		GetAnimator()->FindAnimation(L"Player_Jump_Left")->SetFrame(0);
 	}
 
-	static float fTime = 0;
-	fTime += fDeltaTime;
 	// K 입력 시 공격
 	if (PRESS_KEY_DOWN('K') && m_fAttackDelay <= fTime && m_eCurState != PLAYER_STATE::CLIMB)
 	{
@@ -144,7 +140,7 @@ void CPlayer::update_state()
 		m_bIsAttacking = true;
 
 		// 너무 늦게 입력했다면 콤보 초기화
-		if (m_fAttackDelay + 0.15f <= fTime)
+		if (m_fAttackDelay + 0.2f <= fTime) 
 			m_iComboCount = 0;
 
 		if (m_iComboCount == 3)
@@ -159,6 +155,7 @@ void CPlayer::update_state()
 			m_eCurAttState = PLAYER_ATTACK_STATE::FIRST_SLASH;
 			GetAnimator()->FindAnimation(L"Player_Attack_Combo1_R")->SetFrame(0);
 			GetAnimator()->FindAnimation(L"Player_Attack_Combo1_L")->SetFrame(0);
+			m_pSword->Attack();
 		}
 		else if (m_iComboCount == 2)
 		{
@@ -166,6 +163,7 @@ void CPlayer::update_state()
 			m_eCurAttState = PLAYER_ATTACK_STATE::SECOND_SLASH;
 			GetAnimator()->FindAnimation(L"Player_Attack_Combo2_R")->SetFrame(0);
 			GetAnimator()->FindAnimation(L"Player_Attack_Combo2_L")->SetFrame(0);
+			m_pSword->Attack();
 		}
 		else if (m_iComboCount == 3)
 		{
@@ -173,6 +171,7 @@ void CPlayer::update_state()
 			m_eCurAttState = PLAYER_ATTACK_STATE::THIRD_SLASH;
 			GetAnimator()->FindAnimation(L"Player_Attack_Combo3_R")->SetFrame(0);
 			GetAnimator()->FindAnimation(L"Player_Attack_Combo3_L")->SetFrame(0);
+			m_pSword->Attack();
 		}
 	}
 }
@@ -181,6 +180,7 @@ void CPlayer::update_move()
 {
 	if (PRESS_KEY('A') && !m_bIsAttacking)
 	{
+		m_fvCurDir.x = -1;
 		m_fVelocity += 2000.f * fDeltaTime;
 		if (PRESS_KEY('D'))
 			m_fVelocity -= 3000.f * fDeltaTime;
@@ -188,6 +188,7 @@ void CPlayer::update_move()
 	
 	if (PRESS_KEY('D') && !m_bIsAttacking)
 	{
+		m_fvCurDir.x = 1;
 		m_fVelocity += 2000.f * fDeltaTime;
 		if (PRESS_KEY('A'))
 			m_fVelocity -= 3000.f * fDeltaTime;
@@ -378,6 +379,19 @@ const float CPlayer::GetVelocity()
 const fVector2D& CPlayer::GetDirVector()
 {
 	return m_fvCurDir;
+}
+
+void CPlayer::InitAbility()
+{
+	m_myAbility.fMaxHp = 100.f;
+	m_myAbility.fCurHp = 100.f;
+	m_myAbility.fMaxMp = 100.f;
+	m_myAbility.fCurMp = 100.f;
+
+	m_myAbility.iHpPotionCount = 2;
+	m_myAbility.fHpRecoveryAmount = m_myAbility.fMaxHp / 2.f;
+
+	m_myAbility.sMoney = 0;
 }
 
 void CPlayer::InitAnimation()

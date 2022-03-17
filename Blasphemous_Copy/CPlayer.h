@@ -2,6 +2,7 @@
 #include "CGameObject.h"
 
 class CD2DImage;
+class CPlayerSword;
 
 enum class PLAYER_STATE
 {
@@ -28,6 +29,19 @@ enum class PLAYER_ATTACK_STATE
 	NONE,
 };
 
+struct PLAYER_ABILITY
+{
+	float fMaxHp;
+	float fCurHp;
+	float fMaxMp;
+	float fCurMp;
+
+	UINT  iHpPotionCount;
+	float fHpRecoveryAmount;
+
+	USHORT  sMoney;
+};
+
 class CPlayer : public CGameObject
 {
 private:
@@ -38,6 +52,8 @@ private:
 
 	PLAYER_ATTACK_STATE m_eCurAttState; // 현재 플레이어 어택 상태
 	PLAYER_ATTACK_STATE m_ePreAttState; // 이전 플레이어 어택 상태
+
+	PLAYER_ABILITY m_myAbility;
 
 	fVector2D m_fvCurDir;
 	fVector2D m_fvPrevDir;
@@ -54,12 +70,14 @@ private:
 	UINT  m_iComboCount;
 	bool  m_bIsAttacking;
 
+	CPlayerSword* m_pSword;
 
 public:
 	CPlayer();
 	virtual ~CPlayer();
 
 	virtual CPlayer* Clone() override;
+
 
 	virtual void update() final;
 	void update_state();
@@ -68,6 +86,7 @@ public:
 
 	virtual void render() final;
 
+	void InitAbility();
 	void InitAnimation();
 
 	void Jump();

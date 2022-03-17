@@ -26,6 +26,9 @@ void CScene_Stage1::update()
 
 void CScene_Stage1::Enter()
 {
+	CSoundManager::getInst()->AddSound(L"Tutorial_BGM", L"sound\\BGM\\Churches Field_MASTER.wav", true);
+	CSoundManager::getInst()->Play(L"Tutorial_BGM");
+
 	// Background 积己
 	CBackground* background = new CBackground;
 	background->SetScale(fPoint(733.f, 238.f));
@@ -42,10 +45,11 @@ void CScene_Stage1::Enter()
 	CBackground* background_bigDoor = background->Clone();
 	background_bigDoor->SetScale(fPoint(361.f, 360.f));
 	background_bigDoor->SetTexLeftTop(fPoint(3.f, 3.f));
-	AddObject(background_bigDoor, GROUP_GAMEOBJ::BUILDING);
+	AddObject(background_bigDoor, GROUP_GAMEOBJ::BACKGROUND_FRONT);
 
 	// 敲饭捞绢 积己
 	CPlayer* player = new CPlayer;
+	player->InitAbility();
 	player->InitAnimation();
 	AddObject(player, GROUP_GAMEOBJ::PLAYER);
 
@@ -82,13 +86,12 @@ void CScene_Stage1::Enter()
 
 void CScene_Stage1::Exit()
 {
-	ClearGroup(GROUP_GAMEOBJ::UI);
-	ClearGroup(GROUP_GAMEOBJ::TILE);
-	ClearGroup(GROUP_GAMEOBJ::DEFAULT);
-	ClearGroup(GROUP_GAMEOBJ::BACKGROUND_BACK);
-	ClearGroup(GROUP_GAMEOBJ::BACKGROUND_MIDDLE);
-	ClearGroup(GROUP_GAMEOBJ::FLOOR);
-	ClearGroup(GROUP_GAMEOBJ::BUILDING);
+	for (UINT i = 0; i < (UINT)GROUP_GAMEOBJ::SIZE; ++i)
+	{
+		if ((GROUP_GAMEOBJ)i == GROUP_GAMEOBJ::PLAYER || (GROUP_GAMEOBJ)i == GROUP_GAMEOBJ::ENEMY) continue;
+
+		ClearGroup((GROUP_GAMEOBJ)i);
+	}
 
 	CCollisionManager::getInst()->Reset();
 }

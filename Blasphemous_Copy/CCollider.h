@@ -41,6 +41,7 @@ public:
 	fPoint	GetOffsetPos	();
 	fPoint	GetScale		();
 	RECT	GetBorderPos	();
+	UINT	GetCollisionCount();
 	
 	// 충돌체 고유 ID 반환
 	UINT GetID();

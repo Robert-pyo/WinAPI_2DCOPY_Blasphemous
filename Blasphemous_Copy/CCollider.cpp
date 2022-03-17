@@ -50,6 +50,11 @@ RECT CCollider::GetBorderPos()
 	return m_rtCollider;
 }
 
+UINT CCollider::GetCollisionCount()
+{
+	return m_iCollisionCount;
+}
+
 UINT CCollider::GetID()
 {
 	return m_iUID;
