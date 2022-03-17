@@ -6,6 +6,7 @@
 #include "CPlayer.h"
 #include "CEnemy.h"
 #include "CSound.h"
+#include "CWarpPoint.h"
 
 CSound* pSound;
 
@@ -73,6 +74,12 @@ void CScene_Stage1::Enter()
 	prayTable->SetName(L"PrayerTable");
 	AddObject(prayTable, GROUP_GAMEOBJ::BUILDING);
 
+	// 스테이지 2 씬으로 이동하도록 워프포인트 설정
+	CWarpPoint* warpPoint = new CWarpPoint;
+	warpPoint->SetPos(fPoint(floor2->GetPos().x, floor4->GetPos().y));
+	warpPoint->SetName(L"SceneChangePoint");
+	AddObject(warpPoint, GROUP_GAMEOBJ::DEFAULT);
+
 	//CCameraManager::getInst()->FollowTargetObj(player, true, true);
 	CCameraManager::getInst()->InitCameraPos(fPoint(WINSIZE_X / 2.f, background->GetScale().y / 2.f));
 	CCameraManager::getInst()->SetBoundary(fPoint(0.f, 0.f), fPoint(background->GetPos().x + background->GetScale().x * 4.f, background->GetPos().y + background->GetScale().y * 2.f));
@@ -80,6 +87,7 @@ void CScene_Stage1::Enter()
 	CCollisionManager::getInst()->CheckGroup(GROUP_GAMEOBJ::PLAYER, GROUP_GAMEOBJ::ENEMY);
 	CCollisionManager::getInst()->CheckGroup(GROUP_GAMEOBJ::PLAYER, GROUP_GAMEOBJ::FLOOR);
 	CCollisionManager::getInst()->CheckGroup(GROUP_GAMEOBJ::PLAYER, GROUP_GAMEOBJ::BUILDING);
+	CCollisionManager::getInst()->CheckGroup(GROUP_GAMEOBJ::PLAYER, GROUP_GAMEOBJ::DEFAULT);
 
 	CCameraManager::getInst()->FadeIn(2.f);
 }
@@ -92,6 +100,8 @@ void CScene_Stage1::Exit()
 
 		ClearGroup((GROUP_GAMEOBJ)i);
 	}
+
+	CSoundManager::getInst()->Stop(L"Tutorial_BGM");
 
 	CCollisionManager::getInst()->Reset();
 }

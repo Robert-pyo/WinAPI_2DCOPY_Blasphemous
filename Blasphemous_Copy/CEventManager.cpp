@@ -32,6 +32,8 @@ void CEventManager::Execute(const tEvent& event)
 		// lParam : object 주소
 		// 비활성화 될(죽을) 예정인 오브젝트 관리
 		CGameObject* pObj = (CGameObject*)event.lParam;
+		if (pObj->IsDisabled()) return;
+
 		pObj->SetDisable();
 		m_vecDisableObj.push_back(pObj);
 	}
