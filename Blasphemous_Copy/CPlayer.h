@@ -29,7 +29,7 @@ enum class PLAYER_ATTACK_STATE
 	NONE,
 };
 
-struct PLAYER_ABILITY
+struct tPlayerAbility
 {
 	float fMaxHp;
 	float fCurHp;
@@ -38,6 +38,8 @@ struct PLAYER_ABILITY
 
 	UINT  iHpPotionCount;
 	float fHpRecoveryAmount;
+
+	float fAtt;
 
 	USHORT  sMoney;
 };
@@ -53,11 +55,12 @@ private:
 	PLAYER_ATTACK_STATE m_eCurAttState; // 현재 플레이어 어택 상태
 	PLAYER_ATTACK_STATE m_ePreAttState; // 이전 플레이어 어택 상태
 
-	PLAYER_ABILITY m_myAbility;
+	tPlayerAbility m_tAbility;
 
 	fVector2D m_fvCurDir;
 	fVector2D m_fvPrevDir;
 
+	float m_fAccTime;
 	float m_fVelocity;
 	float m_fMaxVelocity;
 	float m_fAccelGravity;
@@ -78,7 +81,7 @@ public:
 
 	virtual CPlayer* Clone() override;
 
-
+public:
 	virtual void update() final;
 	void update_state();
 	void update_move();
@@ -86,14 +89,19 @@ public:
 
 	virtual void render() final;
 
+public:
 	void InitAbility();
 	void InitAnimation();
 
+public:
 	void Jump();
 
 	const float		 GetVelocity();
 	const fVector2D& GetDirVector();
 
+	const tPlayerAbility& GetPlayerAbility();
+
+public:
 	virtual void OnCollision(CCollider* target) override;
 	virtual void OnCollisionEnter(CCollider* target) override;
 	virtual void OnCollisionExit(CCollider* target) override;

@@ -14,6 +14,7 @@ CEnemy* CEnemyFactory::CreateEnemy(ENEMY_TYPE eEnmType, fPoint pos)
 	case ENEMY_TYPE::NORMAL:
 	{
 		pEnemy = new CEnemy;
+		pEnemy->SetName(L"Enemy");
 		pEnemy->SetPos(pos);
 
 		AI* pAI = new AI;
@@ -26,10 +27,10 @@ CEnemy* CEnemyFactory::CreateEnemy(ENEMY_TYPE eEnmType, fPoint pos)
 		tEnemyInfo info = {};
 		info.fHP = 60.f;
 		info.fAtt = 10.f;
-		info.fAttRange = 30.f;
+		info.fAttRange = 100.f;
 		info.fAttDelayTime = 5.f;
-		info.fRecogRange = 200.f;
-		info.fVelocity = 300.f;
+		info.fRecogRange = 400.f;
+		info.fVelocity = 100.f;
 
 		pEnemy->SetAI(pAI);
 		pEnemy->SetEnemyInfo(info);

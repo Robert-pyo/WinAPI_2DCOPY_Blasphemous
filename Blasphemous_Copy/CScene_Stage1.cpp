@@ -83,7 +83,7 @@ void CScene_Stage1::Enter()
 	player->InitAbility();
 	player->InitAnimation();
 	AddObject(player, GROUP_GAMEOBJ::PLAYER);
-	CGamePlayManager::GetInst()->RegisterPlayer(player);
+	RegisterPlayer(player);
 
 	// 몬스터 생성
 	CEnemy* monster = CEnemyFactory::CreateEnemy(ENEMY_TYPE::NORMAL, player->GetPos() + fPoint(200.0f, 0.f));

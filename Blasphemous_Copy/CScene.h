@@ -1,5 +1,6 @@
 #pragma once
 #include "CEnemyFactory.h"
+#include "CPlayer.h"
 
 // 전방 선언 : 해당 클래스의 포인터 변수를 사용할 수 있게 해줌
 // 1. 헤더파일이 여러번 호출되어 #pragma once 선언부를 확인 불가한 문제 해결
@@ -13,6 +14,8 @@ private:
 	vector<CGameObject*> m_arrObj[(int)GROUP_GAMEOBJ::SIZE];
 	// 현재 Scene의 이름
 	wstring m_sceneName;
+
+	CPlayer* m_pPlayer;
 
 	UINT m_iTileX;
 	UINT m_iTileY;
@@ -29,6 +32,10 @@ public:
 
 	virtual void Enter() = 0;	// 씬 진입 시 행동 -> 씬 마다 행동이 다를 수 있으므로 순수가상함수로 처리
 	virtual void Exit() = 0;	// 씬 아웃 시 행동 -> 씬 마다 행동이 다를 수 있으므로 순수가상함수로 처리
+
+public:
+	void RegisterPlayer(CPlayer* pPlayer) { m_pPlayer = pPlayer; };
+	CPlayer* GetPlayer() { return m_pPlayer; }
 
 	void SetName(const wstring& strName);
 

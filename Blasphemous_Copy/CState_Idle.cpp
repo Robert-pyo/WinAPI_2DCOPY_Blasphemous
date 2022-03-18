@@ -16,7 +16,7 @@ CState_Idle::~CState_Idle()
 
 void CState_Idle::update()
 {
-	CPlayer* pPlayer = (CPlayer*)CGamePlayManager::GetInst()->GetPlayer();
+	CPlayer* pPlayer = CSceneManager::GetInst()->GetCurrentScene()->GetPlayer();
 	fVector2D fvPlayerPos = pPlayer->GetPos();
 
 	CEnemy* pEnemy = GetEnemy();

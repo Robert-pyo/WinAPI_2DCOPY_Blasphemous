@@ -12,7 +12,7 @@ CAnimation::CAnimation()
 	m_iCurFrm		= 0;
 	m_fAccTime		= 0.f;
 	m_bIsLoop		= false;
-	m_bIsDone		= false;
+	m_fCurAnimDuration = 0.f;
 }
 
 CAnimation::~CAnimation()
@@ -61,7 +61,9 @@ void CAnimation::update()
 			if (m_iCurFrm == m_vecAnimFrm.size())
 			{
 				m_iCurFrm = (int)m_vecAnimFrm.size() - 1;
-				m_bIsDone = true;
+
+				if (m_fCurAnimDuration <= m_fAccTime)
+					m_iCurFrm = 0;
 			}
 		}
 	}
@@ -129,6 +131,8 @@ void CAnimation::Create(CD2DImage* pImg,	// 애니메이션의 이미지
 
 		m_vecAnimFrm.push_back(frm);
 	}
+
+	m_fCurAnimDuration += duration * frmCount;
 }
 
 void CAnimation::SetLoop(bool isLoop)
@@ -136,17 +140,12 @@ void CAnimation::SetLoop(bool isLoop)
 	m_bIsLoop = isLoop;
 }
 
-void CAnimation::SetAnimDone(bool isDone)
-{
-	m_bIsDone = isDone;
-}
-
-bool CAnimation::GetAnimDone()
-{
-	return m_bIsDone;
-}
-
 bool CAnimation::GetReverse()
 {
 	return m_bReverse;
+}
+
+float CAnimation::GetAnimDuration()
+{
+	return m_fCurAnimDuration;
 }

@@ -133,8 +133,8 @@
     <Filter Include="Object\Enemy\EnemyFactory">
       <UniqueIdentifier>{d06c6c27-8bfd-493b-be13-269d077a7fc9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\Manager\GamePlayManager">
-      <UniqueIdentifier>{0d485b6a-ef8c-4924-af8e-064f14c707c2}</UniqueIdentifier>
+    <Filter Include="Object\Enemy\Alcoyte">
+      <UniqueIdentifier>{3f4132e9-fb17-4ac3-8e48-f01474a3953e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -282,9 +282,6 @@
     <ClInclude Include="CEnemyFactory.h">
       <Filter>Object\Enemy\EnemyFactory</Filter>
     </ClInclude>
-    <ClInclude Include="CGamePlayManager.h">
-      <Filter>Engine\Manager\GamePlayManager</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CCore.cpp">
@@ -410,9 +407,6 @@
     <ClCompile Include="CEnemyFactory.cpp">
       <Filter>Object\Enemy\EnemyFactory</Filter>
     </ClCompile>
-    <ClCompile Include="CGamePlayManager.cpp">
-      <Filter>Engine\Manager\GamePlayManager</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Blasphemous_Copy.rc">
@@ -426,5 +420,8 @@
     <Image Include="Blasphemous_Copy.ico">
       <Filter>리소스 파일</Filter>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram1.cd" />
   </ItemGroup>
 </Project>

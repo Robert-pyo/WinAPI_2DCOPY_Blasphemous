@@ -15,10 +15,10 @@ CPlayer::CPlayer()
 	m_fvCurDir		= {1.0f, 0.f};
 	m_fvPrevDir		= {};
 	m_fVelocity		= 0.f;
-	m_fMaxVelocity	= 400.f;
+	m_fMaxVelocity	= 300.f;
 	m_fAccelGravity	= 0.f;
 	m_fFrictionValue = 1000.f;
-	m_fJumpPower	= -550.f;
+	m_fJumpPower	= -650.f;
 	m_bIsGrounded	= false;
 
 	m_pSword		= new CPlayerSword;
@@ -51,6 +51,8 @@ CPlayer* CPlayer::Clone()
 
 void CPlayer::update()
 {
+	m_fAccTime += fDeltaTime;
+
 	if (PRESS_KEY(VK_LBUTTON))
 	{
 		fPoint mousePos = CCameraManager::GetInst()->GetRealPos(MousePos());
@@ -73,12 +75,10 @@ void CPlayer::update()
 
 void CPlayer::update_state()
 {
-	static float fTime = 0;
-	fTime += fDeltaTime;
 
 	if (m_fVelocity == 0.f)
 	{
-		if (m_fAttackDelay + 0.2f <= fTime && m_bIsAttacking)
+		if (m_fAttackDelay + 0.05f <= m_fAccTime && m_bIsAttacking)
 		{
 			m_bIsAttacking = false;
 			m_eCurAttState = PLAYER_ATTACK_STATE::NONE;
@@ -95,8 +95,7 @@ void CPlayer::update_state()
 	// 점프 후 땅에 떨어졌을때 A / D 키를 누르고 있을 시 RUN 상태로 전환
 	if (PLAYER_STATE::JUMPOFF == m_eCurState)
 	{
-		if (GetAnimator()->FindAnimation(L"Player_Jumpoff_Right")->GetAnimDone() ||
-			GetAnimator()->FindAnimation(L"Player_Jumpoff_Left")->GetAnimDone())
+		if (GetAnimator()->FindAnimation(L"Player_Jumpoff_Right")->GetAnimDuration() <= m_fAccTime)
 		{
 			if (PRESS_KEY('A') || PRESS_KEY('D'))
 			{
@@ -133,25 +132,31 @@ void CPlayer::update_state()
 	}
 
 	// K 입력 시 공격
-	if (PRESS_KEY_DOWN('K') && m_fAttackDelay <= fTime && m_eCurState != PLAYER_STATE::CLIMB)
+	if (PRESS_KEY_DOWN('K') && m_fAttackDelay <= m_fAccTime && m_eCurState != PLAYER_STATE::CLIMB)
 	{
 		m_eCurState = PLAYER_STATE::ATTACK;
 
 		m_bIsAttacking = true;
 
 		// 너무 늦게 입력했다면 콤보 초기화
-		if (m_fAttackDelay + 0.2f <= fTime) 
+		if (m_fAttackDelay + 0.2f <= m_fAccTime)
+		{
 			m_iComboCount = 0;
+			m_fAttackDelay = 0.3f;
+		}
 
 		if (m_iComboCount == 3)
+		{
 			m_iComboCount %= 3;
+			m_fAttackDelay = 0.3f;
+		}
 
 		// TODO : 적이 맞았을 때만 count 올려주기
 		m_iComboCount++;
 
 		if (m_iComboCount == 1)
 		{
-			fTime = 0;
+			m_fAccTime = 0;
 			m_eCurAttState = PLAYER_ATTACK_STATE::FIRST_SLASH;
 			GetAnimator()->FindAnimation(L"Player_Attack_Combo1_R")->SetFrame(0);
 			GetAnimator()->FindAnimation(L"Player_Attack_Combo1_L")->SetFrame(0);
@@ -159,7 +164,7 @@ void CPlayer::update_state()
 		}
 		else if (m_iComboCount == 2)
 		{
-			fTime = 0;
+			m_fAccTime = 0;
 			m_eCurAttState = PLAYER_ATTACK_STATE::SECOND_SLASH;
 			GetAnimator()->FindAnimation(L"Player_Attack_Combo2_R")->SetFrame(0);
 			GetAnimator()->FindAnimation(L"Player_Attack_Combo2_L")->SetFrame(0);
@@ -167,11 +172,12 @@ void CPlayer::update_state()
 		}
 		else if (m_iComboCount == 3)
 		{
-			fTime = 0;
+			m_fAccTime = 0;
 			m_eCurAttState = PLAYER_ATTACK_STATE::THIRD_SLASH;
 			GetAnimator()->FindAnimation(L"Player_Attack_Combo3_R")->SetFrame(0);
 			GetAnimator()->FindAnimation(L"Player_Attack_Combo3_L")->SetFrame(0);
 			m_pSword->Attack();
+			m_fAttackDelay = GetAnimator()->FindAnimation(L"Player_Attack_Combo3_R")->GetAnimDuration();
 		}
 	}
 }
@@ -180,18 +186,29 @@ void CPlayer::update_move()
 {
 	if (PRESS_KEY('A') && !m_bIsAttacking)
 	{
-		m_fvCurDir.x = -1;
+		if (!PRESS_KEY('D'))
+		{
+			m_fvCurDir.x = -1;
+		}
+
 		m_fVelocity += 2000.f * fDeltaTime;
 		if (PRESS_KEY('D'))
+		{
 			m_fVelocity -= 3000.f * fDeltaTime;
+		}
 	}
 	
 	if (PRESS_KEY('D') && !m_bIsAttacking)
 	{
-		m_fvCurDir.x = 1;
+		if (!PRESS_KEY('A'))
+		{
+			m_fvCurDir.x = 1;
+		}
 		m_fVelocity += 2000.f * fDeltaTime;
 		if (PRESS_KEY('A'))
+		{
 			m_fVelocity -= 3000.f * fDeltaTime;
+		}
 	}
 
 	if (PRESS_KEY_DOWN(VK_SPACE) && m_bIsGrounded && !m_bIsAttacking)
@@ -290,12 +307,9 @@ void CPlayer::update_animation()
 	}break;
 	case PLAYER_STATE::JUMPOFF:
 	{
-		if (GetAnimator()->FindAnimation(L"Player_Jumpoff_Right")->GetAnimDone() || 
-			GetAnimator()->FindAnimation(L"Player_Jumpoff_Left")->GetAnimDone())
+		if (GetAnimator()->FindAnimation(L"Player_Jumpoff_Right")->GetAnimDuration() <= m_fAccTime)
 		{
 			m_eCurState = PLAYER_STATE::IDLE;
-			GetAnimator()->FindAnimation(L"Player_Jumpoff_Right")->SetAnimDone(false);
-			GetAnimator()->FindAnimation(L"Player_Jumpoff_Left")->SetAnimDone(false);
 		}
 
 		if (-1 == m_fvCurDir.x)
@@ -381,17 +395,24 @@ const fVector2D& CPlayer::GetDirVector()
 	return m_fvCurDir;
 }
 
+const tPlayerAbility& CPlayer::GetPlayerAbility()
+{
+	return m_tAbility;
+}
+
 void CPlayer::InitAbility()
 {
-	m_myAbility.fMaxHp = 100.f;
-	m_myAbility.fCurHp = 100.f;
-	m_myAbility.fMaxMp = 100.f;
-	m_myAbility.fCurMp = 100.f;
+	m_tAbility.fMaxHp = 100.f;
+	m_tAbility.fCurHp = 100.f;
+	m_tAbility.fMaxMp = 100.f;
+	m_tAbility.fCurMp = 100.f;
 
-	m_myAbility.iHpPotionCount = 2;
-	m_myAbility.fHpRecoveryAmount = m_myAbility.fMaxHp / 2.f;
+	m_tAbility.iHpPotionCount = 2;
+	m_tAbility.fHpRecoveryAmount = m_tAbility.fMaxHp / 2.f;
 
-	m_myAbility.sMoney = 0;
+	m_tAbility.fAtt = m_pSword->GetAtkValue();
+
+	m_tAbility.sMoney = 0;
 }
 
 void CPlayer::InitAnimation()
@@ -407,10 +428,10 @@ void CPlayer::InitAnimation()
 	GetAnimator()->CreateAnimation(L"Player_Jumpoff_Right", m_pImg, fPoint(576.f, 464.f), fPoint(96.f, 96.f), fPoint(96.f, 0.f), 0.05f, 3, false, false);
 	GetAnimator()->CreateAnimation(L"Player_Jumpoff_Left", m_pImg, fPoint(576.f, 464.f), fPoint(96.f, 96.f), fPoint(96.f, 0.f), 0.05f, 3, false, true);
 
-	GetAnimator()->CreateAnimation(L"Player_Attack_Combo1_R", m_pImg, fPoint(0.f, 560.f), fPoint(163.f, 75.f), fPoint(0.f, 75.f), 0.05f, 7, false, false);
-	GetAnimator()->CreateAnimation(L"Player_Attack_Combo1_L", m_pImg, fPoint(0.f, 560.f), fPoint(163.f, 75.f), fPoint(0.f, 75.f), 0.05f, 7, false, true);
-	GetAnimator()->CreateAnimation(L"Player_Attack_Combo2_R", m_pImg, fPoint(163.f, 560.f), fPoint(163.f, 75.f), fPoint(0.f, 75.f), 0.05f, 7, false, false);
-	GetAnimator()->CreateAnimation(L"Player_Attack_Combo2_L", m_pImg, fPoint(163.f, 560.f), fPoint(163.f, 75.f), fPoint(0.f, 75.f), 0.05f, 7, false, true);
+	GetAnimator()->CreateAnimation(L"Player_Attack_Combo1_R", m_pImg, fPoint(0.f, 560.f), fPoint(163.f, 75.f), fPoint(0.f, 75.f), 0.04f, 7, false, false);
+	GetAnimator()->CreateAnimation(L"Player_Attack_Combo1_L", m_pImg, fPoint(0.f, 560.f), fPoint(163.f, 75.f), fPoint(0.f, 75.f), 0.04f, 7, false, true);
+	GetAnimator()->CreateAnimation(L"Player_Attack_Combo2_R", m_pImg, fPoint(163.f, 560.f), fPoint(163.f, 75.f), fPoint(0.f, 75.f), 0.04f, 7, false, false);
+	GetAnimator()->CreateAnimation(L"Player_Attack_Combo2_L", m_pImg, fPoint(163.f, 560.f), fPoint(163.f, 75.f), fPoint(0.f, 75.f), 0.04f, 7, false, true);
 	GetAnimator()->CreateAnimation(L"Player_Attack_Combo3_R", m_pImg, fPoint(326.f, 560.f), fPoint(163.f, 75.f), fPoint(0.f, 75.f), 0.05f, 14, false, false);
 	GetAnimator()->CreateAnimation(L"Player_Attack_Combo3_L", m_pImg, fPoint(326.f, 560.f), fPoint(163.f, 75.f), fPoint(0.f, 75.f), 0.05f, 14, false, true);
 
@@ -469,11 +490,20 @@ void CPlayer::InitAnimation()
 	{
 		pAnim->GetFrame(i).fptOffset.x += 100.f;
 	}
+
 	pAnim = GetAnimator()->FindAnimation(L"Player_Attack_Combo3_R");
 	for (int i = 0; i < 14; ++i)
 	{
 		pAnim->GetFrame(i).fptOffset.x += 100.f;
 	}
+	pAnim->GetFrame(2).fDuration = 0.1f;
+	pAnim->GetFrame(3).fDuration = 0.1f;
+	pAnim->GetFrame(4).fDuration = 0.1f;
+
+	pAnim = GetAnimator()->FindAnimation(L"Player_Attack_Combo3_L");
+	pAnim->GetFrame(2).fDuration = 0.1f;
+	pAnim->GetFrame(3).fDuration = 0.1f;
+	pAnim->GetFrame(4).fDuration = 0.1f;
 
 	GetAnimator()->Play(L"Player_Idle_Right");
 }

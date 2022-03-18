@@ -11,6 +11,7 @@ struct tEnemyInfo
 	float fAttRange;
 	float fAtt;
 	float fAttDelayTime;
+	float fInvTime;		// 무적 시간
 };
 
 class CEnemy : public CGameObject
@@ -50,6 +51,9 @@ private:
 
 public:
 	const tEnemyInfo& GetEnemyInfo() { return m_tEnmInfo; }
+
+public:
+	void Hit(CGameObject* pPlayer);
 
 public:
 	virtual void OnCollision(CCollider* target) override;

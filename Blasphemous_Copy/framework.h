@@ -98,7 +98,6 @@ enum class ENEMY_STATE
 #include "CUIManager.h"
 #include "CSoundManager.h"
 #include "CRenderManager.h"
-#include "CGamePlayManager.h"
 
 //========================================
 //##			  디파인문				##

@@ -12,10 +12,8 @@ CPlayerSword::CPlayerSword()
 
 	CreateCollider();
 	GetCollider()->SetScale(GetScale());
-	//CCollisionManager::GetInst()->CheckGroup(GROUP_GAMEOBJ::WEAPON_FRONT, GROUP_GAMEOBJ::ENEMY);
-	//CCollisionManager::GetInst()->CheckGroup(GROUP_GAMEOBJ::WEAPON_BEHIND, GROUP_GAMEOBJ::ENEMY);
-	// Test
-	CCollisionManager::GetInst()->CheckGroup(GROUP_GAMEOBJ::WEAPON_FRONT, GROUP_GAMEOBJ::BUILDING);
+	CCollisionManager::GetInst()->CheckGroup(GROUP_GAMEOBJ::WEAPON_FRONT, GROUP_GAMEOBJ::ENEMY);
+	CCollisionManager::GetInst()->CheckGroup(GROUP_GAMEOBJ::WEAPON_BEHIND, GROUP_GAMEOBJ::ENEMY);
 }
 
 CPlayerSword::~CPlayerSword()
@@ -63,12 +61,12 @@ void CPlayerSword::Attack()
 void CWeapon::OnCollision(CCollider* other)
 {
 	// TODO : 적에게 맞았다면 바로 없애주도록 설정
-	if (L"PrayerTable" == other->GetOwnerObj()->GetName())
+	if (L"Enemy" == other->GetOwnerObj()->GetName())
 	{
 		static float fTime = 0.f;
 		fTime += fDeltaTime;
 
-		if (fTime > 0.25f)
+		if (fTime > 0.1f)
 		{
 			SetPos(fPoint(-10000.f, -10000.f));
 			GetCollider()->SetFinalPos(GetPos());

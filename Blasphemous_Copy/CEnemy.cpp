@@ -2,6 +2,8 @@
 #include "CEnemy.h"
 #include "CCollider.h"
 #include "AI.h"
+#include "CScene.h"
+#include "CPlayer.h"
 
 CEnemy::CEnemy()
 {
@@ -30,7 +32,7 @@ void CEnemy::update()
 	if (nullptr != m_pAI)
 	{
 		m_pAI->update();
-	}
+	}  
 
 	fPoint fptPos = GetPos();
 
@@ -52,6 +54,19 @@ void CEnemy::SetAI(AI* pAI)
 {
 	m_pAI = pAI;
 	m_pAI->m_pOwner = this;
+}
+
+void CEnemy::Hit(CGameObject* pPlayer)
+{
+	CPlayer* player = (CPlayer*)pPlayer;
+	m_tEnmInfo.fHP -= player->GetPlayerAbility().fAtt;
+
+	// 맞았으면 HIT 상태로 전환
+	// ChangeAIState(m_pAI, ENEMY_STATE::HIT);
+	if (m_tEnmInfo.fHP <= 0.f)
+	{
+		//Die();
+	}
 }
 
 void CEnemy::OnCollision(CCollider* target)
@@ -111,7 +126,6 @@ void CEnemy::OnCollision(CCollider* target)
 			}
 		}
 
-		// 위쪽 / 아래쪽 벽
 		if (m_fAccelGravity > 0.f)
 		{
 			// 아래쪽
