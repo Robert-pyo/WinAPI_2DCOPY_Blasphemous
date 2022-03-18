@@ -1,4 +1,5 @@
 #pragma once
+#include "CEnemyFactory.h"
 
 // 전방 선언 : 해당 클래스의 포인터 변수를 사용할 수 있게 해줌
 // 1. 헤더파일이 여러번 호출되어 #pragma once 선언부를 확인 불가한 문제 해결

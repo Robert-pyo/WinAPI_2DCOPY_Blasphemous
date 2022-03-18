@@ -5,6 +5,9 @@
 #include "CPrayerTable.h"
 #include "CPlayer.h"
 #include "CEnemy.h"
+#include "AI.h"
+#include "CState_Idle.h"
+#include "CState_Trace.h"
 #include "CSound.h"
 #include "CWarpPoint.h"
 
@@ -71,7 +74,7 @@ void CScene_Stage1::Enter()
 
 	// 스테이지 2 씬으로 이동하도록 워프포인트 설정
 	CWarpPoint* warpPoint = new CWarpPoint;
-	warpPoint->SetPos(fPoint(floor2->GetPos().x, floor4->GetPos().y));
+	warpPoint->SetPos(fPoint(floor4->GetPos().x, floor4->GetPos().y));
 	warpPoint->SetName(L"SceneChangePoint");
 	AddObject(warpPoint, GROUP_GAMEOBJ::DEFAULT);
 
@@ -82,11 +85,9 @@ void CScene_Stage1::Enter()
 	AddObject(player, GROUP_GAMEOBJ::PLAYER);
 
 	// 몬스터 생성
-	CEnemy* monster = new CEnemy;
-	monster->InitObject(player->GetPos() + fPoint(5.0f, 0.f), fPoint(100.f, 100.f));
+	CEnemy* monster = CEnemyFactory::CreateEnemy(ENEMY_TYPE::NORMAL, player->GetPos() + fPoint(5.0f, 0.f));
 	AddObject(monster, GROUP_GAMEOBJ::ENEMY);
 
-	//CCameraManager::getInst()->FollowTargetObj(player, true, true);
 	CCameraManager::getInst()->InitCameraPos(fPoint(WINSIZE_X / 2.f, background->GetScale().y / 2.f));
 	CCameraManager::getInst()->SetBoundary(fPoint(0.f, 0.f), fPoint(background->GetPos().x + background->GetScale().x * 4.f, background->GetPos().y + background->GetScale().y * 2.f));
 
@@ -94,6 +95,7 @@ void CScene_Stage1::Enter()
 	CCollisionManager::getInst()->CheckGroup(GROUP_GAMEOBJ::PLAYER, GROUP_GAMEOBJ::FLOOR);
 	CCollisionManager::getInst()->CheckGroup(GROUP_GAMEOBJ::PLAYER, GROUP_GAMEOBJ::BUILDING);
 	CCollisionManager::getInst()->CheckGroup(GROUP_GAMEOBJ::PLAYER, GROUP_GAMEOBJ::DEFAULT);
+	CCollisionManager::getInst()->CheckGroup(GROUP_GAMEOBJ::ENEMY, GROUP_GAMEOBJ::FLOOR);
 
 	CCameraManager::getInst()->FadeIn(2.f);
 }
@@ -108,6 +110,8 @@ void CScene_Stage1::Exit()
 	}
 
 	CSoundManager::getInst()->Stop(L"Tutorial_BGM");
+
+	CCameraManager::getInst()->FadeOut(2.f);
 
 	CCollisionManager::getInst()->Reset();
 }

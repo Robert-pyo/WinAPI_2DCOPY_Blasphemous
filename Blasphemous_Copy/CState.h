@@ -5,7 +5,7 @@ class CState
 {
 	friend class AI;
 private:
-	CAI* m_pOwnerAI;
+	AI* m_pOwnerAI;
 	ENEMY_STATE m_eEnmState;
 
 public:
@@ -13,10 +13,10 @@ public:
 	virtual ~CState();
 
 	virtual void update() = 0;
-	virtual void Enter() = 0;	// 각 상태마다 구현
+	virtual void Enter() = 0;	// 각 상태마다 구현	
 	virtual void Exit() = 0;	// 각 상태마다 구현
 
-	CAI* GetOwnerObj();
+	AI* GetOwnerObj();
 	ENEMY_STATE GetState();
 };
 

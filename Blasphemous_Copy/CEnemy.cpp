@@ -6,8 +6,9 @@
 CEnemy::CEnemy()
 {
 	m_bIsGrounded = false;
-	m_fVelocity = 0.f;
 	m_fAccelGravity = 0.f;
+	m_pAI = nullptr;
+	m_tEnmInfo = {};
 
 	CreateCollider();
 	GetCollider()->SetScale(fPoint(100.f, 100.f));
@@ -15,6 +16,8 @@ CEnemy::CEnemy()
 
 CEnemy::~CEnemy()
 {
+	if (nullptr != m_pAI)
+		delete m_pAI;
 }
 
 CEnemy* CEnemy::Clone()
@@ -28,6 +31,16 @@ void CEnemy::update()
 	{
 		m_pAI->update();
 	}
+
+	fPoint fptPos = GetPos();
+
+	fptPos.y += m_fAccelGravity * fDeltaTime;
+
+	SetPos(fptPos);
+
+	m_fAccelGravity += GRAVITY * fDeltaTime;
+	if (m_fAccelGravity >= 1000.f)
+		m_fAccelGravity = 1000.f;
 }
 
 void CEnemy::render()
@@ -39,16 +52,6 @@ void CEnemy::SetAI(AI* pAI)
 {
 	m_pAI = pAI;
 	m_pAI->m_pOwner = this;
-}
-
-void CEnemy::SetVelocity(float fVelocity)
-{
-	m_fVelocity = fVelocity;
-}
-
-float CEnemy::GetVelocity()
-{
-	return m_fVelocity;
 }
 
 void CEnemy::OnCollision(CCollider* target)
@@ -111,21 +114,6 @@ void CEnemy::OnCollision(CCollider* target)
 		// 위쪽 / 아래쪽 벽
 		if (m_fAccelGravity > 0.f)
 		{
-			// 위쪽
-			if (GetCollider()->GetBorderPos().bottom > target->GetBorderPos().bottom &&
-				GetCollider()->GetBorderPos().top <= target->GetBorderPos().bottom)
-			{
-				yDiff = (target->GetBorderPos().bottom - GetCollider()->GetBorderPos().top);
-
-				if (yDiff < xDiff)
-				{
-					fPoint fptPos = GetPos();
-					// 충돌시 착지한 경계면에서 뚫고 들어간 정도를 계산하여 현재 위치에 더해줌
-					fptPos.y += (float)(target->GetBorderPos().bottom - GetCollider()->GetBorderPos().top);
-					SetPos(fptPos);
-				}
-
-			}
 			// 아래쪽
 			if (GetCollider()->GetBorderPos().top < target->GetBorderPos().top
 				&& GetCollider()->GetBorderPos().bottom >= target->GetBorderPos().top)

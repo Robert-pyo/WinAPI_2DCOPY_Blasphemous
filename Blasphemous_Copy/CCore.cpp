@@ -36,10 +36,10 @@ void CCore::render()
 
 	CRenderManager::getInst()->GetRenderTarget()->BeginDraw();
 
-	CRenderManager::getInst()->RenderFillRectangle(-1, -1, WINSIZE_X + 1, WINSIZE_Y + 1, RGB(255, 255, 255));
+	CRenderManager::getInst()->RenderFillRectangle(-1, -1, WINSIZE_X + 1, WINSIZE_Y + 1, D2D1::ColorF(255.f, 255.f, 255.f, 1.f));
 
 	CSceneManager::getInst()->render();
-	//CCameraManager::getInst()->render(m_pMemTex->GetDC());
+	CCameraManager::getInst()->render();
 
 	// fps Ç¥Çö
 	WCHAR strFPS[6];

@@ -118,14 +118,20 @@
     <Filter Include="Object\WarpPoint">
       <UniqueIdentifier>{35caece4-8c49-4eec-82fd-ca9a160d95b8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Object\AI">
+    <Filter Include="Engine\Component\AI">
       <UniqueIdentifier>{a8815483-f064-426a-a2f8-81ba25343650}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Object\AI\State">
+    <Filter Include="Engine\Component\AI\State">
       <UniqueIdentifier>{23737534-59b2-449e-bb1e-e3da756bbc09}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Object\AI\State\Idle">
+    <Filter Include="Engine\Component\AI\State\Idle">
       <UniqueIdentifier>{161b35ad-5de9-4630-8519-2ee8f65a4979}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Component\AI\State\Trace">
+      <UniqueIdentifier>{76b703c6-a4ce-43ad-8847-618a81f51355}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Enemy\EnemyFactory">
+      <UniqueIdentifier>{d06c6c27-8bfd-493b-be13-269d077a7fc9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -259,13 +265,19 @@
       <Filter>Object\WarpPoint</Filter>
     </ClInclude>
     <ClInclude Include="CState.h">
-      <Filter>Object\AI\State</Filter>
+      <Filter>Engine\Component\AI\State</Filter>
     </ClInclude>
     <ClInclude Include="CState_Idle.h">
-      <Filter>Object\AI\State\Idle</Filter>
+      <Filter>Engine\Component\AI\State\Idle</Filter>
     </ClInclude>
     <ClInclude Include="AI.h">
-      <Filter>Object\AI</Filter>
+      <Filter>Engine\Component\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="CState_Trace.h">
+      <Filter>Engine\Component\AI\State\Trace</Filter>
+    </ClInclude>
+    <ClInclude Include="CEnemyFactory.h">
+      <Filter>Object\Enemy\EnemyFactory</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -378,13 +390,19 @@
       <Filter>Object\WarpPoint</Filter>
     </ClCompile>
     <ClCompile Include="AI.cpp">
-      <Filter>Object\AI</Filter>
+      <Filter>Engine\Component\AI</Filter>
     </ClCompile>
     <ClCompile Include="CState.cpp">
-      <Filter>Object\AI\State</Filter>
+      <Filter>Engine\Component\AI\State</Filter>
     </ClCompile>
     <ClCompile Include="CState_Idle.cpp">
-      <Filter>Object\AI\State\Idle</Filter>
+      <Filter>Engine\Component\AI\State\Idle</Filter>
+    </ClCompile>
+    <ClCompile Include="CState_Trace.cpp">
+      <Filter>Engine\Component\AI\State\Trace</Filter>
+    </ClCompile>
+    <ClCompile Include="CEnemyFactory.cpp">
+      <Filter>Object\Enemy\EnemyFactory</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

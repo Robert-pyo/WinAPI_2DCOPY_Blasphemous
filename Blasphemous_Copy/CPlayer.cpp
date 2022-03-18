@@ -34,8 +34,8 @@ CPlayer::CPlayer()
 	m_eCurAttState = PLAYER_ATTACK_STATE::NONE;
 
 	CreateAnimator();
+
 	CreateCollider();
-	GetCollider()->SetFinalPos(GetPos());
 	GetCollider()->SetOffsetPos(fPoint(33.f, 28.f));
 	GetCollider()->SetScale(fPoint(GetScale().x - 10.f, GetScale().y));
 }
@@ -78,7 +78,7 @@ void CPlayer::update_state()
 
 	if (m_fVelocity == 0.f)
 	{
-		if (m_fAttackDelay + 0.2f <= fTime)
+		if (m_fAttackDelay + 0.2f <= fTime && m_bIsAttacking)
 		{
 			m_bIsAttacking = false;
 			m_eCurAttState = PLAYER_ATTACK_STATE::NONE;
@@ -225,12 +225,12 @@ void CPlayer::update_move()
 	}
 	fPoint fptPos = GetPos();
 
-	fptPos.x += (float)(m_fvCurDir.x * m_fVelocity * fDeltaTime);
-	fptPos.y += (float)(m_fAccelGravity * fDeltaTime);
+	fptPos.x += m_fvCurDir.x * m_fVelocity * fDeltaTime;
+	fptPos.y += m_fAccelGravity * fDeltaTime;
 
 	SetPos(fptPos);
 
-	m_fAccelGravity += (float)(GRAVITY * fDeltaTime);
+	m_fAccelGravity += GRAVITY * fDeltaTime;
 	if (m_fAccelGravity >= 1000.f)
 		m_fAccelGravity = 1000.f;
 	if (m_fVelocity >= m_fMaxVelocity)

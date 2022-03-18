@@ -18,4 +18,7 @@ public:
 	void update();
 
 	void AddState(CState* pState);
+	CState* GetState(ENEMY_STATE eEnmState);
+
+	void SetCurState(ENEMY_STATE eEnmState);
 };

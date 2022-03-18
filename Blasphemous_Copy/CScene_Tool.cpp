@@ -68,6 +68,8 @@ void ButtonMapClicked(DWORD_PTR param1, DWORD_PTR param2)
 
 void CScene_Tool::Enter()
 {
+	CCameraManager::getInst()->FadeIn(2.f);
+
 	CCameraManager::getInst()->SetLookAt(fPoint(WINSIZE_X / 2.f, WINSIZE_Y / 2.f));
 
 	m_hWnd = CreateDialog(hInst, MAKEINTRESOURCE(IDD_TILEBOX), hWnd, TileWndProc);

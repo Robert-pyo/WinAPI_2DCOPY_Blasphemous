@@ -148,14 +148,11 @@ void CRenderManager::RenderRectangle(float dstX, float dstY, float dstW, float d
 	m_pRenderTarget->DrawRectangle(m_imgRect, m_pBrush);
 }
 
-void CRenderManager::RenderFillRectangle(float dstX, float dstY, float dstW, float dstH, COLORREF color)
+void CRenderManager::RenderFillRectangle(float dstX, float dstY, float dstW, float dstH, D2D_COLOR_F color)
 {
 	D2D1_RECT_F m_imgRect = { dstX, dstY, dstW, dstH };
 
-	int red = color & 0xFF;
-	int green = (color >> 8) & 0xFF;
-	int blue = (color >> 16) & 0xFF;
-	m_pBrush->SetColor(D2D1::ColorF(red / 255.f, green / 255.0f, blue / 255.0f));
+	m_pBrush->SetColor(color);
 
 	m_pRenderTarget->FillRectangle(m_imgRect, m_pBrush);
 }

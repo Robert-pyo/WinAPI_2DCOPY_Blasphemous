@@ -52,7 +52,7 @@ void CCameraManager::update()
 	CalcDiff();
 }
 
-void CCameraManager::render(HDC hDC)
+void CCameraManager::render()
 {
 	if (CAM_EFFECT::NONE == m_eEffect) return;
 
@@ -64,32 +64,21 @@ void CCameraManager::render(HDC hDC)
 	}
 
 	float fRatio = m_fCurTime / m_fEffectDuration;
-	int iAlpha = 0;
+	float fAlpha = 0;
 	if (CAM_EFFECT::FADE_OUT == m_eEffect)
 	{
-		iAlpha = (int)(255.f * fRatio);
+		fAlpha = fRatio;
 	}
 	else if (CAM_EFFECT::FADE_IN == m_eEffect)
 	{
-		iAlpha = (int)(255.f * (1 - fRatio));
+		fAlpha = 1.f - fRatio;
 	}
 
-	BLENDFUNCTION bf = {};
-
-	bf.BlendOp = AC_SRC_OVER;
-	bf.BlendFlags = 0;
-	bf.AlphaFormat = 0;
-	bf.SourceConstantAlpha = iAlpha;		// 알파값 조절
-
-	AlphaBlend(hDC
-		, 0, 0
-		, (int)(m_pImg->GetBmpWidth())
-		, (int)(m_pImg->GetBmpHeight())
-		, m_pImg->GetDC()
-		, 0, 0
-		, (int)(m_pImg->GetBmpWidth())
-		, (int)(m_pImg->GetBmpHeight())
-		, bf);
+	CRenderManager::getInst()->RenderFillRectangle(
+		-1.f, -1.f, 
+		WINSIZE_X + 1, WINSIZE_Y + 1,
+		D2D1::ColorF(0.f, 0.f, 0.f, fAlpha)
+	);
 }
 
 void CCameraManager::InitCameraPos(fPoint pos)

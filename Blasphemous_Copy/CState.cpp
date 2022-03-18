@@ -9,9 +9,10 @@ CState::CState(ENEMY_STATE eState)
 
 CState::~CState()
 {
+	int a = 0;
 }
 
-CAI* CState::GetOwnerObj()
+AI* CState::GetOwnerObj()
 {
 	return m_pOwnerAI;
 }
