@@ -33,11 +33,11 @@ void CWarpPoint::OnCollisionEnter(CCollider* other)
 {
 	if (L"Player" == other->GetOwnerObj()->GetName())
 	{
-		CScene* pCurScene = CSceneManager::getInst()->GetCurrentScene();
+		CScene* pCurScene = CSceneManager::GetInst()->GetCurrentScene();
 
 		if (L"Stage_01" == pCurScene->GetName())
 		{
-			CHANGE_SCENE(GROUP_SCENE::TOOL);
+			ChangeToNextScene(GROUP_SCENE::TOOL);
 		}
 	}
 }

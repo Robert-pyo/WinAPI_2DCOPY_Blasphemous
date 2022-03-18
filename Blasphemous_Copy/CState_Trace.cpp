@@ -12,6 +12,7 @@ CState_Trace::~CState_Trace()
 
 void CState_Trace::update()
 {
+	
 }
 
 void CState_Trace::Enter()

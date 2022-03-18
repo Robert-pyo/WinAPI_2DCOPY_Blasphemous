@@ -94,9 +94,9 @@ void CCollider::render()
 	else
 		rgb = RGB(0, 255, 0);
 
-	fPoint fptRenderPos = CCameraManager::getInst()->GetRenderPos(m_fptFinalPos);
+	fPoint fptRenderPos = CCameraManager::GetInst()->GetRenderPos(m_fptFinalPos);
 
-	CRenderManager::getInst()->RenderRectangle(
+	CRenderManager::GetInst()->RenderRectangle(
 		fptRenderPos.x - m_fptScale.x / 2.f,
 		fptRenderPos.y - m_fptScale.y / 2.f,
 		fptRenderPos.x + m_fptScale.x / 2.f,

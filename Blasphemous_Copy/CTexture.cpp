@@ -54,7 +54,7 @@ void CTexture::Load(const wstring& strFilePath)
 		assert(nullptr);
 
 	// ºñÆ®¸ÊÀ» ´Ù·ê DC¸¸µé±â
-	m_hDC = CreateCompatibleDC(CCore::getInst()->GetMainDC());
+	m_hDC = CreateCompatibleDC(CCore::GetInst()->GetMainDC());
 
 	// ºñÆ®¸Ê°ú DC ¿¬°á
 	HBITMAP hOldBitMap = (HBITMAP)SelectObject(m_hDC, m_hBMP);
@@ -65,7 +65,7 @@ void CTexture::Load(const wstring& strFilePath)
 
 void CTexture::Create(UINT width, UINT height)
 {
-	HDC mainDC = CCore::getInst()->GetMainDC();
+	HDC mainDC = CCore::GetInst()->GetMainDC();
 	m_hBMP = CreateCompatibleBitmap(mainDC, width, height);
 	m_hDC = CreateCompatibleDC(mainDC);
 

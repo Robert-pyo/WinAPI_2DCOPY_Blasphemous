@@ -32,6 +32,7 @@ CEnemy* CEnemyFactory::CreateEnemy(ENEMY_TYPE eEnmType, fPoint pos)
 		info.fVelocity = 300.f;
 
 		pEnemy->SetAI(pAI);
+		pEnemy->SetEnemyInfo(info);
 	}
 		break;
 		

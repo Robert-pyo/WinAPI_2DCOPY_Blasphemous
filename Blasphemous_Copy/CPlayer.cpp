@@ -9,7 +9,7 @@
 
 CPlayer::CPlayer()
 {
-	m_pImg = CResourceManager::getInst()->LoadD2DImage(L"Player", L"\\texture\\Player\\penitent_anim_merge.png");
+	m_pImg = CResourceManager::GetInst()->LoadD2DImage(L"Player", L"\\texture\\Player\\penitent_anim_merge.png");
 	InitObject(fPoint(700.f, 0.f), fPoint(44.f, 96.f));
 	SetName(L"Player");
 	m_fvCurDir		= {1.0f, 0.f};
@@ -23,7 +23,7 @@ CPlayer::CPlayer()
 
 	m_pSword		= new CPlayerSword;
 	m_pSword->SetOwnerObj(this);
-	CScene* pCurScene = CSceneManager::getInst()->GetCurrentScene();
+	CScene* pCurScene = CSceneManager::GetInst()->GetCurrentScene();
 	pCurScene->AddObject(m_pSword, GROUP_GAMEOBJ::WEAPON_FRONT);
 
 	m_fAttackDelay  = 0.3f;
@@ -53,7 +53,7 @@ void CPlayer::update()
 {
 	if (PRESS_KEY(VK_LBUTTON))
 	{
-		fPoint mousePos = CCameraManager::getInst()->GetRealPos(MOUSE_POS());
+		fPoint mousePos = CCameraManager::GetInst()->GetRealPos(MousePos());
 		m_fAccelGravity = 0.f;
 		SetPos(mousePos);
 	}
@@ -62,7 +62,7 @@ void CPlayer::update()
 	update_state();
 	update_animation();
 
-	CCameraManager::getInst()->SetLookAt(GetPos());
+	CCameraManager::GetInst()->SetLookAt(GetPos());
 
 	GetAnimator()->update();
 
@@ -354,7 +354,7 @@ void CPlayer::update_animation()
 
 void CPlayer::render()
 {
-	/*fPoint fptRenderPos = CCameraManager::getInst()->GetRenderPos(GetCollider()->GetFinalPos());
+	/*fPoint fptRenderPos = CCameraManager::GetInst()->GetRenderPos(GetCollider()->GetFinalPos());
 	Rectangle(hDC,
 		(int)(fptRenderPos.x - m_fptScale.x / 2.f),
 		(int)(fptRenderPos.y - m_fptScale.y / 2.f),

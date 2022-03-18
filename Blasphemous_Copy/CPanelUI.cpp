@@ -19,19 +19,19 @@ void CPanelUI::MouseOn()
 {
 	if (IsLBtnDown())
 	{
-		fPoint fptDiff = MOUSE_POS() - m_fptDragStart;
+		fPoint fptDiff = MousePos() - m_fptDragStart;
 
 		fPoint fptCurPos = GetPos();
 		fptCurPos += fptDiff;
 		SetPos(fptCurPos);
 
-		m_fptDragStart = MOUSE_POS();
+		m_fptDragStart = MousePos();
 	}
 }
 
 void CPanelUI::MouseLBtnDown()
 {
-	m_fptDragStart = MOUSE_POS();
+	m_fptDragStart = MousePos();
 }
 
 void CPanelUI::MouseLBtnUp()

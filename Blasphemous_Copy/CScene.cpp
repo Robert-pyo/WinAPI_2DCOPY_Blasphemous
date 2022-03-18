@@ -87,7 +87,7 @@ void CScene::render_tile()
 
 	// 보이는 타일 영역만 그려주기
 
-	fPoint fptCamLook = CCameraManager::getInst()->GetLookAt();
+	fPoint fptCamLook = CCameraManager::GetInst()->GetLookAt();
 	fPoint fptLeftTop = fptCamLook - fPoint(WINSIZE_X, WINSIZE_Y) / 2.f;
 
 	int iLeftTopX = (int)fptLeftTop.x / CTile::SIZE_TILE;
@@ -154,7 +154,7 @@ void CScene::CreateTile(UINT xSize, UINT ySize)
 	m_iTileX = xSize;
 	m_iTileY = ySize;
 
-	CD2DImage* pImg = CResourceManager::getInst()->LoadD2DImage(L"Tile", L"texture\\tile\\tilemap.bmp");
+	CD2DImage* pImg = CResourceManager::GetInst()->LoadD2DImage(L"Tile", L"texture\\tile\\tilemap.bmp");
 
 	// Tile 생성
 	for (UINT i = 0; i < m_iTileY; ++i)

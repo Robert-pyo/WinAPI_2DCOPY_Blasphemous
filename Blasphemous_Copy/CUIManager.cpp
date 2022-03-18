@@ -54,7 +54,7 @@ void CUIManager::SetFocusedUI(CUI* pUI)
 
 	m_pFocusedUI = pUI;
 
-	CScene* pCurScene = CSceneManager::getInst()->GetCurrentScene();
+	CScene* pCurScene = CSceneManager::GetInst()->GetCurrentScene();
 	vector<CGameObject*>& vecUI = pCurScene->GetUIGroup();
 
 	vector<CGameObject*>::iterator iter = vecUI.begin();
@@ -126,7 +126,7 @@ CUI* CUIManager::GetTargetUI(CUI* pParentUI)
 
 CUI* CUIManager::GetFocusedUI()
 {
-	CScene* pCurScene = CSceneManager::getInst()->GetCurrentScene();
+	CScene* pCurScene = CSceneManager::GetInst()->GetCurrentScene();
 	vector<CGameObject*>& vecUI = pCurScene->GetUIGroup();
 
 	CUI* pFocusedUI = m_pFocusedUI;

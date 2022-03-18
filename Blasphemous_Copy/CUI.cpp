@@ -68,12 +68,12 @@ void CUI::render()
 	// 카메라 영향을 받는다면 렌더링 좌표를 카메라 기준으로
 	if (m_bCamAffected)
 	{
-		fptFinalPos = CCameraManager::getInst()->GetRenderPos(fptFinalPos);
+		fptFinalPos = CCameraManager::GetInst()->GetRenderPos(fptFinalPos);
 	}
 
 	if (m_bLBtnDown)
 	{
-		CRenderManager::getInst()->RenderRectangle(
+		CRenderManager::GetInst()->RenderRectangle(
 			fptPos.x,
 			fptPos.y,
 			fptPos.x + fptScale.x,
@@ -82,7 +82,7 @@ void CUI::render()
 	}
 	else
 	{
-		CRenderManager::getInst()->RenderRectangle(
+		CRenderManager::GetInst()->RenderRectangle(
 			fptPos.x,
 			fptPos.y,
 			fptPos.x + fptScale.x,
@@ -177,12 +177,12 @@ void CUI::AddChild(CUI* pUI)
 
 void CUI::MouseOnCheck()
 {
-	fPoint fptMousePos = MOUSE_POS();
+	fPoint fptMousePos = MousePos();
 	fPoint fptScale = GetScale();
 
 	if (m_bCamAffected)
 	{
-		fptMousePos = CCameraManager::getInst()->GetRealPos(fptMousePos);
+		fptMousePos = CCameraManager::GetInst()->GetRealPos(fptMousePos);
 	}
 
 	if (m_fptFinalPos.x <= fptMousePos.x && fptMousePos.x <= m_fptFinalPos.x + fptScale.x && 

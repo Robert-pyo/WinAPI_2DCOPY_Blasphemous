@@ -21,7 +21,7 @@ CCameraManager::~CCameraManager()
 
 void CCameraManager::init()
 {
-	m_pImg = CResourceManager::getInst()->CreateTexture(L"CamTex", WINSIZE_X, WINSIZE_Y);
+	m_pImg = CResourceManager::GetInst()->CreateTexture(L"CamTex", WINSIZE_X, WINSIZE_Y);
 }
 
 void CCameraManager::update()
@@ -74,7 +74,7 @@ void CCameraManager::render()
 		fAlpha = 1.f - fRatio;
 	}
 
-	CRenderManager::getInst()->RenderFillRectangle(
+	CRenderManager::GetInst()->RenderFillRectangle(
 		-1.f, -1.f, 
 		WINSIZE_X + 1, WINSIZE_Y + 1,
 		D2D1::ColorF(0.f, 0.f, 0.f, fAlpha)

@@ -12,10 +12,10 @@ CPlayerSword::CPlayerSword()
 
 	CreateCollider();
 	GetCollider()->SetScale(GetScale());
-	//CCollisionManager::getInst()->CheckGroup(GROUP_GAMEOBJ::WEAPON_FRONT, GROUP_GAMEOBJ::ENEMY);
-	//CCollisionManager::getInst()->CheckGroup(GROUP_GAMEOBJ::WEAPON_BEHIND, GROUP_GAMEOBJ::ENEMY);
+	//CCollisionManager::GetInst()->CheckGroup(GROUP_GAMEOBJ::WEAPON_FRONT, GROUP_GAMEOBJ::ENEMY);
+	//CCollisionManager::GetInst()->CheckGroup(GROUP_GAMEOBJ::WEAPON_BEHIND, GROUP_GAMEOBJ::ENEMY);
 	// Test
-	CCollisionManager::getInst()->CheckGroup(GROUP_GAMEOBJ::WEAPON_FRONT, GROUP_GAMEOBJ::BUILDING);
+	CCollisionManager::GetInst()->CheckGroup(GROUP_GAMEOBJ::WEAPON_FRONT, GROUP_GAMEOBJ::BUILDING);
 }
 
 CPlayerSword::~CPlayerSword()

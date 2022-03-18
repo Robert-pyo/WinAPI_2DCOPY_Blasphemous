@@ -21,7 +21,7 @@ void CSound::Play()
 {
 	FMOD_RESULT result;
 
-	result = CSoundManager::getInst()->GetSystem()->playSound(m_pSound, nullptr, false, &m_pChannel);
+	result = CSoundManager::GetInst()->GetSystem()->playSound(m_pSound, nullptr, false, &m_pChannel);
 	assert(!result);
 }
 
@@ -85,7 +85,7 @@ void CSound::Load(const wstring& strFilePath)
 	// wchar string to multybite string
 	wcstombs_s(nullptr, str, strFilePath.c_str(), 255);
 
-	CSoundManager::getInst()->GetSystem()->createSound(str, FMOD_DEFAULT, nullptr, &m_pSound);
+	CSoundManager::GetInst()->GetSystem()->createSound(str, FMOD_DEFAULT, nullptr, &m_pSound);
 }
 
 void CSound::SetLoop(bool loop)

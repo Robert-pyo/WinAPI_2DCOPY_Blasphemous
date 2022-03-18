@@ -163,6 +163,7 @@
     <ClInclude Include="CEnemy.h" />
     <ClInclude Include="CEnemyFactory.h" />
     <ClInclude Include="CEventManager.h" />
+    <ClInclude Include="CGamePlayManager.h" />
     <ClInclude Include="CKeyManager.h" />
     <ClInclude Include="CGameObject.h" />
     <ClInclude Include="CPanelUI.h" />
@@ -216,6 +217,7 @@
     <ClCompile Include="CEnemyFactory.cpp" />
     <ClCompile Include="CEventManager.cpp" />
     <ClCompile Include="CGameObject.cpp" />
+    <ClCompile Include="CGamePlayManager.cpp" />
     <ClCompile Include="CKeyManager.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>

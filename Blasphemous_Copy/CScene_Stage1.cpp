@@ -30,14 +30,14 @@ void CScene_Stage1::update()
 
 void CScene_Stage1::Enter()
 {
-	CSoundManager::getInst()->AddSound(L"Tutorial_BGM", L"sound\\BGM\\Churches Field_MASTER.wav", true);
-	CSoundManager::getInst()->Play(L"Tutorial_BGM");
+	CSoundManager::GetInst()->AddSound(L"Tutorial_BGM", L"sound\\BGM\\Churches Field_MASTER.wav", true);
+	CSoundManager::GetInst()->Play(L"Tutorial_BGM");
 
 	// Background 积己
 	CBackground* background = new CBackground;
 	background->SetScale(fPoint(733.f, 238.f));
 	background->SetImage(
-		CResourceManager::getInst()->LoadD2DImage(L"Background", L"texture\\Map\\TutorialScene\\Background\\brotherhood-entrance-spritesheet.png"));
+		CResourceManager::GetInst()->LoadD2DImage(L"Background", L"texture\\Map\\TutorialScene\\Background\\brotherhood-entrance-spritesheet.png"));
 	background->SetTexLeftTop(fPoint(6.f, 779.f));
 	AddObject(background, GROUP_GAMEOBJ::BACKGROUND_BACK);
 
@@ -83,21 +83,22 @@ void CScene_Stage1::Enter()
 	player->InitAbility();
 	player->InitAnimation();
 	AddObject(player, GROUP_GAMEOBJ::PLAYER);
+	CGamePlayManager::GetInst()->RegisterPlayer(player);
 
 	// 阁胶磐 积己
-	CEnemy* monster = CEnemyFactory::CreateEnemy(ENEMY_TYPE::NORMAL, player->GetPos() + fPoint(5.0f, 0.f));
+	CEnemy* monster = CEnemyFactory::CreateEnemy(ENEMY_TYPE::NORMAL, player->GetPos() + fPoint(200.0f, 0.f));
 	AddObject(monster, GROUP_GAMEOBJ::ENEMY);
 
-	CCameraManager::getInst()->InitCameraPos(fPoint(WINSIZE_X / 2.f, background->GetScale().y / 2.f));
-	CCameraManager::getInst()->SetBoundary(fPoint(0.f, 0.f), fPoint(background->GetPos().x + background->GetScale().x * 4.f, background->GetPos().y + background->GetScale().y * 2.f));
+	CCameraManager::GetInst()->InitCameraPos(fPoint(WINSIZE_X / 2.f, background->GetScale().y / 2.f));
+	CCameraManager::GetInst()->SetBoundary(fPoint(0.f, 0.f), fPoint(background->GetPos().x + background->GetScale().x * 4.f, background->GetPos().y + background->GetScale().y * 2.f));
 
-	CCollisionManager::getInst()->CheckGroup(GROUP_GAMEOBJ::PLAYER, GROUP_GAMEOBJ::ENEMY);
-	CCollisionManager::getInst()->CheckGroup(GROUP_GAMEOBJ::PLAYER, GROUP_GAMEOBJ::FLOOR);
-	CCollisionManager::getInst()->CheckGroup(GROUP_GAMEOBJ::PLAYER, GROUP_GAMEOBJ::BUILDING);
-	CCollisionManager::getInst()->CheckGroup(GROUP_GAMEOBJ::PLAYER, GROUP_GAMEOBJ::DEFAULT);
-	CCollisionManager::getInst()->CheckGroup(GROUP_GAMEOBJ::ENEMY, GROUP_GAMEOBJ::FLOOR);
+	CCollisionManager::GetInst()->CheckGroup(GROUP_GAMEOBJ::PLAYER, GROUP_GAMEOBJ::ENEMY);
+	CCollisionManager::GetInst()->CheckGroup(GROUP_GAMEOBJ::PLAYER, GROUP_GAMEOBJ::FLOOR);
+	CCollisionManager::GetInst()->CheckGroup(GROUP_GAMEOBJ::PLAYER, GROUP_GAMEOBJ::BUILDING);
+	CCollisionManager::GetInst()->CheckGroup(GROUP_GAMEOBJ::PLAYER, GROUP_GAMEOBJ::DEFAULT);
+	CCollisionManager::GetInst()->CheckGroup(GROUP_GAMEOBJ::ENEMY, GROUP_GAMEOBJ::FLOOR);
 
-	CCameraManager::getInst()->FadeIn(2.f);
+	CCameraManager::GetInst()->FadeIn(2.f);
 }
 
 void CScene_Stage1::Exit()
@@ -109,9 +110,9 @@ void CScene_Stage1::Exit()
 		ClearGroup((GROUP_GAMEOBJ)i);
 	}
 
-	CSoundManager::getInst()->Stop(L"Tutorial_BGM");
+	CSoundManager::GetInst()->Stop(L"Tutorial_BGM");
 
-	CCameraManager::getInst()->FadeOut(2.f);
+	CCameraManager::GetInst()->FadeOut(2.f);
 
-	CCollisionManager::getInst()->Reset();
+	CCollisionManager::GetInst()->Reset();
 }

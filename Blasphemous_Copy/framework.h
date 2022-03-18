@@ -63,7 +63,8 @@ enum class TYPE_EVENT
 {
 	CREATE_OBJECT,
 	DELETE_OBJECT,
-	CHANGE_SCENE,
+	ChangeScene,
+	CHANGE_AI_STATE,
 
 	SIZE,
 };
@@ -97,6 +98,7 @@ enum class ENEMY_STATE
 #include "CUIManager.h"
 #include "CSoundManager.h"
 #include "CRenderManager.h"
+#include "CGamePlayManager.h"
 
 //========================================
 //##			  디파인문				##
@@ -108,17 +110,18 @@ enum class ENEMY_STATE
 #define WINSTART_Y		100
 #define WINSTYLE		WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX
 
-#define fDeltaTime		(float)CTimeManager::getInst()->GetDeltaTime()
+#define fDeltaTime		(float)CTimeManager::GetInst()->GetDeltaTime()
 
-#define PRESS_KEY(VK_KEY)			CKeyManager::getInst()->GetButton(VK_KEY)
-#define PRESS_KEY_DOWN(VK_KEY)		CKeyManager::getInst()->GetButtonDown(VK_KEY)
-#define PRESS_KEY_UP(VK_KEY)		CKeyManager::getInst()->GetButtonUp(VK_KEY)
+#define PRESS_KEY(VK_KEY)			CKeyManager::GetInst()->GetButton(VK_KEY)
+#define PRESS_KEY_DOWN(VK_KEY)		CKeyManager::GetInst()->GetButtonDown(VK_KEY)
+#define PRESS_KEY_UP(VK_KEY)		CKeyManager::GetInst()->GetButtonUp(VK_KEY)
 
-#define MOUSE_POS()					CKeyManager::getInst()->GetMousePos()
+#define MousePos()					CKeyManager::GetInst()->GetMousePos()
 
-#define CREATE_OBJ(OBJ, GROUP)		CEventManager::getInst()->EventCreateObj(OBJ, GROUP)
-#define DELETE_OBJ(OBJ)				CEventManager::getInst()->EventDeleteObj(OBJ)
-#define CHANGE_SCENE(SCENE)			CEventManager::getInst()->EventChangeScene(SCENE)
+#define CreateObj(OBJ, GROUP)		CEventManager::GetInst()->EventCreateObj(OBJ, GROUP)
+#define DeleteObj(OBJ)				CEventManager::GetInst()->EventDeleteObj(OBJ)
+#define ChangeToNextScene(SCENE)	CEventManager::GetInst()->EventChangeScene(SCENE)
+#define ChangeAIState(AI, State)	CEventManager::GetInst()->EventChangeAIState(AI, State);
 
 #define GRAVITY						(1500.f)
 

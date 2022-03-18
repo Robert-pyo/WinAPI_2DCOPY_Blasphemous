@@ -77,12 +77,12 @@ void CAnimation::render()
 
 	fptDrawPos = fptDrawPos + animFrm.fptOffset;
 
-	fPoint fptRenderPos = CCameraManager::getInst()->GetRenderPos(fptDrawPos);
+	fPoint fptRenderPos = CCameraManager::GetInst()->GetRenderPos(fptDrawPos);
 	fPoint fptScale = pObj->GetScale();
 
 	if (m_bReverse)
 	{
-		CRenderManager::getInst()->RenderRevFrame(
+		CRenderManager::GetInst()->RenderRevFrame(
 			m_pImg,
 			fptRenderPos.x - animFrm.fptTexScale.x,
 			fptRenderPos.y - animFrm.fptTexScale.y,
@@ -96,7 +96,7 @@ void CAnimation::render()
 	}
 	else
 	{
-		CRenderManager::getInst()->RenderFrame(
+		CRenderManager::GetInst()->RenderFrame(
 			m_pImg,
 			fptRenderPos.x - animFrm.fptTexScale.x,
 			fptRenderPos.y - animFrm.fptTexScale.y,

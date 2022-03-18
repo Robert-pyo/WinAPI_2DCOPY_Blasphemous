@@ -34,7 +34,7 @@ void AI::AddState(CState* pState)
 	assert(!pTargetState);
 
 	m_mapEnmState.insert(make_pair(pState->GetState(), pState));
-	pState->m_pOwnerAI = this;
+	pState->m_pAI = this;
 }
 
 CState* AI::GetState(ENEMY_STATE eEnmState)
@@ -54,5 +54,15 @@ void AI::SetCurState(ENEMY_STATE eEnmState)
 	
 	// m_pCurState에 nullptr이 들어갔다면 assert
 	assert(m_pCurState);
+}
+
+void AI::ChangeState(ENEMY_STATE eNextState)
+{
+	CState* pNextState = GetState(eNextState);
+	assert(m_pCurState != pNextState);
+
+	m_pCurState->Exit();
+	m_pCurState = pNextState;
+	m_pCurState->Enter();
 }
 

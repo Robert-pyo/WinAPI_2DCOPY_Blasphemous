@@ -43,6 +43,14 @@ public:
 
 	void SetAI(AI* pAI);
 
+private:
+	// Enemy의 info는 enemy에서만 세팅 가능
+	// 단, factory에서는 사용 가능 -> 적을 생성해야하기 때문
+	void SetEnemyInfo(const tEnemyInfo& info) { m_tEnmInfo = info; }
+
+public:
+	const tEnemyInfo& GetEnemyInfo() { return m_tEnmInfo; }
+
 public:
 	virtual void OnCollision(CCollider* target) override;
 	virtual void OnCollisionEnter(CCollider* target) override;

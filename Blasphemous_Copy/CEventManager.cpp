@@ -2,6 +2,7 @@
 #include "CEventManager.h"
 #include "CScene.h"
 #include "CGameObject.h"
+#include "AI.h"
 
 CEventManager::CEventManager()
 {
@@ -23,7 +24,7 @@ void CEventManager::Execute(const tEvent& event)
 		CGameObject* pObj = (CGameObject*)event.lParam;
 		GROUP_GAMEOBJ group = (GROUP_GAMEOBJ)event.wParam;
 
-		CSceneManager::getInst()->GetCurrentScene()->AddObject(pObj, group);
+		CSceneManager::GetInst()->GetCurrentScene()->AddObject(pObj, group);
 	}
 		break;
 	case TYPE_EVENT::DELETE_OBJECT:
@@ -38,14 +39,28 @@ void CEventManager::Execute(const tEvent& event)
 		m_vecDisableObj.push_back(pObj);
 	}
 		break;
-	case TYPE_EVENT::CHANGE_SCENE:
+	case TYPE_EVENT::ChangeScene:
+	{
 		// Change Scene
 		// lParam : Scene 그룹 열거형
 		GROUP_SCENE scene = (GROUP_SCENE)event.lParam;
-		CUIManager::getInst()->SetFocusedUI(nullptr);
+		CUIManager::GetInst()->SetFocusedUI(nullptr);
 
-		CSceneManager::getInst()->ChangeScene(scene);
+		CSceneManager::GetInst()->ChangeScene(scene);
+	}
+		break;
 
+	case TYPE_EVENT::CHANGE_AI_STATE:
+	{
+		// Change Enemy AI State
+		// lParam : AI 포인터 변수
+		// wParam : ENEMY_STATE
+
+		AI* pAI = (AI*)event.lParam;
+		ENEMY_STATE eEnmState = (ENEMY_STATE)event.wParam;
+
+		pAI->ChangeState(eEnmState);
+	}
 		break;
 	}
 }
@@ -94,8 +109,18 @@ void CEventManager::EventDeleteObj(CGameObject* pObj)
 void CEventManager::EventChangeScene(GROUP_SCENE scene)
 {
 	tEvent event;
-	event.eEvent = TYPE_EVENT::CHANGE_SCENE;
+	event.eEvent = TYPE_EVENT::ChangeScene;
 	event.lParam = (DWORD_PTR)scene;
+
+	AddEvent(event);
+}
+
+void CEventManager::EventChangeAIState(AI* pAI, ENEMY_STATE eNextState)
+{
+	tEvent event;
+	event.eEvent = TYPE_EVENT::CHANGE_AI_STATE;
+	event.lParam = (DWORD_PTR)pAI;
+	event.wParam = (DWORD_PTR)eNextState;
 
 	AddEvent(event);
 }

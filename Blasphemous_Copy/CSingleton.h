@@ -22,7 +22,7 @@
 #define SINGLETON(type)								\
 													\
 public:												\
-	static type* getInst()							\
+	static type* GetInst()							\
 	{												\
 		static type _instance;						\
 		return &_instance;							\
@@ -44,7 +44,7 @@ protected:
 	~Singleton();
 
 public:
-	static T* getInst()
+	static T* GetInst()
 	{
 		//싱글톤 객체가 없으면 새로 만들어 전달.
 		if (nullptr == _instance)

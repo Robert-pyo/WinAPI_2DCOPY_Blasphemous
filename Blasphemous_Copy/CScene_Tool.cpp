@@ -28,29 +28,29 @@ void CScene_Tool::update()
 
 	if (PRESS_KEY_DOWN(VK_ESCAPE))
 	{
-		CHANGE_SCENE(GROUP_SCENE::STAGE_01);
+		ChangeToNextScene(GROUP_SCENE::STAGE_01);
 	}
 
 	if (PRESS_KEY('A'))
 	{
-		CCameraManager::getInst()->Scroll(fVector2D(-1, 0), 500.f);
+		CCameraManager::GetInst()->Scroll(fVector2D(-1, 0), 500.f);
 	}
 	if (PRESS_KEY('D'))
 	{
-		CCameraManager::getInst()->Scroll(fVector2D(1, 0), 500.f);
+		CCameraManager::GetInst()->Scroll(fVector2D(1, 0), 500.f);
 	}
 	if (PRESS_KEY('W'))
 	{
-		CCameraManager::getInst()->Scroll(fVector2D(0, -1), 500.f);
+		CCameraManager::GetInst()->Scroll(fVector2D(0, -1), 500.f);
 	}
 	if (PRESS_KEY('S'))
 	{
-		CCameraManager::getInst()->Scroll(fVector2D(0, 1), 500.f);
+		CCameraManager::GetInst()->Scroll(fVector2D(0, 1), 500.f);
 	}
 
 	if (PRESS_KEY_DOWN('1'))
 	{
-		CUIManager::getInst()->SetFocusedUI(pUI2);
+		CUIManager::GetInst()->SetFocusedUI(pUI2);
 	}
 
 	SetTileDrawIndex();
@@ -63,14 +63,14 @@ void ButtonItemClicked(DWORD_PTR param1, DWORD_PTR param2)
 
 void ButtonMapClicked(DWORD_PTR param1, DWORD_PTR param2)
 {
-	CHANGE_SCENE(GROUP_SCENE::STAGE_01);
+	ChangeToNextScene(GROUP_SCENE::STAGE_01);
 }
 
 void CScene_Tool::Enter()
 {
-	CCameraManager::getInst()->FadeIn(2.f);
+	CCameraManager::GetInst()->FadeIn(2.f);
 
-	CCameraManager::getInst()->SetLookAt(fPoint(WINSIZE_X / 2.f, WINSIZE_Y / 2.f));
+	CCameraManager::GetInst()->SetLookAt(fPoint(WINSIZE_X / 2.f, WINSIZE_Y / 2.f));
 
 	m_hWnd = CreateDialog(hInst, MAKEINTRESOURCE(IDD_TILEBOX), hWnd, TileWndProc);
 
@@ -128,8 +128,8 @@ void CScene_Tool::SetTileDrawIndex()
 {
 	if (PRESS_KEY(VK_LBUTTON))
 	{
-		fPoint fptMousePos = MOUSE_POS();
-		fptMousePos = CCameraManager::getInst()->GetRealPos(fptMousePos);
+		fPoint fptMousePos = MousePos();
+		fptMousePos = CCameraManager::GetInst()->GetRealPos(fptMousePos);
 
 		int iTileX = (int)GetTileX();
 		int iTileY = (int)GetTileY();
@@ -147,8 +147,8 @@ void CScene_Tool::SetTileDrawIndex()
 	}
 	if (PRESS_KEY(VK_RBUTTON))	// 오른쪽 마우스 누를 시 지우기
 	{
-		fPoint fptMousePos = MOUSE_POS();
-		fptMousePos = CCameraManager::getInst()->GetRealPos(fptMousePos);
+		fPoint fptMousePos = MousePos();
+		fptMousePos = CCameraManager::GetInst()->GetRealPos(fptMousePos);
 
 		int iTileX = (int)GetTileX();
 		int iTileY = (int)GetTileY();
@@ -205,7 +205,7 @@ void CScene_Tool::SaveTileData()
 	ofn.nMaxFile = sizeof(szName);	// lpstrFile에 지정된 버퍼의 문자 수
 	ofn.nFilterIndex = 1;			// 기본 필터 세팅. 0은 all로 초기 세팅됨 -> 처음
 	ofn.lpstrFileTitle = 0;			// 타이틀 바 문자열 크기 nullptr이면 0
-	wstring strTileFolder = CPathManager::getInst()->GetContentPath();
+	wstring strTileFolder = CPathManager::GetInst()->GetContentPath();
 	strTileFolder += L"texture\\Land\\Tileset\\Tilemaps";
 	ofn.lpstrInitialDir = strTileFolder.c_str();	// 초기 경로
 	ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST;	// 스타일
@@ -227,7 +227,7 @@ void CScene_Tool::LoadTileData()
 	ofn.nMaxFile = sizeof(szName);	// lpstrFile에 지정된 버퍼의 문자 수
 	ofn.nFilterIndex = 1;			// 기본 필터 세팅. 0은 all로 초기 세팅됨 -> 처음
 	ofn.lpstrFileTitle = 0;			// 타이틀 바 문자열 크기 nullptr이면 0
-	wstring strTileFolder = CPathManager::getInst()->GetContentPath();
+	wstring strTileFolder = CPathManager::GetInst()->GetContentPath();
 	strTileFolder += L"texture\\Land\\Tileset\\Tilemaps";
 	ofn.lpstrInitialDir = strTileFolder.c_str();	// 초기 경로
 	ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST;	// 스타일
@@ -250,7 +250,7 @@ INT_PTR CALLBACK TileWndProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lPar
 	case WM_COMMAND:
 		if (LOWORD(wParam) == IDOK)
 		{
-			CScene* pCurScene = CSceneManager::getInst()->GetCurrentScene();
+			CScene* pCurScene = CSceneManager::GetInst()->GetCurrentScene();
 			CScene_Tool* pToolScene = dynamic_cast<CScene_Tool*>(pCurScene);
 			assert(pToolScene);
 
@@ -259,7 +259,7 @@ INT_PTR CALLBACK TileWndProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lPar
 		}
 		else if (LOWORD(wParam) == IDCANCEL)
 		{
-			CScene* pCurScene = CSceneManager::getInst()->GetCurrentScene();
+			CScene* pCurScene = CSceneManager::GetInst()->GetCurrentScene();
 			CScene_Tool* pToolScene = dynamic_cast<CScene_Tool*>(pCurScene);
 			assert(pToolScene);
 
@@ -271,7 +271,7 @@ INT_PTR CALLBACK TileWndProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lPar
 			int x = GetDlgItemInt(hDlg, IDC_EDIT_SIZEX, nullptr, false);
 			int y = GetDlgItemInt(hDlg, IDC_EDIT_SIZEY, nullptr, false);
 
-			CScene* pCurScene = CSceneManager::getInst()->GetCurrentScene();
+			CScene* pCurScene = CSceneManager::GetInst()->GetCurrentScene();
 			CScene_Tool* pToolScene = dynamic_cast<CScene_Tool*>(pCurScene);
 			assert(pToolScene);
 
@@ -283,14 +283,14 @@ INT_PTR CALLBACK TileWndProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lPar
 		{
 			int index = GetDlgItemInt(hDlg, IDC_EDIT_TILE, nullptr, false);
 
-			CScene* pCurScene = CSceneManager::getInst()->GetCurrentScene();
+			CScene* pCurScene = CSceneManager::GetInst()->GetCurrentScene();
 			CScene_Tool* pToolScene = dynamic_cast<CScene_Tool*>(pCurScene);
 			assert(pToolScene);		// CScene_Tool 이 아니라면 -> nullptr
 
 			pToolScene->SelectIndex(index);
 
 			// 미리보기 그리기
-			CTexture* pTex = CResourceManager::getInst()->LoadTexture(L"Tile", L"texture\\Land\\Tileset\\tilemap.bmp");
+			CTexture* pTex = CResourceManager::GetInst()->LoadTexture(L"Tile", L"texture\\Land\\Tileset\\tilemap.bmp");
 
 			UINT iWidth = pTex->GetBmpWidth();
 			UINT iHeight = pTex->GetBmpHeight();

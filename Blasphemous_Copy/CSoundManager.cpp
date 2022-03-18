@@ -43,7 +43,7 @@ System* CSoundManager::GetSystem()
 void CSoundManager::AddSound(wstring keyName, wstring filePath, bool isLoop)
 {
 	if (m_mapSound.end() != m_mapSound.find(keyName)) return;
-	CSound* pSound = CResourceManager::getInst()->LoadSound(keyName, filePath);
+	CSound* pSound = CResourceManager::GetInst()->LoadSound(keyName, filePath);
 	pSound->SetLoop(isLoop);
 	m_mapSound.insert(make_pair(keyName, pSound));
 }

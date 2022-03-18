@@ -5,7 +5,7 @@
 
 CPlatform::CPlatform()
 {
-	m_pImg = CResourceManager::getInst()->LoadD2DImage(L"Platform_Floor", L"texture\\Map\\TutorialScene\\Floor\\brotherhood_floor.png");
+	m_pImg = CResourceManager::GetInst()->LoadD2DImage(L"Platform_Floor", L"texture\\Map\\TutorialScene\\Floor\\brotherhood_floor.png");
 
 	InitObject(fPoint(627.f, 370.f), fPoint(403.f, 110.f));
 
@@ -30,9 +30,9 @@ void CPlatform::update()
 
 void CPlatform::render()
 {
-	fPoint fptRenderPos = CCameraManager::getInst()->GetRenderPos(GetPos());
+	fPoint fptRenderPos = CCameraManager::GetInst()->GetRenderPos(GetPos());
 
-	CRenderManager::getInst()->RenderFrame(
+	CRenderManager::GetInst()->RenderFrame(
 		m_pImg,
 		fptRenderPos.x - GetScale().x,
 		fptRenderPos.y - GetScale().y * 1.3f,
