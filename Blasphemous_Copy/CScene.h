@@ -6,6 +6,7 @@
 // 1. 헤더파일이 여러번 호출되어 #pragma once 선언부를 확인 불가한 문제 해결
 // 2. 컴파일 시간을 단축시킬 수 있음
 class CGameObject;
+class CUI;
 
 class CScene
 {
@@ -19,6 +20,8 @@ private:
 
 	UINT m_iTileX;
 	UINT m_iTileY;
+
+	vector<CUI*> m_vecUI;
 
 public:
 	CScene();
@@ -37,15 +40,24 @@ public:
 	void RegisterPlayer(CPlayer* pPlayer) { m_pPlayer = pPlayer; };
 	CPlayer* GetPlayer() { return m_pPlayer; }
 
+public:
 	void SetName(const wstring& strName);
-
 	wstring GetName();
+
 	UINT	GetTileX();
 	UINT	GetTileY();
 
+public:
+	void RegisterUI(CUI* pUI);
+	CUI* GetUI(const CUI* pUI);
+
+	void UIOptionSelector();
+
+public:
 	vector<CGameObject*>& GetObjGroup(GROUP_GAMEOBJ group);
 	vector<CGameObject*>& GetUIGroup();
 
+public:
 	// 현재 씬에 게임 오브젝트 추가
 	void AddObject(CGameObject* pGameObj, GROUP_GAMEOBJ type);
 

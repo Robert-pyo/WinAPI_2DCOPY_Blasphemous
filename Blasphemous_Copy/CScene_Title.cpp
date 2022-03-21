@@ -9,8 +9,6 @@ CScene_Title::CScene_Title()
 	m_pBackImgFront = CResourceManager::GetInst()->LoadD2DImage(L"Title_Background_Crisanta", L"texture\\UI\\Background\\Title\\MainMenu_Crisanta_Animation.png");
 	m_pBackImgMiddle = CResourceManager::GetInst()->LoadD2DImage(L"Title_Background", L"texture\\UI\\Background\\Title\\MainMenu_BG_Animation.png");
 	m_pBackImgBack = CResourceManager::GetInst()->LoadD2DImage(L"Title_Background_petals", L"texture\\UI\\Background\\Title\\MainMenu_Middle_petals.png");
-
-	m_vecUI = {};
 }
 
 CScene_Title::~CScene_Title()
@@ -31,67 +29,7 @@ void CScene_Title::update()
 {
 	CScene::update();
 
-	if (PRESS_KEY_DOWN(VK_UP) || PRESS_KEY_DOWN('W'))
-	{
-		CSoundManager::GetInst()->Play(L"ChangeSelection");
-		for (UINT i = 0; i < m_vecUI.size(); ++i)
-		{
-			if (m_vecUI[i]->IsMouseOn())
-			{
-				m_vecUI[i]->DeselectUI();
-				m_vecUI[i]->MouseLBtnUp();
-				
-				if (i > 0)
-				{
-					m_vecUI[i - 1]->SelectUI();
-					CUIManager::GetInst()->SetFocusedUI(m_vecUI[i - 1]);
-				}
-				else
-				{
-					m_vecUI[m_vecUI.size() - 1]->SelectUI();
-					CUIManager::GetInst()->SetFocusedUI(m_vecUI[m_vecUI.size() - 1]);
-				}
-				break;
-			}
-		}
-	}
-
-	if (PRESS_KEY_DOWN(VK_DOWN) || PRESS_KEY_DOWN('S'))
-	{
-		CSoundManager::GetInst()->Play(L"ChangeSelection");
-		for (UINT i = 0; i < m_vecUI.size(); ++i)
-		{
-			if (m_vecUI[i]->IsMouseOn())
-			{
-				m_vecUI[i]->DeselectUI();
-				m_vecUI[i]->MouseLBtnUp();
-
-				if (i < m_vecUI.size() - 1)
-				{
-					m_vecUI[i + 1]->SelectUI();
-					CUIManager::GetInst()->SetFocusedUI(m_vecUI[i + 1]);
-				}
-				else
-				{
-					m_vecUI[0]->SelectUI();
-					CUIManager::GetInst()->SetFocusedUI(m_vecUI[0]);
-				}
-				break;
-			}
-		}
-	}
-
-	if (PRESS_KEY_DOWN(VK_RETURN))
-	{
-		for (UINT i = 0; i < m_vecUI.size(); ++i)
-		{
-			if (m_vecUI[i]->IsMouseOn())
-			{
-				m_vecUI[i]->MouseLBtnClicked();
-				break;
-			}
-		}
-	}
+	UIOptionSelector();
 }
 
 void CScene_Title::Enter()
@@ -154,14 +92,14 @@ void CScene_Title::Enter()
 	pBtn_start->SetPos(fPoint(WINSIZE_X - 210.f, WINSIZE_Y / 2.f + 90.f));
 	pBtn_start->SetText(L"순례");
 	pBtn_start->SetClickCallBack(ButtonStartClicked, 0, 0);
-	m_vecUI.push_back(pBtn_start);
+	RegisterUI(pBtn_start);
 	AddObject(pBtn_start, GROUP_GAMEOBJ::UI);
 
 	CButtonUI* pBtn_option = new CButtonUI;
 	pBtn_option->SetScale(fPoint(100.f, 50.f));
 	pBtn_option->SetPos(fPoint(WINSIZE_X - 210.f, WINSIZE_Y / 2.f + 140.f));
 	pBtn_option->SetText(L"옵션");
-	m_vecUI.push_back(pBtn_option);
+	RegisterUI(pBtn_option);
 	AddObject(pBtn_option, GROUP_GAMEOBJ::UI);
 
 	CButtonUI* pBtn_quit = new CButtonUI;
@@ -169,11 +107,10 @@ void CScene_Title::Enter()
 	pBtn_quit->SetPos(fPoint(WINSIZE_X - 210.f, WINSIZE_Y / 2.f + 190.f));
 	pBtn_quit->SetText(L"나가기");
 	pBtn_quit->SetClickCallBack(ButtonQuitClicked, 0, 0);
-	m_vecUI.push_back(pBtn_quit);
+	RegisterUI(pBtn_quit);
 	AddObject(pBtn_quit, GROUP_GAMEOBJ::UI);
 
-	pBtn_start->SelectUI();
-	CUIManager::GetInst()->SetFocusedUI(pBtn_start);
+	GetUI(pBtn_start)->SelectUI();
 }
 
 void CScene_Title::Exit()

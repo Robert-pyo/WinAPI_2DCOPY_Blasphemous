@@ -178,6 +178,7 @@ void CUI::AddChild(CUI* pUI)
 void CUI::SelectUI()
 {
 	m_bMouseOn = true;
+	CUIManager::GetInst()->SetFocusedUI(this);
 }
 
 void CUI::DeselectUI()

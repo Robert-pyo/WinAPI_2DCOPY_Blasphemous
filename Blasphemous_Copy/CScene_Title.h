@@ -10,8 +10,6 @@ private:
 	CD2DImage* m_pBackImgMiddle;
 	CD2DImage* m_pBackImgBack;
 
-	vector<CUI*> m_vecUI;
-
 public:
 	CScene_Title();
 	~CScene_Title();

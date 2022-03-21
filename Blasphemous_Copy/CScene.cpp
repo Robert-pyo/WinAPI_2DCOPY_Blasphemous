@@ -3,12 +3,15 @@
 #include "CGameObject.h"
 #include "CTile.h"
 #include "CTexture.h"
+#include "CUI.h"
 
 CScene::CScene()
 {
 	this->m_sceneName = L"";
 	m_iTileX = 0;
 	m_iTileY = 0;
+
+	m_vecUI = {};
 }
 
 CScene::CScene(const wstring& sceneName)
@@ -128,6 +131,89 @@ UINT CScene::GetTileX()
 UINT CScene::GetTileY()
 {
 	return m_iTileY;
+}
+
+void CScene::RegisterUI(CUI* pUI)
+{
+	m_vecUI.push_back(pUI);
+}
+
+CUI* CScene::GetUI(const CUI* pUI)
+{
+	for (UINT i = 0; i < m_vecUI.size(); ++i)
+	{
+		if (m_vecUI[i] == pUI)
+		{
+			return m_vecUI[i];
+		}
+	}
+
+	return nullptr;
+}
+
+void CScene::UIOptionSelector()
+{
+	if (PRESS_KEY_DOWN(VK_UP) || PRESS_KEY_DOWN('W'))
+	{
+		CSoundManager::GetInst()->Play(L"ChangeSelection");
+		for (UINT i = 0; i < m_vecUI.size(); ++i)
+		{
+			if (m_vecUI[i]->IsMouseOn())
+			{
+				m_vecUI[i]->DeselectUI();
+				m_vecUI[i]->MouseLBtnUp();
+
+				if (i > 0)
+				{
+					m_vecUI[i - 1]->SelectUI();
+					CUIManager::GetInst()->SetFocusedUI(m_vecUI[i - 1]);
+				}
+				else
+				{
+					m_vecUI[m_vecUI.size() - 1]->SelectUI();
+					CUIManager::GetInst()->SetFocusedUI(m_vecUI[m_vecUI.size() - 1]);
+				}
+				break;
+			}
+		}
+	}
+
+	if (PRESS_KEY_DOWN(VK_DOWN) || PRESS_KEY_DOWN('S'))
+	{
+		CSoundManager::GetInst()->Play(L"ChangeSelection");
+		for (UINT i = 0; i < m_vecUI.size(); ++i)
+		{
+			if (m_vecUI[i]->IsMouseOn())
+			{
+				m_vecUI[i]->DeselectUI();
+				m_vecUI[i]->MouseLBtnUp();
+
+				if (i < m_vecUI.size() - 1)
+				{
+					m_vecUI[i + 1]->SelectUI();
+					CUIManager::GetInst()->SetFocusedUI(m_vecUI[i + 1]);
+				}
+				else
+				{
+					m_vecUI[0]->SelectUI();
+					CUIManager::GetInst()->SetFocusedUI(m_vecUI[0]);
+				}
+				break;
+			}
+		}
+	}
+
+	if (PRESS_KEY_DOWN(VK_RETURN))
+	{
+		for (UINT i = 0; i < m_vecUI.size(); ++i)
+		{
+			if (m_vecUI[i]->IsMouseOn())
+			{
+				m_vecUI[i]->MouseLBtnClicked();
+				break;
+			}
+		}
+	}
 }
 
 void CScene::AddObject(CGameObject* pGameObj, GROUP_GAMEOBJ type)
