@@ -11,7 +11,6 @@ CState::CState(ENEMY_STATE eState)
 
 CState::~CState()
 {
-	int a = 0;
 }
 
 AI* CState::GetAI()

@@ -162,6 +162,7 @@
     <ClInclude Include="CD2DImage.h" />
     <ClInclude Include="CEnemy.h" />
     <ClInclude Include="CEnemyFactory.h" />
+    <ClInclude Include="CEnemy_Acolyte.h" />
     <ClInclude Include="CEventManager.h" />
     <ClInclude Include="CKeyManager.h" />
     <ClInclude Include="CGameObject.h" />
@@ -181,7 +182,9 @@
     <ClInclude Include="CSingleton.h" />
     <ClInclude Include="CSound.h" />
     <ClInclude Include="CSoundManager.h" />
+    <ClInclude Include="CSpear.h" />
     <ClInclude Include="CState.h" />
+    <ClInclude Include="CState_Attack.h" />
     <ClInclude Include="CState_Idle.h" />
     <ClInclude Include="CState_Trace.h" />
     <ClInclude Include="CWarpPoint.h" />
@@ -214,6 +217,7 @@
     <ClCompile Include="CD2DImage.cpp" />
     <ClCompile Include="CEnemy.cpp" />
     <ClCompile Include="CEnemyFactory.cpp" />
+    <ClCompile Include="CEnemy_Acolyte.cpp" />
     <ClCompile Include="CEventManager.cpp" />
     <ClCompile Include="CGameObject.cpp" />
     <ClCompile Include="CKeyManager.cpp">
@@ -235,7 +239,9 @@
     <ClCompile Include="CScene_Tool.cpp" />
     <ClCompile Include="CSound.cpp" />
     <ClCompile Include="CSoundManager.cpp" />
+    <ClCompile Include="CSpear.cpp" />
     <ClCompile Include="CState.cpp" />
+    <ClCompile Include="CState_Attack.cpp" />
     <ClCompile Include="CState_Idle.cpp" />
     <ClCompile Include="CState_Trace.cpp" />
     <ClCompile Include="CWarpPoint.cpp" />

@@ -34,7 +34,6 @@ void CState_Idle::update()
 
 void CState_Idle::Enter()
 {
-	
 }
 
 void CState_Idle::Exit()

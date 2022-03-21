@@ -20,7 +20,7 @@ public:
 	void render();
 
 	void CreateAnimation(const wstring& strName, CD2DImage* pImg, fPoint leftTop, fPoint scale,
-						fPoint step, float duration, UINT frmCount, bool isLoop, bool bReverse);
+						fPoint step, UINT column, float duration, UINT frmCount, bool isLoop, bool bReverse);
 	CAnimation* FindAnimation(const wstring& strName);
 	// 애니메이션 재생
 	void Play(const wstring& strName);

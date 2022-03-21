@@ -1,4 +1,6 @@
 #pragma once
+#include "CAnimator.h"
+
 class AI;
 class CEnemy;
 

@@ -21,6 +21,7 @@ public:
 public:
 	void AddState(CState* pState);
 	CState* GetState(ENEMY_STATE eEnmState);
+	CState* GetCurState();
 	void SetCurState(ENEMY_STATE eEnmState);
 	void ChangeState(ENEMY_STATE eNextState);
 

@@ -11,9 +11,8 @@ CEnemy::CEnemy()
 	m_fAccelGravity = 0.f;
 	m_pAI = nullptr;
 	m_tEnmInfo = {};
-
-	CreateCollider();
-	GetCollider()->SetScale(fPoint(100.f, 100.f));
+	m_fvCurDir = {};
+	m_fvPrevDir = {GetPos().x, GetPos().y};
 }
 
 CEnemy::~CEnemy()
@@ -22,17 +21,12 @@ CEnemy::~CEnemy()
 		delete m_pAI;
 }
 
-CEnemy* CEnemy::Clone()
-{
-	return new CEnemy(*this);
-}
-
 void CEnemy::update()
 {
 	if (nullptr != m_pAI)
 	{
 		m_pAI->update();
-	}  
+	}
 
 	fPoint fptPos = GetPos();
 
@@ -43,11 +37,18 @@ void CEnemy::update()
 	m_fAccelGravity += GRAVITY * fDeltaTime;
 	if (m_fAccelGravity >= 1000.f)
 		m_fAccelGravity = 1000.f;
+
+	m_fvPrevDir = m_fvCurDir;
 }
 
 void CEnemy::render()
 {
 	component_render();
+}
+
+AI* CEnemy::GetAI()
+{
+	return m_pAI;
 }
 
 void CEnemy::SetAI(AI* pAI)
@@ -62,7 +63,8 @@ void CEnemy::Hit(CGameObject* pPlayer)
 	m_tEnmInfo.fHP -= player->GetPlayerAbility().fAtt;
 
 	// 맞았으면 HIT 상태로 전환
-	// ChangeAIState(m_pAI, ENEMY_STATE::HIT);
+	//ChangeAIState(m_pAI, ENEMY_STATE::HIT);
+
 	if (m_tEnmInfo.fHP <= 0.f)
 	{
 		//Die();

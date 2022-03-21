@@ -32,7 +32,7 @@ void CAnimator::render()
 }
 
 void CAnimator::CreateAnimation(const wstring& strName, CD2DImage* pImg, fPoint leftTop, fPoint scale,
-								fPoint step, float duration, UINT frmCount, bool isLoop, bool bReverse)
+								fPoint step, UINT column, float duration, UINT frmCount, bool isLoop, bool bReverse)
 {
 	CAnimation* pAnim = FindAnimation(strName);
 
@@ -43,7 +43,7 @@ void CAnimator::CreateAnimation(const wstring& strName, CD2DImage* pImg, fPoint 
 
 	pAnim->SetName(strName);
 	pAnim->m_pAnimator = this;
-	pAnim->Create(pImg, leftTop, scale, step, duration, frmCount);
+	pAnim->Create(pImg, leftTop, scale, step, column, duration, frmCount);
 	pAnim->SetLoop(isLoop);
 	pAnim->m_bReverse = bReverse;
 

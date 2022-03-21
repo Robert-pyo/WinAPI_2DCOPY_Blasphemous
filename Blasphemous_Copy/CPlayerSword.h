@@ -1,9 +1,12 @@
 #pragma once
 #include "CWeapon.h"
+
+class CD2DImage;
+
 class CPlayerSword : public CWeapon
 {
 private:
-	float m_fAttTime;	// 공격 시간
+	CD2DImage* m_pImg;
 
 public:
 	CPlayerSword();
@@ -16,6 +19,8 @@ public:
 
 	virtual void Attack();
 
-
+	virtual void OnCollision(CCollider* other);
+	virtual void OnCollisionEnter(CCollider* other);
+	virtual void OnCollisionExit(CCollider* other) {}
 };
 

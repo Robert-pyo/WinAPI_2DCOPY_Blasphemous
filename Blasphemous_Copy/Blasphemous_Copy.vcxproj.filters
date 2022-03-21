@@ -136,6 +136,12 @@
     <Filter Include="Object\Enemy\Alcoyte">
       <UniqueIdentifier>{3f4132e9-fb17-4ac3-8e48-f01474a3953e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\Component\AI\State\Attack">
+      <UniqueIdentifier>{209c9d8c-710d-4635-890c-9bb87ba1a6f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Weapon\Spear">
+      <UniqueIdentifier>{3b6e2565-7e80-4c8c-bd01-a09c66cb4288}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -282,6 +288,15 @@
     <ClInclude Include="CEnemyFactory.h">
       <Filter>Object\Enemy\EnemyFactory</Filter>
     </ClInclude>
+    <ClInclude Include="CEnemy_Acolyte.h">
+      <Filter>Object\Enemy\Alcoyte</Filter>
+    </ClInclude>
+    <ClInclude Include="CState_Attack.h">
+      <Filter>Engine\Component\AI\State\Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="CSpear.h">
+      <Filter>Object\Weapon\Spear</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CCore.cpp">
@@ -406,6 +421,15 @@
     </ClCompile>
     <ClCompile Include="CEnemyFactory.cpp">
       <Filter>Object\Enemy\EnemyFactory</Filter>
+    </ClCompile>
+    <ClCompile Include="CEnemy_Acolyte.cpp">
+      <Filter>Object\Enemy\Alcoyte</Filter>
+    </ClCompile>
+    <ClCompile Include="CState_Attack.cpp">
+      <Filter>Engine\Component\AI\State\Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="CSpear.cpp">
+      <Filter>Object\Weapon\Spear</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

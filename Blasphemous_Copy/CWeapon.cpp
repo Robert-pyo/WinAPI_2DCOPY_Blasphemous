@@ -5,7 +5,8 @@ CWeapon::CWeapon()
 {
 	m_pOwner = nullptr;
 	SetPos(fPoint(-10000.f, -10000.f));
-	m_fAtk = 0.f;
+	m_fAtt = 0.f;
+	m_fAttDuration = 0.f;
 }
 
 CWeapon::~CWeapon()
@@ -25,9 +26,9 @@ CGameObject* CWeapon::GetOwnerObj()
 	return m_pOwner;
 }
 
-const float CWeapon::GetAtkValue()
+const float CWeapon::GetAttValue()
 {
-	return m_fAtk;
+	return m_fAtt;
 }
 
 void CWeapon::SetOwnerObj(CGameObject* pOwner)
@@ -35,7 +36,17 @@ void CWeapon::SetOwnerObj(CGameObject* pOwner)
 	m_pOwner = pOwner;
 }
 
-void CWeapon::SetAtk(const float atk)
+void CWeapon::SetAtt(const float att)
 {
-	m_fAtk = atk;
+	m_fAtt = att;
+}
+
+const float CWeapon::GetDuration()
+{
+	return m_fAttDuration;
+}
+
+void CWeapon::SetAttDuration(const float duration)
+{
+	m_fAttDuration = duration;
 }

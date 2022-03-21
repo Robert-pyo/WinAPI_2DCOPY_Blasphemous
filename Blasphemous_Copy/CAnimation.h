@@ -36,13 +36,13 @@ public:
 	// 문자열의 경우 문자열의 특성때문에 원본을 반환하기 때문에 const 선언
 	const wstring& GetName();
 	tAnimFrm& GetFrame(int frmIndex);
-	bool GetReverse();
+	bool  GetReverse();
 	float GetAnimDuration();
 
 	void update();
 	void render();
 
 	// 애니메이션 생성
-	void Create(CD2DImage* pImg, fPoint leftTop, fPoint scale, fPoint step, float duration, UINT frmCount);
+	void Create(CD2DImage* pImg, fPoint leftTop, fPoint scale, fPoint step, UINT column, float duration, UINT frmCount);
 };
 

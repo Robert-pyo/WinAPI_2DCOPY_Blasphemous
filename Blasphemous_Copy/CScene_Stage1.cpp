@@ -86,7 +86,7 @@ void CScene_Stage1::Enter()
 	RegisterPlayer(player);
 
 	// 몬스터 생성
-	CEnemy* monster = CEnemyFactory::CreateEnemy(ENEMY_TYPE::NORMAL, player->GetPos() + fPoint(200.0f, 0.f));
+	CEnemy* monster = CEnemyFactory::CreateEnemy(ENEMY_TYPE::NORMAL, player->GetPos() + fPoint(300.0f, 0.f));
 	AddObject(monster, GROUP_GAMEOBJ::ENEMY);
 
 	CCameraManager::GetInst()->InitCameraPos(fPoint(WINSIZE_X / 2.f, background->GetScale().y / 2.f));

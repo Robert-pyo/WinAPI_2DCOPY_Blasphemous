@@ -48,6 +48,11 @@ CState* AI::GetState(ENEMY_STATE eEnmState)
 	return iter->second;
 }
 
+CState* AI::GetCurState()
+{
+	return m_pCurState;
+}
+
 void AI::SetCurState(ENEMY_STATE eEnmState)
 {
 	m_pCurState = GetState(eEnmState);

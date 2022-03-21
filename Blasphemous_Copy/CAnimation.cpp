@@ -82,14 +82,23 @@ void CAnimation::render()
 	fPoint fptRenderPos = CCameraManager::GetInst()->GetRenderPos(fptDrawPos);
 	fPoint fptScale = pObj->GetScale();
 
+	if (animFrm.fptTexScale.x > fptScale.x)
+	{
+		fptScale.x = animFrm.fptTexScale.x * 2.f;
+	}
+	if (animFrm.fptTexScale.y > fptScale.y)
+	{
+		fptScale.y = animFrm.fptTexScale.y * 2.f;
+	}
+
 	if (m_bReverse)
 	{
 		CRenderManager::GetInst()->RenderRevFrame(
 			m_pImg,
-			fptRenderPos.x - animFrm.fptTexScale.x,
-			fptRenderPos.y - animFrm.fptTexScale.y,
-			fptRenderPos.x + animFrm.fptTexScale.x,
-			fptRenderPos.y + animFrm.fptTexScale.y,
+			fptRenderPos.x - fptScale.x / 2.f,
+			fptRenderPos.y - fptScale.y / 2.f,
+			fptRenderPos.x + fptScale.x / 2.f,
+			fptRenderPos.y + fptScale.y / 2.f,
 			animFrm.fptLeftTop.x,
 			animFrm.fptLeftTop.y,
 			animFrm.fptLeftTop.x + animFrm.fptTexScale.x,
@@ -100,10 +109,10 @@ void CAnimation::render()
 	{
 		CRenderManager::GetInst()->RenderFrame(
 			m_pImg,
-			fptRenderPos.x - animFrm.fptTexScale.x,
-			fptRenderPos.y - animFrm.fptTexScale.y,
-			fptRenderPos.x + animFrm.fptTexScale.x,
-			fptRenderPos.y + animFrm.fptTexScale.y,
+			fptRenderPos.x - fptScale.x / 2.f,
+			fptRenderPos.y - fptScale.y / 2.f,
+			fptRenderPos.x + fptScale.x / 2.f,
+			fptRenderPos.y + fptScale.y / 2.f,
 			animFrm.fptLeftTop.x,
 			animFrm.fptLeftTop.y,
 			animFrm.fptLeftTop.x + animFrm.fptTexScale.x,
@@ -116,6 +125,7 @@ void CAnimation::Create(CD2DImage* pImg,	// 애니메이션의 이미지
 						fPoint leftTop,		// 애니메이션 시작 프레임 좌상단 좌표
 						fPoint scale,		// 애니메이션 프레임의 크기
 						fPoint step,		// 애니메이션 프레임 반복 위치
+						UINT column,		// 행당 열 갯수
 						float duration,		// 애니메이션 프레임 지속 시간
 						UINT frmCount)		// 애니메이션 프레임 개수
 {
@@ -126,8 +136,21 @@ void CAnimation::Create(CD2DImage* pImg,	// 애니메이션의 이미지
 	{
 		frm.fDuration = duration;	// 지속 시간
 		frm.fptTexScale = scale;	// 텍스쳐의 크기
+
+		UINT count = i;
+		if (count != 0 && column != 0 && count % column == 0)
+		{
+			count = 0;
+
+			leftTop = fPoint(0.f, leftTop.y + scale.y);
+		}
+		else if (count != 0 && column != 0)
+		{
+			count %= column;
+		}
+
 		// leftTop + 다음 프레임 이미지까지의 거리 * 현재 프레임 카운트
-		frm.fptLeftTop = leftTop + step * i;
+		frm.fptLeftTop = leftTop + step * count;
 
 		m_vecAnimFrm.push_back(frm);
 	}

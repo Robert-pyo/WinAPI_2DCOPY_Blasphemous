@@ -46,6 +46,7 @@ struct tPlayerAbility
 
 class CPlayer : public CGameObject
 {
+	
 private:
 	CD2DImage* m_pImg;
 
@@ -100,6 +101,10 @@ public:
 	const fVector2D& GetDirVector();
 
 	const tPlayerAbility& GetPlayerAbility();
+	void SetPlayerAbility(tPlayerAbility tAbility);
+
+	const UINT GetAttackCount() { return m_iComboCount; }
+	void SetAttackCount(const UINT count) { m_iComboCount = count; }
 
 public:
 	virtual void OnCollision(CCollider* target) override;

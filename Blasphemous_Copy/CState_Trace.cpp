@@ -23,19 +23,23 @@ void CState_Trace::update()
 	float fLength = fvEnemyDir.Length();
 	fvEnemyDir.Normalize();
 
-	fvEnemyPos.x += fvEnemyDir.x * GetEnemy()->GetEnemyInfo().fVelocity * fDeltaTime;
+	//fvEnemyPos.x += fvEnemyDir.x * GetEnemy()->GetEnemyInfo().fVelocity * fDeltaTime;
 
 	GetEnemy()->SetPos(fvEnemyPos);
+	GetEnemy()->SetDir(fvEnemyDir);
 
 	if (fLength > GetEnemy()->GetEnemyInfo().fRecogRange)
 	{
 		ChangeAIState(GetAI(), ENEMY_STATE::IDLE);
 	}
 
-	if (fLength < GetEnemy()->GetEnemyInfo().fAttRange)
+	static float fTime = 0.f;
+	fTime += fDeltaTime;
+	if (fLength < GetEnemy()->GetEnemyInfo().fAttRange && GetEnemy()->GetEnemyInfo().iAttCount == 0
+		&& GetEnemy()->GetEnemyInfo().fAttDelayTime <= fTime)
 	{
-		int a = 0;
-		//ChangeAIState(GetAI(), ENEMY_STATE::ATTACK);
+		ChangeAIState(GetAI(), ENEMY_STATE::ATTACK);
+		fTime = 0.f;
 	}
 }
 
