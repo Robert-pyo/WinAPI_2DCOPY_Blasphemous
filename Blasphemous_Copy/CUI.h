@@ -53,6 +53,10 @@ public:
 
 	void AddChild(CUI* pUI);
 
+public:
+	void SelectUI();
+	void DeselectUI();
+
 private:
 	void MouseOnCheck();
 };

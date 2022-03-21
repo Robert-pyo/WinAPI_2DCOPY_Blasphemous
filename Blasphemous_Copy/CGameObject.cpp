@@ -60,13 +60,17 @@ void CGameObject::finalUpdate()
 
 void CGameObject::component_render()
 {
+	if (CSceneManager::GetInst()->GetIsDebugging())
+	{
+		if (nullptr != m_pCollider)
+		{
+			m_pCollider->render();
+		}
+	}
+
 	if (nullptr != m_pAnimator)
 	{
 		m_pAnimator->render();
-	}
-	if (nullptr != m_pCollider)
-	{
-		m_pCollider->render();
 	}
 }
 

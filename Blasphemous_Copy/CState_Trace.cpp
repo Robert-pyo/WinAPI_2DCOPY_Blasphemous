@@ -23,7 +23,7 @@ void CState_Trace::update()
 	float fLength = fvEnemyDir.Length();
 	fvEnemyDir.Normalize();
 
-	//fvEnemyPos.x += fvEnemyDir.x * GetEnemy()->GetEnemyInfo().fVelocity * fDeltaTime;
+	fvEnemyPos.x += fvEnemyDir.x * GetEnemy()->GetEnemyInfo().fVelocity * fDeltaTime;
 
 	GetEnemy()->SetPos(fvEnemyPos);
 	GetEnemy()->SetDir(fvEnemyDir);

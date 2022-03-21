@@ -47,7 +47,7 @@ enum class GROUP_GAMEOBJ
 enum class GROUP_SCENE
 {
 	TOOL,
-	START,
+	TITLE,
 	STAGE_01,
 	STAGE_02,
 
@@ -114,6 +114,7 @@ enum class ENEMY_STATE
 #define PRESS_KEY(VK_KEY)			CKeyManager::GetInst()->GetButton(VK_KEY)
 #define PRESS_KEY_DOWN(VK_KEY)		CKeyManager::GetInst()->GetButtonDown(VK_KEY)
 #define PRESS_KEY_UP(VK_KEY)		CKeyManager::GetInst()->GetButtonUp(VK_KEY)
+#define PRESS_ANY_KEY()				CKeyManager::GetInst()->GetAnyKeyDown()
 
 #define MousePos()					CKeyManager::GetInst()->GetMousePos()
 

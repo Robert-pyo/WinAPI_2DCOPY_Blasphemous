@@ -3,6 +3,7 @@
 #include "CScene_Start.h"
 #include "CScene_Stage1.h"
 #include "CScene_Tool.h"
+#include "CScene_Title.h"
 
 CSceneManager::CSceneManager()
 {
@@ -12,6 +13,8 @@ CSceneManager::CSceneManager()
 	}
 
 	m_pCurScene = nullptr;
+
+	m_bDebugMode = false;
 }
 
 CSceneManager::~CSceneManager()
@@ -34,6 +37,11 @@ void CSceneManager::ChangeScene(GROUP_SCENE scene)
 
 void CSceneManager::update()
 {
+	if (PRESS_KEY_DOWN(VK_F11))
+	{
+		m_bDebugMode = !m_bDebugMode;
+	}
+
 	m_pCurScene->update();
 	m_pCurScene->finalUpdate();
 }
@@ -51,7 +59,10 @@ void CSceneManager::init()
 	m_arrScene[(int)GROUP_SCENE::TOOL] = new CScene_Tool();
 	m_arrScene[(int)GROUP_SCENE::TOOL]->SetName(L"Tool");
 
-	m_pCurScene = m_arrScene[(int)GROUP_SCENE::STAGE_01];
+	m_arrScene[(int)GROUP_SCENE::TITLE] = new CScene_Title();
+	m_arrScene[(int)GROUP_SCENE::TITLE]->SetName(L"Title");
+
+	m_pCurScene = m_arrScene[(int)GROUP_SCENE::TITLE];
 	m_pCurScene->Enter();
 }
 

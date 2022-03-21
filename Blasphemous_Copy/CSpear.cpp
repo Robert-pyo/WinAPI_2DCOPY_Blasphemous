@@ -12,7 +12,6 @@ CSpear::CSpear()
 	CreateCollider();
 	GetCollider()->SetScale(GetScale());
 	CCollisionManager::GetInst()->CheckGroup(GROUP_GAMEOBJ::WEAPON, GROUP_GAMEOBJ::ENEMY);
-	CCollisionManager::GetInst()->CheckGroup(GROUP_GAMEOBJ::WEAPON_BEHIND, GROUP_GAMEOBJ::ENEMY);
 }
 
 CSpear::~CSpear()

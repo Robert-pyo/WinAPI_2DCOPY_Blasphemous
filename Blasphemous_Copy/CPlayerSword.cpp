@@ -12,6 +12,7 @@ CPlayerSword::CPlayerSword()
 	SetScale(fPoint(100.f, 50.f));
 	SetAtt(20.f);
 	SetAttDuration(0.3f);
+	fAccTime = 0.f;
 
 	CreateCollider();
 	GetCollider()->SetScale(GetScale());
@@ -103,6 +104,30 @@ CPlayerSword* CPlayerSword::Clone()
 
 void CPlayerSword::update()
 {
+	fAccTime += fDeltaTime;
+
+	CGameObject* ownerObj = GetOwnerObj();
+	if (ownerObj == nullptr) return;
+
+	CPlayer* user = dynamic_cast<CPlayer*>(ownerObj);
+
+	if (user->GetAttackCount() < 2)
+	{
+		if (fAccTime > 0.5f)
+		{
+			GetCollider()->SetOffsetPos(fPoint(0.f, -10000.f));
+			fAccTime = 0.f;
+		}
+	}
+	else if (user->GetAttackCount() == 2)
+	{
+		if (fAccTime > GetAnimator()->FindAnimation(L"Sword_Combo_3_R")->GetAnimDuration())
+		{
+			GetCollider()->SetOffsetPos(fPoint(0.f, -10000.f));
+			fAccTime = 0.f;
+		}
+	}
+
 	GetAnimator()->update();
 }
 

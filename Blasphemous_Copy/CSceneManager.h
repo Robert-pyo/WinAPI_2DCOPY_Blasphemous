@@ -15,6 +15,8 @@ private:
 	// 현재 Scene이 무엇인지 저장
 	CScene* m_pCurScene;
 
+	bool m_bDebugMode;
+
 	void ChangeScene(GROUP_SCENE scene);
 
 public:
@@ -23,5 +25,8 @@ public:
 	void init();
 
 	CScene* GetCurrentScene();
+
+public:
+	bool GetIsDebugging() { return m_bDebugMode; }
 };
 

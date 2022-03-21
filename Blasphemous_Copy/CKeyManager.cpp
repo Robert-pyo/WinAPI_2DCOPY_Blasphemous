@@ -11,6 +11,7 @@ CKeyManager::CKeyManager()
 		m_arrCurKey[key] = false;
 		m_arrPrevKey[key] = false;
 	}
+	m_bIsAnyKeyPressed = false;
 }
 
 CKeyManager::~CKeyManager()
@@ -42,6 +43,7 @@ void CKeyManager::update()
 		if (GetAsyncKeyState(key) & 0x8000)
 		{
 			m_arrCurKey[key] = true;
+			m_bIsAnyKeyPressed = true;
 		}
 		else
 		{
@@ -76,6 +78,17 @@ bool CKeyManager::GetButtonDown(const int key)
 bool CKeyManager::GetButtonUp(const int key)
 {
 	return (true == m_arrPrevKey[key] && false == m_arrCurKey[key]);
+}
+
+bool CKeyManager::GetAnyKeyDown()
+{
+	if (m_bIsAnyKeyPressed)
+	{
+		m_bIsAnyKeyPressed = false;
+		return true;
+	}
+	
+	return false;
 }
 
 fPoint CKeyManager::GetMousePos()

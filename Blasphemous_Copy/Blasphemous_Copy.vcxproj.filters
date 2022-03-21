@@ -297,6 +297,9 @@
     <ClInclude Include="CSpear.h">
       <Filter>Object\Weapon\Spear</Filter>
     </ClInclude>
+    <ClInclude Include="CScene_Title.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CCore.cpp">
@@ -430,6 +433,9 @@
     </ClCompile>
     <ClCompile Include="CSpear.cpp">
       <Filter>Object\Weapon\Spear</Filter>
+    </ClCompile>
+    <ClCompile Include="CScene_Title.cpp">
+      <Filter>Scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

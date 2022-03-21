@@ -8,6 +8,8 @@ class CPlayerSword : public CWeapon
 private:
 	CD2DImage* m_pImg;
 
+	float fAccTime;
+
 public:
 	CPlayerSword();
 	~CPlayerSword();

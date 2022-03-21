@@ -60,7 +60,7 @@ void CRenderManager::init()
 	}
 
 	m_pWriteFactory->CreateTextFormat(
-		L"±¼¸²",
+		L"DungGeunMo",
 		NULL,
 		DWRITE_FONT_WEIGHT_NORMAL,
 		DWRITE_FONT_STYLE_NORMAL,
@@ -114,7 +114,7 @@ void CRenderManager::RenderText(wstring str, float dstX, float dstY, float dstW,
 	if (m_pTextFormat->GetFontSize() != fontSize)
 	{
 		m_pWriteFactory->CreateTextFormat(
-			L"±¼¸²",
+			L"DungGeunMo",
 			NULL,
 			DWRITE_FONT_WEIGHT_NORMAL,
 			DWRITE_FONT_STYLE_NORMAL,

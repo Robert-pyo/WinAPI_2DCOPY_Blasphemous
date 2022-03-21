@@ -26,7 +26,7 @@ CPlayer::CPlayer()
 	CScene* pCurScene = CSceneManager::GetInst()->GetCurrentScene();
 	pCurScene->AddObject(m_pSword, GROUP_GAMEOBJ::WEAPON);
 
-	m_fAttackDelay  = 0.3f;
+	m_fAttackDelay  = 0.2f;
 	m_iComboCount	= 0;
 	m_bIsAttacking	= false;
 

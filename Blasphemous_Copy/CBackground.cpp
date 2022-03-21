@@ -1,12 +1,15 @@
 #include "framework.h"
 #include "CBackground.h"
 #include "CTexture.h"
+#include "CAnimator.h"
 
 CBackground::CBackground()
 {
 	m_pImg = nullptr;
 
 	InitObject(fPoint(0.f, 0.f), fPoint(0.f, 0.f));
+
+	CreateAnimator();
 }
 
 CBackground::~CBackground()
@@ -20,7 +23,7 @@ CBackground* CBackground::Clone()
 
 void CBackground::update()
 {
-
+	GetAnimator()->update();
 }
 
 void CBackground::render()

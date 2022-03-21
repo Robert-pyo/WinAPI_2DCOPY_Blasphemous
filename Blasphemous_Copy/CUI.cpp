@@ -54,7 +54,7 @@ void CUI::finalUpdate()
 		m_fptFinalPos += fptParentPos;
 	}
 
-	MouseOnCheck();
+	//MouseOnCheck();
 
 	finalUpdate_child();
 }
@@ -173,6 +173,16 @@ void CUI::AddChild(CUI* pUI)
 	m_vecChildUI.push_back(pUI);
 	pUI->m_pParentUI = this;
 	pUI->SetCamAffected(this->m_bCamAffected);
+}
+
+void CUI::SelectUI()
+{
+	m_bMouseOn = true;
+}
+
+void CUI::DeselectUI()
+{
+	m_bMouseOn = false;
 }
 
 void CUI::MouseOnCheck()

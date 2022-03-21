@@ -15,9 +15,6 @@ CCore::~CCore()
 
 void CCore::update()
 {
-	// 만약 게임 윈도우가 선택된 윈도우가 아닐 경우
-	//if (hWnd != GetFocus()) return;
-
 	CEventManager::GetInst()->update();		// 가장 먼저 이벤트에 관한 내용 처리
 
 	CTimeManager::GetInst()->update();
@@ -31,9 +28,6 @@ void CCore::update()
 
 void CCore::render()
 {
-	// 만약 게임 윈도우가 선택된 윈도우가 아닐 경우
-	//if (hWnd != GetFocus()) return;
-
 	CRenderManager::GetInst()->GetRenderTarget()->BeginDraw();
 
 	CRenderManager::GetInst()->RenderFillRectangle(-1, -1, WINSIZE_X + 1, WINSIZE_Y + 1, D2D1::ColorF(255.f, 255.f, 255.f, 1.f));
@@ -41,10 +35,12 @@ void CCore::render()
 	CSceneManager::GetInst()->render();
 	CCameraManager::GetInst()->render();
 
+#ifdef _DEBUG
 	// fps 표현
 	WCHAR strFPS[6];
 	swprintf_s(strFPS, L"%5d", CTimeManager::GetInst()->GetFPS());
 	CRenderManager::GetInst()->RenderText(strFPS, WINSIZE_X - 50, 10, WINSIZE_X, 50, 12, RGB(0, 0, 0));
+#endif
 
 	CRenderManager::GetInst()->GetRenderTarget()->EndDraw();
 }
