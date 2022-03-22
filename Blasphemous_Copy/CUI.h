@@ -20,6 +20,12 @@ private:
 	// UI가 이전 프레임에 눌렸었다면 true, 아니라면 false
 	bool m_bLBtnDown;
 
+	CD2DImage*	m_pImg;
+
+	wstring		m_strText;
+	COLORREF	m_rgbTxtColor;
+	COLORREF	m_rgbTxtShadowColor;
+
 public:
 	CUI();
 	CUI(const CUI& other);
@@ -27,6 +33,7 @@ public:
 
 	virtual CUI* Clone();
 
+public:
 	virtual void update();
 	virtual void finalUpdate();
 	virtual void render();
@@ -36,22 +43,36 @@ public:
 	void finalUpdate_child();
 	void render_child();
 
+public:
 	virtual void MouseOn();
 	virtual void MouseLBtnDown();
 	virtual void MouseLBtnUp();
 	virtual void MouseLBtnClicked();
 
-	void SetCamAffected(bool isAffected);
-
-	fPoint	GetFinalPos();
-	CUI*	GetParent();
-	const vector<CUI*>& GetChildUI();
-	bool	GetCamAffected();
-
 	bool	IsMouseOn();
 	bool	IsLBtnDown();
 
-	void AddChild(CUI* pUI);
+public:
+	void SetCamAffected(bool isAffected);
+	bool GetCamAffected();
+
+	fPoint	GetFinalPos();
+
+	CUI*	GetParent();
+	const	vector<CUI*>& GetChildUI();
+	void	AddChild(CUI* pUI);
+
+public:
+	void LoadImg(const wstring& strKey, const wstring& strRelativePath);
+
+	void SetText(const wstring& text);
+	const wstring& GetText();
+
+	void SetTextColor(const COLORREF color);
+	const COLORREF GetTextColor();
+
+	void SetTxtShadowColor(const COLORREF color);
+	const COLORREF GetTxtShadowColor();
 
 public:
 	void SelectUI();

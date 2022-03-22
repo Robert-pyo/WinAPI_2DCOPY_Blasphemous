@@ -28,6 +28,9 @@ public:
 	void Stop(wstring keyName);
 	void Pause(wstring keyName);
 	void Resume(wstring keyName);
+	void SetVolume(wstring keyName, float fVolume);
+	float GetVolume(wstring keyName);
+
 
 	bool IsPlaySound(wstring keyName);
 	bool IsPauseSound(wstring keyName);

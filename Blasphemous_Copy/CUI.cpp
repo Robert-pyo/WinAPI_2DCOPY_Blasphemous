@@ -7,6 +7,10 @@ CUI::CUI()
 	m_bCamAffected = false;
 	m_bMouseOn = false;
 	m_bLBtnDown = false;
+	m_pImg = nullptr;
+	m_strText = L"";
+	m_rgbTxtColor = RGB(255.f, 255.f, 255.f);
+	m_rgbTxtShadowColor = RGB(0.f, 0.f, 0.f);
 }
 
 CUI::CUI(const CUI& other)
@@ -16,6 +20,10 @@ CUI::CUI(const CUI& other)
 	m_bCamAffected = other.m_bCamAffected;
 	m_bMouseOn = false;
 	m_bLBtnDown = false;
+	m_pImg = nullptr;
+	m_strText = L"";
+	m_rgbTxtColor = RGB(255.f, 255.f, 255.f);
+	m_rgbTxtShadowColor = RGB(0.f, 0.f, 0.f);
 
 	for (UINT i = 0; i < other.m_vecChildUI.size(); ++i)
 	{
@@ -173,6 +181,41 @@ void CUI::AddChild(CUI* pUI)
 	m_vecChildUI.push_back(pUI);
 	pUI->m_pParentUI = this;
 	pUI->SetCamAffected(this->m_bCamAffected);
+}
+
+void CUI::LoadImg(const wstring& strKey, const wstring& strRelativePath)
+{
+	m_pImg = CResourceManager::GetInst()->LoadD2DImage(strKey, strRelativePath);
+}
+
+void CUI::SetText(const wstring& text)
+{
+	m_strText = text;
+}
+
+const wstring& CUI::GetText()
+{
+	return m_strText;
+}
+
+void CUI::SetTextColor(const COLORREF color)
+{
+	m_rgbTxtColor = color;
+}
+
+const COLORREF CUI::GetTextColor()
+{
+	return m_rgbTxtColor;
+}
+
+void CUI::SetTxtShadowColor(const COLORREF color)
+{
+	m_rgbTxtShadowColor = color;
+}
+
+const COLORREF CUI::GetTxtShadowColor()
+{
+	return m_rgbTxtShadowColor;
 }
 
 void CUI::SelectUI()

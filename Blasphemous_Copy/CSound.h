@@ -11,6 +11,8 @@ private:
 	Channel*	m_pChannel;
 	Sound*		m_pSound;
 
+	float*		m_pVolume;
+
 public:
 	CSound();
 	~CSound();
@@ -19,6 +21,8 @@ public:
 	void Stop();
 	void Pause();
 	void Resume();
+	void SetVolume(float fVolume);
+	float GetVolume();
 
 	bool IsPlaying();
 	bool IsPaused();

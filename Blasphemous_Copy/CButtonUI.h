@@ -13,11 +13,6 @@ private:
 	DWORD_PTR m_pParam1;
 	DWORD_PTR m_pParam2;
 
-	CD2DImage* m_pImg;
-	wstring m_strText;
-	COLORREF m_color;
-	COLORREF m_shadowColor;
-
 public:
 	CButtonUI();
 	~CButtonUI();
@@ -33,9 +28,5 @@ public:
 	virtual void MouseLBtnClicked() override;
 
 	void SetClickCallBack(BTN_FUNC func, DWORD_PTR param1, DWORD_PTR param2);
-
-public:
-	void LoadImg(const wstring& strKey, const wstring& strRelativePath);
-	void SetText(const wstring& text);
 };
 

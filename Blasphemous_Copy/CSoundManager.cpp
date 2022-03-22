@@ -83,6 +83,22 @@ void CSoundManager::Resume(wstring keyName)
 	iter->second->Resume();
 }
 
+void CSoundManager::SetVolume(wstring keyName, float fVolume)
+{
+	map<wstring, CSound*>::iterator iter = m_mapSound.find(keyName);
+	if (iter == m_mapSound.end()) return;
+
+	iter->second->SetVolume(fVolume);
+}
+
+float CSoundManager::GetVolume(wstring keyName)
+{
+	map<wstring, CSound*>::iterator iter = m_mapSound.find(keyName);
+	assert(iter != m_mapSound.end());
+
+	return iter->second->GetVolume();
+}
+
 bool CSoundManager::IsPlaySound(wstring keyName)
 {
 	map<wstring, CSound*>::iterator iter = m_mapSound.find(keyName);

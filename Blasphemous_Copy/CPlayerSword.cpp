@@ -104,8 +104,6 @@ CPlayerSword* CPlayerSword::Clone()
 
 void CPlayerSword::update()
 {
-	fAccTime += fDeltaTime;
-
 	CGameObject* ownerObj = GetOwnerObj();
 	if (ownerObj == nullptr) return;
 

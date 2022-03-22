@@ -65,6 +65,7 @@ void CGameObject::component_render()
 		if (nullptr != m_pCollider)
 		{
 			m_pCollider->render();
+			debug_render();
 		}
 	}
 
@@ -72,6 +73,21 @@ void CGameObject::component_render()
 	{
 		m_pAnimator->render();
 	}
+}
+
+void CGameObject::debug_render()
+{
+	//WCHAR strFPS[6];
+	//swprintf_s(strFPS, L"%5d", CTimeManager::GetInst()->GetFPS());
+
+	fPoint fptRenderPos = CCameraManager::GetInst()->GetRenderPos(m_pCollider->GetFinalPos());
+
+	CRenderManager::GetInst()->RenderText(m_strName,
+		fptRenderPos.x - m_fptScale.x,
+		fptRenderPos.y - m_fptScale.y,
+		fptRenderPos.x + m_fptScale.x,
+		fptRenderPos.y,
+		20.f, RGB(0.f, 255.f, 0.f));
 }
 
 void CGameObject::InitObject(const fPoint m_fptPos, const fPoint m_fptScale)
