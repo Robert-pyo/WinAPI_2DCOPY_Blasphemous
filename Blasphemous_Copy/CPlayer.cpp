@@ -371,6 +371,59 @@ void CPlayer::render()
 	component_render();
 }
 
+void CPlayer::component_render()
+{
+	CGameObject::component_render();
+	if (CSceneManager::GetInst()->GetIsDebugging())
+	{
+		debug_render();
+	}
+}
+
+void CPlayer::debug_render()
+{
+	CGameObject::debug_render();
+
+	wstring curState = L"";
+
+	switch (m_eCurState)
+	{
+	case PLAYER_STATE::IDLE:
+		curState = L"Idle";
+		break;
+	case PLAYER_STATE::CROUCH:
+		curState = L"Crouch";
+		break;
+	case PLAYER_STATE::CLIMB:
+		curState = L"Climb";
+		break;
+	case PLAYER_STATE::RUN:
+		curState = L"Run";
+		break;
+	case PLAYER_STATE::ATTACK:
+		curState = L"Attack";
+		break;
+	case PLAYER_STATE::JUMP:
+		curState = L"Jump";
+		break;
+	case PLAYER_STATE::DEAD:
+		curState = L"Dead";
+		break;
+	default:
+		curState = L"None";
+		break;
+	}
+
+	fPoint fptRenderPos = CCameraManager::GetInst()->GetRenderPos(GetCollider()->GetFinalPos());
+
+	CRenderManager::GetInst()->RenderText(curState,
+		fptRenderPos.x - GetScale().x * 2.f,
+		fptRenderPos.y - GetScale().y / 1.5f,
+		fptRenderPos.x + GetScale().x,
+		fptRenderPos.y,
+		15.f, RGB(0.f, 255.f, 0.f));
+}
+
 
 void CPlayer::Jump()
 {

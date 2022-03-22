@@ -6,7 +6,7 @@ CTimeManager::CTimeManager()
 	m_llCurCount = {};
 	m_llPrevCount = {};
 	m_llFrequency = {};
-	m_uiFPS = 0;
+	m_iFPS = 0;
 	m_dDeltaTime = 0;
 }
 
@@ -33,7 +33,7 @@ void CTimeManager::update()
 	updateOneSecond += m_dDeltaTime;
 	if (updateOneSecond >= 1.0) // 1초가 진행 됐다면
 	{
-		m_uiFPS = updateCount;  // 초당 업데이트 횟수 == FPS
+		m_iFPS = updateCount;  // 초당 업데이트 횟수 == FPS
 		updateCount = 0;
 		updateOneSecond = 0;
 	}

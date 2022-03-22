@@ -46,6 +46,60 @@ void CEnemy::render()
 	component_render();
 }
 
+void CEnemy::component_render()
+{
+	CGameObject::component_render();
+
+	if (CSceneManager::GetInst()->GetIsDebugging())
+	{
+		debug_render();
+	}
+}
+
+void CEnemy::debug_render()
+{
+	CGameObject::debug_render();
+
+	wstring curState = L"";
+
+	switch (m_pAI->GetCurState()->GetState())
+	{
+	case ENEMY_STATE::IDLE:
+		curState = L"Idle";
+		break;
+	case ENEMY_STATE::PATROL:
+		curState = L"Patrol";
+		break;
+	case ENEMY_STATE::TRACE:
+		curState = L"Trace";
+		break;
+	case ENEMY_STATE::ATTACK:
+		curState = L"Attack";
+		break;
+	case ENEMY_STATE::RUN:
+		curState = L"Run";
+		break;
+	case ENEMY_STATE::HIT:
+		curState = L"Hit";
+		break;
+	case ENEMY_STATE::DEAD:
+		curState = L"Dead";
+		break;
+	default:
+		curState = L"None";
+		break;
+	}
+
+	fPoint fptRenderPos = CCameraManager::GetInst()->GetRenderPos(GetCollider()->GetFinalPos());
+
+	CRenderManager::GetInst()->RenderText(curState,
+		fptRenderPos.x - GetScale().x * 2.f,
+		fptRenderPos.y - GetScale().y / 1.5f,
+		fptRenderPos.x + GetScale().x,
+		fptRenderPos.y,
+		15.f, RGB(0.f, 255.f, 0.f));
+}
+
 AI* CEnemy::GetAI()
 {
 	return m_pAI;

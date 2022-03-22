@@ -43,6 +43,9 @@ public:
 	virtual void update();
 	virtual void render();
 
+	virtual void component_render();
+	virtual void debug_render();
+
 	virtual void Update_Animation() = 0;
 
 public:

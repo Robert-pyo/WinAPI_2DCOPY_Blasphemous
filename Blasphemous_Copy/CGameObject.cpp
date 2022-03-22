@@ -2,6 +2,8 @@
 #include "CGameObject.h"
 #include "CCollider.h"
 #include "CAnimator.h"
+#include "CAnimation.h"
+#include "CWeapon.h"
 
 void CGameObject::SetDisable()
 {
@@ -60,6 +62,11 @@ void CGameObject::finalUpdate()
 
 void CGameObject::component_render()
 {
+	if (nullptr != m_pAnimator)
+	{
+		m_pAnimator->render();
+	}
+
 	if (CSceneManager::GetInst()->GetIsDebugging())
 	{
 		if (nullptr != m_pCollider)
@@ -68,17 +75,12 @@ void CGameObject::component_render()
 			debug_render();
 		}
 	}
-
-	if (nullptr != m_pAnimator)
-	{
-		m_pAnimator->render();
-	}
 }
 
 void CGameObject::debug_render()
 {
-	//WCHAR strFPS[6];
-	//swprintf_s(strFPS, L"%5d", CTimeManager::GetInst()->GetFPS());
+	//CWeapon* pWeapon = dynamic_cast<CWeapon*>(this);
+	//if (pWeapon != nullptr) return;
 
 	fPoint fptRenderPos = CCameraManager::GetInst()->GetRenderPos(m_pCollider->GetFinalPos());
 
@@ -88,6 +90,37 @@ void CGameObject::debug_render()
 		fptRenderPos.x + m_fptScale.x,
 		fptRenderPos.y,
 		20.f, RGB(0.f, 255.f, 0.f));
+
+	WCHAR posX[10] = {};
+	WCHAR posY[10] = {};
+	swprintf_s(posX, L"%.f", m_pCollider->GetFinalPos().x);
+	swprintf_s(posY, L"%.f", m_pCollider->GetFinalPos().y);
+	wstring strObjPos = L"(";
+	strObjPos += posX;
+	strObjPos += L", ";
+	strObjPos += posY;
+	strObjPos += L")";
+
+	CRenderManager::GetInst()->RenderText(strObjPos,
+		fptRenderPos.x - m_fptScale.x * 2.f,
+		fptRenderPos.y - m_fptScale.y / 2.f,
+		fptRenderPos.x + m_fptScale.x,
+		fptRenderPos.y,
+		12.f, RGB(0.f, 255.f, 0.f));
+
+	
+	if (nullptr != m_pAnimator && nullptr != m_pAnimator->m_pCurAnim)
+	{
+		wstring strAnim = L"CurAnim : ";
+		strAnim += m_pAnimator->m_pCurAnim->GetName();
+
+		CRenderManager::GetInst()->RenderText(strAnim,
+			fptRenderPos.x + 20.f,
+			fptRenderPos.y - m_fptScale.y / 2.f,
+			fptRenderPos.x + m_fptScale.x + 50.f,
+			fptRenderPos.y,
+			13.f, RGB(0.f, 255.f, 0.f));
+	}
 }
 
 void CGameObject::InitObject(const fPoint m_fptPos, const fPoint m_fptScale)

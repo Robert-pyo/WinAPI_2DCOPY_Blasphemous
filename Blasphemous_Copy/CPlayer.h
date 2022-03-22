@@ -89,6 +89,8 @@ public:
 	void update_animation();
 
 	virtual void render() final;
+	virtual void component_render() final;
+	virtual void debug_render() final;
 
 public:
 	void InitAbility();
