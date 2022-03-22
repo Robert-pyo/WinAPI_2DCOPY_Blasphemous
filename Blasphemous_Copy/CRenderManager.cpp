@@ -39,7 +39,8 @@ void CRenderManager::init()
 
 	// 지정한 윈도우의 클라이언트 영역에 그림을 그리기 위한 Render Target을 생성
 	m_pFactory->CreateHwndRenderTarget(RenderTargetProperties(),
-		HwndRenderTargetProperties(hWnd, SizeU(rc.right, rc.bottom)),
+		HwndRenderTargetProperties(hWnd, SizeU(rc.right, rc.bottom),
+			D2D1_PRESENT_OPTIONS_IMMEDIATELY),
 		&m_pRenderTarget);
 
 	// WICImagingFactory 생성
@@ -68,6 +69,8 @@ void CRenderManager::init()
 		12.f,
 		L"ko",
 		&m_pTextFormat);
+	m_pTextFormat->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_CENTER);
+	m_pTextFormat->SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT_CENTER);
 
 	m_pRenderTarget->CreateSolidColorBrush(D2D1::ColorF(0.f, 0.f, 0.f), &m_pBrush);
 }
@@ -111,8 +114,13 @@ void CRenderManager::RenderRevFrame(CD2DImage* img, float dstX, float dstY, floa
 
 void CRenderManager::RenderText(wstring str, float dstX, float dstY, float dstW, float dstH, float fontSize, COLORREF color)
 {
+	int red = color & 0xFF;
+	int green = (color >> 8) & 0xFF;
+	int blue = (color >> 16) & 0xFF;
+
 	if (m_pTextFormat->GetFontSize() != fontSize)
 	{
+		m_pTextFormat->Release();
 		m_pWriteFactory->CreateTextFormat(
 			L"DungGeunMo",
 			NULL,
@@ -127,10 +135,7 @@ void CRenderManager::RenderText(wstring str, float dstX, float dstY, float dstW,
 	m_pTextFormat->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_CENTER);
 	m_pTextFormat->SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT_CENTER);
 
-	int red = color & 0xFF;
-	int green = (color >> 8) & 0xFF;
-	int blue = (color >> 16) & 0xFF;
-	m_pBrush->SetColor(D2D1::ColorF(red / 255.f, green / 255.0f, blue / 255.0f));
+	m_pBrush->SetColor(D2D1::ColorF(red / 255.0f, green / 255.0f, blue / 255.0f, 1.f));
 
 	m_pRenderTarget->DrawTextW(str.c_str(), (UINT)str.size(), m_pTextFormat,
 		D2D1::RectF(dstX, dstY, dstW, dstH), m_pBrush);

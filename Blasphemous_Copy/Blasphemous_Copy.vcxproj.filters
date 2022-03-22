@@ -142,6 +142,18 @@
     <Filter Include="Object\Weapon\Spear">
       <UniqueIdentifier>{3b6e2565-7e80-4c8c-bd01-a09c66cb4288}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\Component\AI\State\Hit">
+      <UniqueIdentifier>{9ab3efc6-5c1f-4f95-a4fc-4aa36ac226cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Component\AI\State\Patrol">
+      <UniqueIdentifier>{d28d6a47-7b3f-4114-a282-ea8f888856a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Effect">
+      <UniqueIdentifier>{d4287c25-ef28-4a50-9694-c2a19a125593}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Effect\SwordSlash">
+      <UniqueIdentifier>{7b628f56-3d48-491e-b2c3-94d04f95ce42}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -300,6 +312,12 @@
     <ClInclude Include="CScene_Title.h">
       <Filter>Scene</Filter>
     </ClInclude>
+    <ClInclude Include="CEffect.h">
+      <Filter>Object\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="CEffect_SwordSlash.h">
+      <Filter>Object\Effect\SwordSlash</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CCore.cpp">
@@ -436,6 +454,12 @@
     </ClCompile>
     <ClCompile Include="CScene_Title.cpp">
       <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="CEffect.cpp">
+      <Filter>Object\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="CEffect_SwordSlash.cpp">
+      <Filter>Object\Effect\SwordSlash</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

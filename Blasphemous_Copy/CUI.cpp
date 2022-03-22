@@ -9,8 +9,8 @@ CUI::CUI()
 	m_bLBtnDown = false;
 	m_pImg = nullptr;
 	m_strText = L"";
-	m_rgbTxtColor = RGB(255.f, 255.f, 255.f);
-	m_rgbTxtShadowColor = RGB(0.f, 0.f, 0.f);
+	m_rgbTxtColor = RGB(255, 255, 255);
+	m_rgbTxtShadowColor = RGB(0, 0, 0);
 }
 
 CUI::CUI(const CUI& other)
@@ -22,8 +22,8 @@ CUI::CUI(const CUI& other)
 	m_bLBtnDown = false;
 	m_pImg = nullptr;
 	m_strText = L"";
-	m_rgbTxtColor = RGB(255.f, 255.f, 255.f);
-	m_rgbTxtShadowColor = RGB(0.f, 0.f, 0.f);
+	m_rgbTxtColor = RGB(255, 255, 255);
+	m_rgbTxtShadowColor = RGB(0, 0, 0);
 
 	for (UINT i = 0; i < other.m_vecChildUI.size(); ++i)
 	{

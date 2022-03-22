@@ -92,7 +92,12 @@ void CCollider::render()
 	if (m_iCollisionCount)
 		rgb = RGB(255, 0, 0);
 	else
-		rgb = RGB(0, 255, 0);
+	{
+		if (GROUP_GAMEOBJ::FX == m_pOwner->GetObjGroup())
+			rgb = RGB(0, 0, 255);
+		else
+			rgb = RGB(0, 255, 0);
+	}
 
 	fPoint fptRenderPos = CCameraManager::GetInst()->GetRenderPos(m_fptFinalPos);
 

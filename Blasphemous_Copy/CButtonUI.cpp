@@ -26,14 +26,14 @@ void CButtonUI::render()
 			GetPos().y - GetScale().y + 2.f,
 			GetPos().x + GetScale().x * 2.f,
 			(GetPos().y + GetScale().y * 2.f) + 2.f,
-			30.f, GetTxtShadowColor());
+			30, GetTxtShadowColor());
 
 		CRenderManager::GetInst()->RenderText(GetText(),
 			GetPos().x - GetScale().x,
 			GetPos().y - GetScale().y,
 			GetPos().x + GetScale().x * 2.f,
 			GetPos().y + GetScale().y * 2.f,
-			30.f, GetTextColor());
+			30, GetTextColor());
 	}
 	else
 	{
@@ -44,7 +44,7 @@ void CButtonUI::render()
 void CButtonUI::MouseOn()
 {
 	if (GetText() != L"")
-		SetTextColor(RGB(255.f, 255.f, 0.f));
+		SetTextColor(RGB(255, 255, 0));
 }
 
 void CButtonUI::MouseLBtnDown()
@@ -54,7 +54,7 @@ void CButtonUI::MouseLBtnDown()
 void CButtonUI::MouseLBtnUp()
 {
 	if (GetText() != L"")
-		SetTextColor(RGB(255.f, 255.f, 255.f));
+		SetTextColor(RGB(255, 255, 255));
 }
 
 void CButtonUI::MouseLBtnClicked()

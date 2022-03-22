@@ -89,7 +89,7 @@ void CGameObject::debug_render()
 		fptRenderPos.y - m_fptScale.y,
 		fptRenderPos.x + m_fptScale.x,
 		fptRenderPos.y,
-		20.f, RGB(0.f, 255.f, 0.f));
+		20, RGB(0, 255, 0));
 
 	WCHAR posX[10] = {};
 	WCHAR posY[10] = {};
@@ -106,7 +106,7 @@ void CGameObject::debug_render()
 		fptRenderPos.y - m_fptScale.y / 2.f,
 		fptRenderPos.x + m_fptScale.x,
 		fptRenderPos.y,
-		12.f, RGB(0.f, 255.f, 0.f));
+		12, RGB(0, 255, 0));
 
 	
 	if (nullptr != m_pAnimator && nullptr != m_pAnimator->m_pCurAnim)
@@ -119,7 +119,7 @@ void CGameObject::debug_render()
 			fptRenderPos.y - m_fptScale.y / 2.f,
 			fptRenderPos.x + m_fptScale.x + 50.f,
 			fptRenderPos.y,
-			13.f, RGB(0.f, 255.f, 0.f));
+			13, RGB(0, 255, 0));
 	}
 }
 

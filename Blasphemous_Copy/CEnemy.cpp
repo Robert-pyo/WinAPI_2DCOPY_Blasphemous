@@ -97,7 +97,7 @@ void CEnemy::debug_render()
 		fptRenderPos.y - GetScale().y / 1.5f,
 		fptRenderPos.x + GetScale().x,
 		fptRenderPos.y,
-		15.f, RGB(0.f, 255.f, 0.f));
+		15, RGB(0, 255, 0));
 }
 
 AI* CEnemy::GetAI()

@@ -1,6 +1,8 @@
 #pragma once
 #include "CGameObject.h"
 
+#define MAX_SPEED (300.f)
+
 class CD2DImage;
 class CPlayerSword;
 
@@ -10,6 +12,7 @@ enum class PLAYER_STATE
 	CROUCH,
 	CLIMB,
 	RUN,
+	DODGE,
 	ATTACK,
 	JUMP,
 	JUMPOFF,
@@ -49,6 +52,7 @@ class CPlayer : public CGameObject
 	
 private:
 	CD2DImage* m_pImg;
+	CD2DImage* m_pDashImg;
 
 	PLAYER_STATE m_eCurState;		// 현재 플레이어의 상태
 	PLAYER_STATE m_ePrevState;		// 이전 플레이어의 상태
@@ -61,7 +65,6 @@ private:
 	fVector2D m_fvCurDir;
 	fVector2D m_fvPrevDir;
 
-	float m_fAccTime;
 	float m_fVelocity;
 	float m_fMaxVelocity;
 	float m_fAccelGravity;
@@ -70,9 +73,15 @@ private:
 	bool  m_bIsActing;
 	bool  m_bIsGrounded;
 
+	float m_fAtkAccTime;
 	float m_fAttackDelay;
 	UINT  m_iComboCount;
 	bool  m_bIsAttacking;
+
+	float m_fDodgeAccTime;
+	float m_fDodgeDelay;
+	float m_fDodgeDelayAccTime;
+	bool  m_bIsInvincible;
 
 	CPlayerSword* m_pSword;
 
@@ -98,6 +107,7 @@ public:
 
 public:
 	void Jump();
+	void Dash();
 
 	const float		 GetVelocity();
 	const fVector2D& GetDirVector();
@@ -107,6 +117,8 @@ public:
 
 	const UINT GetAttackCount() { return m_iComboCount; }
 	void SetAttackCount(const UINT count) { m_iComboCount = count; }
+
+	void SetWeapon(CPlayerSword* weapon) { m_pSword = weapon; }
 
 public:
 	virtual void OnCollision(CCollider* target) override;

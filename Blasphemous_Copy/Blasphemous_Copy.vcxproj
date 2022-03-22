@@ -160,6 +160,8 @@
     <ClInclude Include="CCollisionManager.h" />
     <ClInclude Include="CCore.h" />
     <ClInclude Include="CD2DImage.h" />
+    <ClInclude Include="CEffect.h" />
+    <ClInclude Include="CEffect_SwordSlash.h" />
     <ClInclude Include="CEnemy.h" />
     <ClInclude Include="CEnemyFactory.h" />
     <ClInclude Include="CEnemy_Acolyte.h" />
@@ -216,6 +218,8 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="CD2DImage.cpp" />
+    <ClCompile Include="CEffect.cpp" />
+    <ClCompile Include="CEffect_SwordSlash.cpp" />
     <ClCompile Include="CEnemy.cpp" />
     <ClCompile Include="CEnemyFactory.cpp" />
     <ClCompile Include="CEnemy_Acolyte.cpp" />

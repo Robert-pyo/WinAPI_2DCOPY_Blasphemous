@@ -10,25 +10,28 @@
 CPlayer::CPlayer()
 {
 	m_pImg = CResourceManager::GetInst()->LoadD2DImage(L"Player", L"\\texture\\Player\\penitent_anim_merge.png");
+	m_pDashImg = CResourceManager::GetInst()->LoadD2DImage(L"Player_Dodge", L"\\texture\\Player\\Dodge\\penitent_dodge.png");
 	InitObject(fPoint(700.f, 0.f), fPoint(134.f, 144.f));
 	SetName(L"Player");
 	m_fvCurDir		= {1.0f, 0.f};
 	m_fvPrevDir		= {};
 	m_fVelocity		= 0.f;
-	m_fMaxVelocity	= 300.f;
+	m_fMaxVelocity	= MAX_SPEED;
 	m_fAccelGravity	= 0.f;
-	m_fFrictionValue = 1000.f;
+	m_fFrictionValue = 800.f;
 	m_fJumpPower	= -650.f;
 	m_bIsGrounded	= false;
 
-	m_pSword		= new CPlayerSword;
-	m_pSword->SetOwnerObj(this);
-	CScene* pCurScene = CSceneManager::GetInst()->GetCurrentScene();
-	pCurScene->AddObject(m_pSword, GROUP_GAMEOBJ::WEAPON);
+	m_pSword = nullptr;
 
 	m_fAttackDelay  = 0.2f;
 	m_iComboCount	= 0;
 	m_bIsAttacking	= false;
+
+	m_fDodgeAccTime = 0.f;
+	m_fDodgeDelay = 1.f;
+	m_fDodgeDelayAccTime = 0.f;
+	m_bIsInvincible = false;
 
 	m_eCurState = PLAYER_STATE::IDLE;
 	m_eCurAttState = PLAYER_ATTACK_STATE::NONE;
@@ -75,7 +78,7 @@ void CPlayer::update_state()
 {
 	if (m_fVelocity == 0.f)
 	{
-		if (m_fAttackDelay + 0.1f < m_fAccTime && m_bIsAttacking)
+		if (m_fAttackDelay + 0.1f <= m_fAtkAccTime && m_bIsAttacking)
 		{
 			m_bIsAttacking = false;
 			m_eCurAttState = PLAYER_ATTACK_STATE::NONE;
@@ -99,7 +102,7 @@ void CPlayer::update_state()
 	}
 
 	// A키 눌렀을 때 RUN 상태
-	if (PRESS_KEY('A') && !m_bIsAttacking)
+	if (PRESS_KEY('A') && !m_bIsAttacking && m_eCurState != PLAYER_STATE::DODGE)
 	{
 		if (PLAYER_STATE::JUMP != m_eCurState)
 		{
@@ -108,7 +111,7 @@ void CPlayer::update_state()
 	}
 
 	// D키 눌렀을 때 RUN 상태
-	if (PRESS_KEY('D') && !m_bIsAttacking)
+	if (PRESS_KEY('D') && !m_bIsAttacking && m_eCurState != PLAYER_STATE::DODGE)
 	{
 		if (PLAYER_STATE::JUMP != m_eCurState)
 		{
@@ -125,9 +128,33 @@ void CPlayer::update_state()
 		GetAnimator()->FindAnimation(L"Player_Jump_Left")->SetFrame(0);
 	}
 
-	m_fAccTime += fDeltaTime;
+	m_fDodgeDelayAccTime += fDeltaTime;
+	if (PRESS_KEY_DOWN(VK_LSHIFT) && m_bIsGrounded && !m_bIsAttacking && m_fDodgeDelay <= m_fDodgeDelayAccTime)
+	{
+		if (m_eCurState != PLAYER_STATE::DODGE)
+		{
+			GetAnimator()->FindAnimation(L"Player_Dodge_Right")->SetFrame(0);
+			GetAnimator()->FindAnimation(L"Player_Dodge_Left")->SetFrame(0);
+		}
+
+		m_eCurState = PLAYER_STATE::DODGE;
+	}
+	if (m_eCurState == PLAYER_STATE::DODGE)
+	{
+		m_fDodgeAccTime += fDeltaTime;
+		m_bIsInvincible = true;
+		if (m_fDodgeAccTime >= GetAnimator()->FindAnimation(L"Player_Dodge_Right")->GetAnimDuration())
+		{
+			m_eCurState = PLAYER_STATE::IDLE;
+			m_bIsInvincible = false;
+			m_fDodgeAccTime = 0.f;
+			m_fDodgeDelayAccTime = 0.f;
+			m_fMaxVelocity = MAX_SPEED;
+		}
+	}
+	m_fAtkAccTime += fDeltaTime;
 	// K 입력 시 공격
-	if (PRESS_KEY_DOWN('K') && m_fAttackDelay <= m_fAccTime && m_eCurState != PLAYER_STATE::CLIMB)
+	if (PRESS_KEY_DOWN('K') && m_fAttackDelay <= m_fAtkAccTime && m_eCurState != PLAYER_STATE::CLIMB)
 	{
 		m_eCurState = PLAYER_STATE::ATTACK;
 
@@ -135,7 +162,7 @@ void CPlayer::update_state()
 		m_fVelocity = 0.f;
 
 		// 너무 늦게 입력했다면 콤보 초기화
-		if (m_fAttackDelay + 0.3f <= m_fAccTime)
+		if (m_fAttackDelay + 0.3f <= m_fAtkAccTime)
 		{
 			m_iComboCount = 0;
 			m_fAttackDelay = GetAnimator()->FindAnimation(L"Player_Attack_Combo1_R")->GetAnimDuration();
@@ -149,7 +176,7 @@ void CPlayer::update_state()
 
 		if (m_iComboCount == 0)
 		{
-			m_fAccTime = 0;
+			m_fAtkAccTime = 0;
 			m_eCurAttState = PLAYER_ATTACK_STATE::FIRST_SLASH;
 			GetAnimator()->FindAnimation(L"Player_Attack_Combo1_R")->SetFrame(0);
 			GetAnimator()->FindAnimation(L"Player_Attack_Combo1_L")->SetFrame(0);
@@ -157,7 +184,7 @@ void CPlayer::update_state()
 		}
 		else if (m_iComboCount == 1)
 		{
-			m_fAccTime = 0;
+			m_fAtkAccTime = 0;
 			m_eCurAttState = PLAYER_ATTACK_STATE::SECOND_SLASH;
 			GetAnimator()->FindAnimation(L"Player_Attack_Combo2_R")->SetFrame(0);
 			GetAnimator()->FindAnimation(L"Player_Attack_Combo2_L")->SetFrame(0);
@@ -165,7 +192,7 @@ void CPlayer::update_state()
 		}
 		else if (m_iComboCount == 2)
 		{
-			m_fAccTime = 0;
+			m_fAtkAccTime = 0;
 			m_eCurAttState = PLAYER_ATTACK_STATE::THIRD_SLASH;
 			GetAnimator()->FindAnimation(L"Player_Attack_Combo3_R")->SetFrame(0);
 			GetAnimator()->FindAnimation(L"Player_Attack_Combo3_L")->SetFrame(0);
@@ -177,34 +204,36 @@ void CPlayer::update_state()
 
 void CPlayer::update_move()
 {
-	if (PRESS_KEY_DOWN('A') && !m_bIsAttacking)
-		m_fVelocity += 50.f;
 	if (PRESS_KEY('A') && !m_bIsAttacking)
 	{
-		if (!PRESS_KEY('D'))
+		if (m_fVelocity == 0)
+			m_fVelocity += 200.f;
+
+		if (!PRESS_KEY('D') && m_eCurState != PLAYER_STATE::DODGE)
 		{
 			m_fvCurDir.x = -1;
 		}
 
-		m_fVelocity += 2000.f * fDeltaTime;
+		m_fVelocity += 1000.f * fDeltaTime;
 		if (PRESS_KEY('D'))
 		{
-			m_fVelocity -= 3000.f * fDeltaTime;
+			m_fVelocity -= 1000.f * fDeltaTime;
 		}
 	}
 	
-	if (PRESS_KEY_DOWN('D') && !m_bIsAttacking)
-		m_fVelocity += 50.f;
 	if (PRESS_KEY('D') && !m_bIsAttacking)
 	{
-		if (!PRESS_KEY('A'))
+		if (m_fVelocity == 0)
+			m_fVelocity += 200.f;
+
+		if (!PRESS_KEY('A') && m_eCurState != PLAYER_STATE::DODGE)
 		{
 			m_fvCurDir.x = 1;
 		}
-		m_fVelocity += 2000.f * fDeltaTime;
+		m_fVelocity += 1000.f * fDeltaTime;
 		if (PRESS_KEY('A'))
 		{
-			m_fVelocity -= 3000.f * fDeltaTime;
+			m_fVelocity -= 1000.f * fDeltaTime;
 		}
 	}
 
@@ -212,6 +241,12 @@ void CPlayer::update_move()
 	{
 		Jump();
 	}
+
+	if (m_eCurState == PLAYER_STATE::DODGE)
+	{
+		Dash();
+	}
+
 	// 마찰력
 	float fFriction = m_fvCurDir.x * (-1) * m_fFrictionValue * fDeltaTime;
 
@@ -266,12 +301,10 @@ void CPlayer::update_animation()
 		if (-1 == m_fvCurDir.x)
 		{
 			GetAnimator()->Play(L"Player_Idle_Left");
-			Logger::debug(L"IDLE_LEFT");
 		}
 		else
 		{
 			GetAnimator()->Play(L"Player_Idle_Right");
-			Logger::debug(L"IDLE_RIGHT");
 		}
 	}break;
 
@@ -280,12 +313,10 @@ void CPlayer::update_animation()
 		if (-1 == m_fvCurDir.x)
 		{
 			GetAnimator()->Play(L"Player_Running_Left");
-			Logger::debug(L"RUN_LEFT");
 		}
 		else
 		{
 			GetAnimator()->Play(L"Player_Running_Right");
-			Logger::debug(L"RUN_RIGHT");
 		}
 	}break;
 
@@ -294,16 +325,15 @@ void CPlayer::update_animation()
 		if (-1 == m_fvCurDir.x)
 		{
 			GetAnimator()->Play(L"Player_Jump_Left");
-			Logger::debug(L"JUMP_LEFT");
 		}
 		else
 		{
 			GetAnimator()->Play(L"Player_Jump_Right");
-			Logger::debug(L"JUMP_RIGHT");
 		}
 	}break;
 	case PLAYER_STATE::JUMPOFF:
 	{
+		// TODO : fTime 멤버변수로 교체
 		static float fTime = 0.f;
 		fTime += fDeltaTime;
 		if (GetAnimator()->FindAnimation(L"Player_Jumpoff_Right")->GetAnimDuration() <= fTime)
@@ -315,12 +345,10 @@ void CPlayer::update_animation()
 		if (-1 == m_fvCurDir.x)
 		{
 			GetAnimator()->Play(L"Player_Jumpoff_Left");
-			Logger::debug(L"JUMPOFF_LEFT");
 		}
 		else
 		{
 			GetAnimator()->Play(L"Player_Jumpoff_Right");
-			Logger::debug(L"JUMPOFF_RIGHT");
 		}
 	}break;
 
@@ -332,15 +360,12 @@ void CPlayer::update_animation()
 			{
 			case PLAYER_ATTACK_STATE::FIRST_SLASH:
 				GetAnimator()->Play(L"Player_Attack_Combo1_L");
-				Logger::debug(L"Combo1");
 				break;
 			case PLAYER_ATTACK_STATE::SECOND_SLASH:
 				GetAnimator()->Play(L"Player_Attack_Combo2_L");
-				Logger::debug(L"Combo2");
 				break;
 			case PLAYER_ATTACK_STATE::THIRD_SLASH:
 				GetAnimator()->Play(L"Player_Attack_Combo3_L");
-				Logger::debug(L"Combo3");
 				break;
 			}
 		}
@@ -350,17 +375,26 @@ void CPlayer::update_animation()
 			{
 			case PLAYER_ATTACK_STATE::FIRST_SLASH:
 				GetAnimator()->Play(L"Player_Attack_Combo1_R");
-				Logger::debug(L"Combo1");
 				break;
 			case PLAYER_ATTACK_STATE::SECOND_SLASH:
 				GetAnimator()->Play(L"Player_Attack_Combo2_R");
-				Logger::debug(L"Combo2");
 				break;
 			case PLAYER_ATTACK_STATE::THIRD_SLASH:
 				GetAnimator()->Play(L"Player_Attack_Combo3_R");
-				Logger::debug(L"Combo3");
 				break;
 			}
+		}
+	}break;
+
+	case PLAYER_STATE::DODGE:
+	{
+		if (-1 == m_fvCurDir.x)
+		{
+			GetAnimator()->Play(L"Player_Dodge_Left");
+		}
+		else
+		{
+			GetAnimator()->Play(L"Player_Dodge_Right");
 		}
 	}break;
 	}
@@ -384,44 +418,64 @@ void CPlayer::debug_render()
 {
 	CGameObject::debug_render();
 
-	wstring curState = L"";
+	wstring strCurState = L"";
 
 	switch (m_eCurState)
 	{
 	case PLAYER_STATE::IDLE:
-		curState = L"Idle";
+		strCurState = L"Idle";
 		break;
 	case PLAYER_STATE::CROUCH:
-		curState = L"Crouch";
+		strCurState = L"Crouch";
 		break;
 	case PLAYER_STATE::CLIMB:
-		curState = L"Climb";
+		strCurState = L"Climb";
 		break;
 	case PLAYER_STATE::RUN:
-		curState = L"Run";
+		strCurState = L"Run";
+		break;
+	case PLAYER_STATE::DODGE:
+		strCurState = L"Dodge";
 		break;
 	case PLAYER_STATE::ATTACK:
-		curState = L"Attack";
+		strCurState = L"Attack";
 		break;
 	case PLAYER_STATE::JUMP:
-		curState = L"Jump";
+		strCurState = L"Jump";
 		break;
 	case PLAYER_STATE::DEAD:
-		curState = L"Dead";
+		strCurState = L"Dead";
 		break;
 	default:
-		curState = L"None";
+		strCurState = L"None";
 		break;
 	}
 
 	fPoint fptRenderPos = CCameraManager::GetInst()->GetRenderPos(GetCollider()->GetFinalPos());
 
-	CRenderManager::GetInst()->RenderText(curState,
+	CRenderManager::GetInst()->RenderText(strCurState,
 		fptRenderPos.x - GetScale().x * 2.f,
 		fptRenderPos.y - GetScale().y / 1.5f,
 		fptRenderPos.x + GetScale().x,
 		fptRenderPos.y,
-		15.f, RGB(0.f, 255.f, 0.f));
+		15, RGB(0, 255, 0));
+
+	wstring strInv = L"Inv : ";
+	if (m_bIsInvincible)
+	{
+		strInv += L"True";
+	}
+	else
+	{
+		strInv += L"False";
+	}
+
+	CRenderManager::GetInst()->RenderText(strInv,
+		fptRenderPos.x - GetScale().x * 2.f,
+		fptRenderPos.y,
+		fptRenderPos.x + GetScale().x,
+		fptRenderPos.y,
+		13, RGB(0, 255, 0));
 }
 
 
@@ -429,6 +483,12 @@ void CPlayer::Jump()
 {
 	m_bIsGrounded = false;
 	m_fAccelGravity += m_fJumpPower;
+}
+
+void CPlayer::Dash()
+{
+	m_fMaxVelocity = 500.f;
+	m_fVelocity = 500.f;
 }
 
 const float CPlayer::GetVelocity()
@@ -484,6 +544,10 @@ void CPlayer::InitAnimation()
 	GetAnimator()->CreateAnimation(L"Player_Attack_Combo3_R", m_pImg, fPoint(326.f, 560.f), fPoint(163.f, 75.f), fPoint(0.f, 75.f), 0, 0.04f, 14, false, false);
 	GetAnimator()->CreateAnimation(L"Player_Attack_Combo3_L", m_pImg, fPoint(326.f, 560.f), fPoint(163.f, 75.f), fPoint(0.f, 75.f), 0, 0.04f, 14, false, true);
 
+	GetAnimator()->CreateAnimation(L"Player_Dodge_Right", m_pDashImg, fPoint(0.f, 0.f), fPoint(97.f, 72.f), fPoint(97.f, 0.f), 4, 0.03f, 24, false, false);
+	GetAnimator()->CreateAnimation(L"Player_Dodge_Left", m_pDashImg, fPoint(0.f, 0.f), fPoint(97.f, 72.f), fPoint(97.f, 0.f), 4, 0.03f, 24, false, true);
+
+#pragma region AnimationFrameEdit
 	CAnimation* pAnim;
 	pAnim = GetAnimator()->FindAnimation(L"Player_Idle_Left");
 	for (int i = 0; i < 13; ++i)
@@ -570,6 +634,13 @@ void CPlayer::InitAnimation()
 	pAnim->GetFrame(4).fDuration = 0.1f;
 
 	GetAnimator()->Play(L"Player_Idle_Right");
+
+	pAnim = GetAnimator()->FindAnimation(L"Player_Dodge_Left");
+	for (int i = 0; i < 24; ++i)
+	{
+		pAnim->GetFrame(i).fptOffset.x += 30.f;
+	}
+#pragma endregion
 }
 
 #pragma region CollisionCheck

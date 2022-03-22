@@ -10,6 +10,7 @@
 #include "CState_Trace.h"
 #include "CSound.h"
 #include "CWarpPoint.h"
+#include "CPlayerSword.h"
 
 CSound* pSound;
 
@@ -79,14 +80,21 @@ void CScene_Stage1::Enter()
 	AddObject(warpPoint, GROUP_GAMEOBJ::DEFAULT);
 
 	// 플레이어 생성
-	CPlayer* player = new CPlayer;
-	player->InitAbility();
-	player->InitAnimation();
-	AddObject(player, GROUP_GAMEOBJ::PLAYER);
-	RegisterPlayer(player);
+	CPlayer* pPlayer = new CPlayer;
+	pPlayer->InitAnimation();
+	AddObject(pPlayer, GROUP_GAMEOBJ::PLAYER);
+	RegisterPlayer(pPlayer);
+
+	CPlayerSword* pSword = new CPlayerSword;
+	pSword->SetOwnerObj(pPlayer);
+	AddObject(pSword, GROUP_GAMEOBJ::WEAPON);
+
+	// 플레이어 무기와 능력 초기화
+	pPlayer->SetWeapon(pSword);
+	pPlayer->InitAbility();
 
 	// 몬스터 생성
-	CEnemy* monster = CEnemyFactory::CreateEnemy(ENEMY_TYPE::NORMAL, player->GetPos() + fPoint(300.0f, 0.f));
+	CEnemy* monster = CEnemyFactory::CreateEnemy(ENEMY_TYPE::NORMAL, pPlayer->GetPos() + fPoint(300.0f, 0.f));
 	AddObject(monster, GROUP_GAMEOBJ::ENEMY);
 
 	CCameraManager::GetInst()->InitCameraPos(fPoint(WINSIZE_X / 2.f, background->GetScale().y / 2.f));
@@ -105,7 +113,8 @@ void CScene_Stage1::Exit()
 {
 	for (UINT i = 0; i < (UINT)GROUP_GAMEOBJ::SIZE; ++i)
 	{
-		if ((GROUP_GAMEOBJ)i == GROUP_GAMEOBJ::PLAYER || (GROUP_GAMEOBJ)i == GROUP_GAMEOBJ::ENEMY) continue;
+		if ((GROUP_GAMEOBJ)i == GROUP_GAMEOBJ::PLAYER || (GROUP_GAMEOBJ)i == GROUP_GAMEOBJ::ENEMY
+			|| (GROUP_GAMEOBJ)i == GROUP_GAMEOBJ::FX) continue;
 
 		ClearGroup((GROUP_GAMEOBJ)i);
 	}
