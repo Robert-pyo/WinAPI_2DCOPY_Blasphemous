@@ -21,8 +21,9 @@ CEnemy_Acolyte::CEnemy_Acolyte()
 	info.fAttDelayTime = 2.f;
 	info.fRecogRange = 400.f;
 	info.fVelocity = 100.f;
-	info.fInvTime = 3.f;		// TODO : 플레이어가 처형 발동 시 무적되는 시간
+	info.fInvTime = 0.5f;
 	info.iMoney = 20;
+
 	info.pWeapon = new CSpear;
 	info.pWeapon->SetOwnerObj(this);
 	CScene* pCurScene = CSceneManager::GetInst()->GetCurrentScene();
@@ -132,6 +133,17 @@ void CEnemy_Acolyte::Update_Animation()
 		else
 		{
 			GetAnimator()->Play(L"Acolyte_Attack_L");
+		}
+	}break;
+	case ENEMY_STATE::HIT:
+	{
+		if (GetDir().x > 0.f)
+		{
+			GetAnimator()->Play(L"Acolyte_Hit_R");
+		}
+		else
+		{
+			GetAnimator()->Play(L"Acolyte_Hit_L");
 		}
 	}break;
 

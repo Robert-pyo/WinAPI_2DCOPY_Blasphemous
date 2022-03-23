@@ -5,6 +5,7 @@
 #include "CState_Idle.h"
 #include "CState_Trace.h"
 #include "CState_Attack.h"
+#include "CState_Hit.h"
 #include "CEnemy_Acolyte.h"
 
 CEnemy* CEnemyFactory::CreateEnemy(ENEMY_TYPE eEnmType, fPoint pos)
@@ -22,7 +23,7 @@ CEnemy* CEnemyFactory::CreateEnemy(ENEMY_TYPE eEnmType, fPoint pos)
 		pAI->AddState(new CState_Idle(ENEMY_STATE::IDLE));
 		pAI->AddState(new CState_Trace(ENEMY_STATE::TRACE));
 		pAI->AddState(new CState_Attack(ENEMY_STATE::ATTACK));
-		//pAI->AddState(new CState_Hit(ENEMY_STATE::HIT));
+		pAI->AddState(new CState_Hit(ENEMY_STATE::HIT));
 		pAI->SetCurState(ENEMY_STATE::IDLE);
 
 		pEnemy->SetAI(pAI);

@@ -16,6 +16,7 @@ struct tEnemyInfo
 	float fAttDelayTime;
 	UINT  iAttCount = 0;
 	float fInvTime;		// 무적 시간
+	bool  bIsInvincible;
 	UINT  iMoney;
 	CWeapon* pWeapon;
 };
@@ -71,7 +72,11 @@ public:
 
 public:
 	virtual void Attack() = 0;
-	void Hit(CGameObject* pPlayer);
+	
+	void SetInvincible(const bool bIsInv) { m_tEnmInfo.bIsInvincible = bIsInv; }
+
+	virtual void Hit(CGameObject* pPlayer);
+	virtual void Die();
 
 public:
 	virtual void OnCollision(CCollider* target) override;

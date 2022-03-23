@@ -76,7 +76,7 @@ void CPlayer::update()
 
 void CPlayer::update_state()
 {
-	if (m_fVelocity == 0.f)
+	if (m_fVelocity < 0.1f)
 	{
 		if (m_fAttackDelay + 0.1f <= m_fAtkAccTime && m_bIsAttacking)
 		{
@@ -120,7 +120,7 @@ void CPlayer::update_state()
 	}
 
 	// space바 눌렀을 때 JUMP 상태
-	if (PRESS_KEY_DOWN(VK_SPACE) && !m_bIsAttacking)
+	if (PRESS_KEY_DOWN(VK_SPACE) && m_bIsGrounded && !m_bIsAttacking && m_eCurState != PLAYER_STATE::DODGE)
 	{
 		m_eCurState = PLAYER_STATE::JUMP;
 
@@ -154,7 +154,8 @@ void CPlayer::update_state()
 	}
 	m_fAtkAccTime += fDeltaTime;
 	// K 입력 시 공격
-	if (PRESS_KEY_DOWN('K') && m_fAttackDelay <= m_fAtkAccTime && m_eCurState != PLAYER_STATE::CLIMB)
+	if (PRESS_KEY_DOWN('K') && m_fAttackDelay <= m_fAtkAccTime
+		&& m_eCurState != PLAYER_STATE::CLIMB && m_eCurState != PLAYER_STATE::DODGE)
 	{
 		m_eCurState = PLAYER_STATE::ATTACK;
 
@@ -206,7 +207,7 @@ void CPlayer::update_move()
 {
 	if (PRESS_KEY('A') && !m_bIsAttacking)
 	{
-		if (m_fVelocity == 0)
+		if (m_fVelocity == 0.f && !PRESS_KEY('D'))
 			m_fVelocity += 200.f;
 
 		if (!PRESS_KEY('D') && m_eCurState != PLAYER_STATE::DODGE)
@@ -217,13 +218,13 @@ void CPlayer::update_move()
 		m_fVelocity += 1000.f * fDeltaTime;
 		if (PRESS_KEY('D'))
 		{
-			m_fVelocity -= 1000.f * fDeltaTime;
+			m_fVelocity = 0.f;
 		}
 	}
 	
 	if (PRESS_KEY('D') && !m_bIsAttacking)
 	{
-		if (m_fVelocity == 0)
+		if (m_fVelocity == 0.f && !PRESS_KEY('A'))
 			m_fVelocity += 200.f;
 
 		if (!PRESS_KEY('A') && m_eCurState != PLAYER_STATE::DODGE)
@@ -233,11 +234,11 @@ void CPlayer::update_move()
 		m_fVelocity += 1000.f * fDeltaTime;
 		if (PRESS_KEY('A'))
 		{
-			m_fVelocity -= 1000.f * fDeltaTime;
+			m_fVelocity = 0.f;
 		}
 	}
 
-	if (PRESS_KEY_DOWN(VK_SPACE) && m_bIsGrounded && !m_bIsAttacking)
+	if (m_eCurState == PLAYER_STATE::JUMP && m_bIsGrounded)
 	{
 		Jump();
 	}
@@ -333,7 +334,6 @@ void CPlayer::update_animation()
 	}break;
 	case PLAYER_STATE::JUMPOFF:
 	{
-		// TODO : fTime 멤버변수로 교체
 		static float fTime = 0.f;
 		fTime += fDeltaTime;
 		if (GetAnimator()->FindAnimation(L"Player_Jumpoff_Right")->GetAnimDuration() <= fTime)

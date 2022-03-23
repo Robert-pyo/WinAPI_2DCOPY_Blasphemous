@@ -113,16 +113,23 @@ void CEnemy::SetAI(AI* pAI)
 
 void CEnemy::Hit(CGameObject* pPlayer)
 {
+	if (m_tEnmInfo.bIsInvincible) return;
+
 	CPlayer* player = (CPlayer*)pPlayer;
 	m_tEnmInfo.fHP -= player->GetPlayerAbility().fAtt;
 
 	// 맞았으면 HIT 상태로 전환
-	//ChangeAIState(m_pAI, ENEMY_STATE::HIT);
+	ChangeAIState(m_pAI, ENEMY_STATE::HIT);
 
 	if (m_tEnmInfo.fHP <= 0.f)
 	{
-		//Die();
+		Die();
 	}
+}
+
+void CEnemy::Die()
+{
+	DeleteObj(this);
 }
 
 void CEnemy::OnCollision(CCollider* target)

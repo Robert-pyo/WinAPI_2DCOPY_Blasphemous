@@ -188,6 +188,7 @@
     <ClInclude Include="CSpear.h" />
     <ClInclude Include="CState.h" />
     <ClInclude Include="CState_Attack.h" />
+    <ClInclude Include="CState_Hit.h" />
     <ClInclude Include="CState_Idle.h" />
     <ClInclude Include="CState_Trace.h" />
     <ClInclude Include="CWarpPoint.h" />
@@ -248,6 +249,7 @@
     <ClCompile Include="CSpear.cpp" />
     <ClCompile Include="CState.cpp" />
     <ClCompile Include="CState_Attack.cpp" />
+    <ClCompile Include="CState_Hit.cpp" />
     <ClCompile Include="CState_Idle.cpp" />
     <ClCompile Include="CState_Trace.cpp" />
     <ClCompile Include="CWarpPoint.cpp" />

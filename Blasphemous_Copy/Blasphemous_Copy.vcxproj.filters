@@ -133,9 +133,6 @@
     <Filter Include="Object\Enemy\EnemyFactory">
       <UniqueIdentifier>{d06c6c27-8bfd-493b-be13-269d077a7fc9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Object\Enemy\Alcoyte">
-      <UniqueIdentifier>{3f4132e9-fb17-4ac3-8e48-f01474a3953e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Engine\Component\AI\State\Attack">
       <UniqueIdentifier>{209c9d8c-710d-4635-890c-9bb87ba1a6f4}</UniqueIdentifier>
     </Filter>
@@ -153,6 +150,9 @@
     </Filter>
     <Filter Include="Object\Effect\SwordSlash">
       <UniqueIdentifier>{7b628f56-3d48-491e-b2c3-94d04f95ce42}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Enemy\Acolyte">
+      <UniqueIdentifier>{3f4132e9-fb17-4ac3-8e48-f01474a3953e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -301,7 +301,7 @@
       <Filter>Object\Enemy\EnemyFactory</Filter>
     </ClInclude>
     <ClInclude Include="CEnemy_Acolyte.h">
-      <Filter>Object\Enemy\Alcoyte</Filter>
+      <Filter>Object\Enemy\Acolyte</Filter>
     </ClInclude>
     <ClInclude Include="CState_Attack.h">
       <Filter>Engine\Component\AI\State\Attack</Filter>
@@ -317,6 +317,9 @@
     </ClInclude>
     <ClInclude Include="CEffect_SwordSlash.h">
       <Filter>Object\Effect\SwordSlash</Filter>
+    </ClInclude>
+    <ClInclude Include="CState_Hit.h">
+      <Filter>Engine\Component\AI\State\Hit</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -444,7 +447,7 @@
       <Filter>Object\Enemy\EnemyFactory</Filter>
     </ClCompile>
     <ClCompile Include="CEnemy_Acolyte.cpp">
-      <Filter>Object\Enemy\Alcoyte</Filter>
+      <Filter>Object\Enemy\Acolyte</Filter>
     </ClCompile>
     <ClCompile Include="CState_Attack.cpp">
       <Filter>Engine\Component\AI\State\Attack</Filter>
@@ -460,6 +463,9 @@
     </ClCompile>
     <ClCompile Include="CEffect_SwordSlash.cpp">
       <Filter>Object\Effect\SwordSlash</Filter>
+    </ClCompile>
+    <ClCompile Include="CState_Hit.cpp">
+      <Filter>Engine\Component\AI\State\Hit</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

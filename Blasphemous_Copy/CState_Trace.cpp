@@ -33,13 +33,13 @@ void CState_Trace::update()
 		ChangeAIState(GetAI(), ENEMY_STATE::IDLE);
 	}
 
-	static float fTime = 0.f;
-	fTime += fDeltaTime;
+	static float fAttAccTime = 0.f;
+	fAttAccTime += fDeltaTime;
 	if (fLength < GetEnemy()->GetEnemyInfo().fAttRange && GetEnemy()->GetEnemyInfo().iAttCount == 0
-		&& GetEnemy()->GetEnemyInfo().fAttDelayTime <= fTime)
+		&& GetEnemy()->GetEnemyInfo().fAttDelayTime <= fAttAccTime)
 	{
 		ChangeAIState(GetAI(), ENEMY_STATE::ATTACK);
-		fTime = 0.f;
+		fAttAccTime = 0.f;
 	}
 }
 
