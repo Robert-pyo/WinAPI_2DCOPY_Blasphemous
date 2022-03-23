@@ -93,7 +93,8 @@ void CCollider::render()
 		rgb = RGB(255, 0, 0);
 	else
 	{
-		if (GROUP_GAMEOBJ::FX == m_pOwner->GetObjGroup())
+		if (GROUP_GAMEOBJ::PLAYER_ATT_FX == m_pOwner->GetObjGroup()
+			|| GROUP_GAMEOBJ::ENEMY_ATT_FX == m_pOwner->GetObjGroup())
 			rgb = RGB(0, 0, 255);
 		else
 			rgb = RGB(0, 255, 0);

@@ -7,6 +7,7 @@ CEffect::CEffect()
 	m_pOwner = nullptr;
 	m_fFxDuration = 0.f;
 	m_bIsStart = false;
+	m_fvDir = {};
 }
 
 CEffect::~CEffect()

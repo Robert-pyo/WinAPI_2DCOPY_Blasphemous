@@ -49,7 +49,7 @@ void CPlayerSword::Attack()
 	m_pFxSlash = new CEffect_SwordSlash;
 	m_pFxSlash->SetOwnerObj(this);
 	m_pFxSlash->SetScale(GetScale());
-	CreateObj(m_pFxSlash, GROUP_GAMEOBJ::FX);
+	CreateObj(m_pFxSlash, GROUP_GAMEOBJ::PLAYER_ATT_FX);
 
 	CGameObject* ownerObj = GetOwnerObj();
 	if (ownerObj == nullptr) return;
@@ -95,7 +95,6 @@ void CPlayerSword::Attack()
 			}
 			else
 			{
-				//GetCollider()->SetOffsetPos(fPoint(-60.f, 20.f));
 				m_pFxSlash->GetAnimator()->FindAnimation(L"Sword_Combo_2_L")->SetFrame(0);
 				m_pFxSlash->GetAnimator()->Play(L"Sword_Combo_2_L");
 				CSoundManager::GetInst()->Play(L"Penitent_Slash_02");

@@ -62,7 +62,7 @@ void CUI::finalUpdate()
 		m_fptFinalPos += fptParentPos;
 	}
 
-	//MouseOnCheck();
+	MouseOnCheck();
 
 	finalUpdate_child();
 }

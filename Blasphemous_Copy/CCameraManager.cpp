@@ -84,6 +84,7 @@ void CCameraManager::render()
 void CCameraManager::InitCameraPos(fPoint pos)
 {
 	m_fptPrevLookAt = pos;
+	m_fptLookAt = pos;
 }
 
 void CCameraManager::SetLookAt(fPoint lookAt)

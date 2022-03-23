@@ -14,7 +14,6 @@ CEffect_SwordSlash::CEffect_SwordSlash()
 
 	CreateCollider();
 	m_iAttCount = 0;
-	m_fvDir = {};
 
 	CreateAnimator();
 	GetAnimator()->CreateAnimation(L"Sword_Combo_1_R", GetFxImg(), fPoint(546.f, 576.f), fPoint(110.f, 72.f), fPoint(110.f, 0.f), 0, 0.05f, 4, false, false);
@@ -24,7 +23,7 @@ CEffect_SwordSlash::CEffect_SwordSlash()
 	GetAnimator()->CreateAnimation(L"Sword_Combo_3_R", GetFxImg(), fPoint(546.f, 728.f), fPoint(110.f, 72.f), fPoint(110.f, 0.f), 0, 0.05f, 4, false, false);
 	GetAnimator()->CreateAnimation(L"Sword_Combo_3_L", GetFxImg(), fPoint(546.f, 728.f), fPoint(110.f, 72.f), fPoint(110.f, 0.f), 0, 0.05f, 4, false, true);
 
-	CCollisionManager::GetInst()->CheckGroup(GROUP_GAMEOBJ::FX, GROUP_GAMEOBJ::ENEMY);
+	CCollisionManager::GetInst()->CheckGroup(GROUP_GAMEOBJ::PLAYER_ATT_FX, GROUP_GAMEOBJ::ENEMY);
 
 #pragma region AnimationFrameEdit
 	CAnimation* pAnim = GetAnimator()->FindAnimation(L"Sword_Combo_1_R");
@@ -104,7 +103,7 @@ void CEffect_SwordSlash::update()
 		GetCollider()->SetScale(fPoint(170.f, 70.f));
 		SetDuration(GetAnimator()->FindAnimation(L"Sword_Combo_1_R")->GetAnimDuration());
 
-		if (m_fvDir.x > 0.f)
+		if (GetFxDir().x > 0.f)
 		{
 			GetCollider()->SetOffsetPos(fPoint(110.f, 0.f));
 		}
@@ -119,7 +118,7 @@ void CEffect_SwordSlash::update()
 		GetCollider()->SetScale(fPoint(180.f, 100.f));
 		SetDuration(GetAnimator()->FindAnimation(L"Sword_Combo_3_R")->GetAnimDuration());
 
-		if (m_fvDir.x > 0.f)
+		if (GetFxDir().x > 0.f)
 		{
 			GetCollider()->SetOffsetPos(fPoint(100.f, 20.f));
 		}

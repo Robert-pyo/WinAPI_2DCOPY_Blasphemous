@@ -6,7 +6,11 @@
 #include "CState_Trace.h"
 #include "CState_Attack.h"
 #include "CState_Hit.h"
+#include "CState_Dead.h"
 #include "CEnemy_Acolyte.h"
+#include "CWeapon.h"
+#include "CSpear.h"
+#include "CScene.h"
 
 CEnemy* CEnemyFactory::CreateEnemy(ENEMY_TYPE eEnmType, fPoint pos)
 {
@@ -16,15 +20,16 @@ CEnemy* CEnemyFactory::CreateEnemy(ENEMY_TYPE eEnmType, fPoint pos)
 	{
 	case ENEMY_TYPE::NORMAL:
 	{
-		pEnemy = new CEnemy_Acolyte;
-		pEnemy->SetPos(pos);
-
 		AI* pAI = new AI;
 		pAI->AddState(new CState_Idle(ENEMY_STATE::IDLE));
 		pAI->AddState(new CState_Trace(ENEMY_STATE::TRACE));
 		pAI->AddState(new CState_Attack(ENEMY_STATE::ATTACK));
 		pAI->AddState(new CState_Hit(ENEMY_STATE::HIT));
+		pAI->AddState(new CState_Dead(ENEMY_STATE::DEAD));
 		pAI->SetCurState(ENEMY_STATE::IDLE);
+
+		pEnemy = new CEnemy_Acolyte;
+		pEnemy->SetPos(pos);
 
 		pEnemy->SetAI(pAI);
 	}

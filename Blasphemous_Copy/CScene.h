@@ -16,8 +16,6 @@ private:
 	// 현재 Scene의 이름
 	wstring m_sceneName;
 
-	CPlayer* m_pPlayer;
-
 	UINT m_iTileX;
 	UINT m_iTileY;
 
@@ -35,10 +33,6 @@ public:
 
 	virtual void Enter() = 0;	// 씬 진입 시 행동 -> 씬 마다 행동이 다를 수 있으므로 순수가상함수로 처리
 	virtual void Exit() = 0;	// 씬 아웃 시 행동 -> 씬 마다 행동이 다를 수 있으므로 순수가상함수로 처리
-
-public:
-	void RegisterPlayer(CPlayer* pPlayer) { m_pPlayer = pPlayer; };
-	CPlayer* GetPlayer() { return m_pPlayer; }
 
 public:
 	void SetName(const wstring& strName);

@@ -97,7 +97,18 @@ void CEnemy::debug_render()
 		fptRenderPos.y - GetScale().y / 1.5f,
 		fptRenderPos.x + GetScale().x,
 		fptRenderPos.y,
-		15, RGB(0, 255, 0));
+		13, RGB(0, 255, 0));
+
+	WCHAR hp[5];
+	swprintf_s(hp, L"%4d", (int)m_tEnmInfo.fHP);
+	wstring strHp = L"HP : ";
+	strHp += hp;
+	CRenderManager::GetInst()->RenderText(strHp,
+		fptRenderPos.x - GetScale().x,
+		fptRenderPos.y + GetScale().y / 2.f,
+		fptRenderPos.x + GetScale().x,
+		fptRenderPos.y,
+		14, RGB(0, 255, 0));
 }
 
 AI* CEnemy::GetAI()
@@ -113,23 +124,24 @@ void CEnemy::SetAI(AI* pAI)
 
 void CEnemy::Hit(CGameObject* pPlayer)
 {
-	if (m_tEnmInfo.bIsInvincible) return;
-
 	CPlayer* player = (CPlayer*)pPlayer;
 	m_tEnmInfo.fHP -= player->GetPlayerAbility().fAtt;
-
-	// 맞았으면 HIT 상태로 전환
-	ChangeAIState(m_pAI, ENEMY_STATE::HIT);
 
 	if (m_tEnmInfo.fHP <= 0.f)
 	{
 		Die();
+		m_tEnmInfo.fHP = 0.f;
 	}
+
+	if (GetAI()->GetCurState()->GetState() == ENEMY_STATE::ATTACK) return;
+	if (GetAI()->GetCurState()->GetState() == ENEMY_STATE::HIT) return;
+	// 맞았으면 HIT 상태로 전환
+	ChangeAIState(m_pAI, ENEMY_STATE::HIT);
 }
 
 void CEnemy::Die()
 {
-	DeleteObj(this);
+	ChangeAIState(m_pAI, ENEMY_STATE::DEAD);
 }
 
 void CEnemy::OnCollision(CCollider* target)

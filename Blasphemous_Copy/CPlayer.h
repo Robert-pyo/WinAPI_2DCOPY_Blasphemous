@@ -16,6 +16,7 @@ enum class PLAYER_STATE
 	ATTACK,
 	JUMP,
 	JUMPOFF,
+	HIT,
 	DEAD,
 };
 
@@ -49,7 +50,9 @@ struct tPlayerAbility
 
 class CPlayer : public CGameObject
 {
-	
+private:
+	static CPlayer* instance; // 플레이어 임의 싱글톤
+
 private:
 	CD2DImage* m_pImg;
 	CD2DImage* m_pDashImg;
@@ -92,6 +95,10 @@ public:
 	virtual CPlayer* Clone() override;
 
 public:
+	void RegisterPlayer(CPlayer* pPlayer) { instance = pPlayer; };
+	static CPlayer* GetPlayer() { return instance; }
+
+public:
 	virtual void update() final;
 	void update_state();
 	void update_move();
@@ -109,16 +116,20 @@ public:
 	void Jump();
 	void Dash();
 
+	void Hit(CGameObject* other);
+
 	const float		 GetVelocity();
 	const fVector2D& GetDirVector();
 
 	const tPlayerAbility& GetPlayerAbility();
-	void SetPlayerAbility(tPlayerAbility tAbility);
+	void SetPlayerAbility(const tPlayerAbility& tAbility);
 
 	const UINT GetAttackCount() { return m_iComboCount; }
 	void SetAttackCount(const UINT count) { m_iComboCount = count; }
 
-	void SetWeapon(CPlayerSword* weapon) { m_pSword = weapon; }
+	void SetWeapon(CPlayerSword* weapon) { m_pSword = weapon; } // TODO : 필요성 검토
+
+	bool IsInvincible() { return m_bIsInvincible; }
 
 public:
 	virtual void OnCollision(CCollider* target) override;

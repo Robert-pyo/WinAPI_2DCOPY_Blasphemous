@@ -63,6 +63,7 @@ CAnimation* CAnimator::FindAnimation(const wstring& strName)
 void CAnimator::Play(const wstring& strName)
 {
 	m_pCurAnim = FindAnimation(strName);
+	m_pCurAnim->SetAnimDone(false);
 }
 
 CGameObject* CAnimator::GetOwnerObj()

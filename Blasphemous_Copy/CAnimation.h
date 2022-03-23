@@ -24,11 +24,13 @@ private:
 	float				m_fCurAnimDuration;	// 현재 플레이 중인 애니메이션의 총 유지 시간
 	bool				m_bIsLoop;
 	bool				m_bReverse;
+	bool				m_bIsAnimDone;
 
 public:
 	CAnimation();
 	~CAnimation();
 
+public:
 	void SetName(const wstring& strName);
 	void SetFrame(int frmIndex);
 	void SetLoop(bool isLoop);
@@ -44,5 +46,11 @@ public:
 
 	// 애니메이션 생성
 	void Create(CD2DImage* pImg, fPoint leftTop, fPoint scale, fPoint step, UINT column, float duration, UINT frmCount);
+
+public:
+	bool IsAnimDone() { return m_bIsAnimDone; }
+
+private:
+	void SetAnimDone(bool bIsDone) { m_bIsAnimDone = bIsDone; }
 };
 

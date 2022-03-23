@@ -161,6 +161,7 @@
     <ClInclude Include="CCore.h" />
     <ClInclude Include="CD2DImage.h" />
     <ClInclude Include="CEffect.h" />
+    <ClInclude Include="CEffect_Spear.h" />
     <ClInclude Include="CEffect_SwordSlash.h" />
     <ClInclude Include="CEnemy.h" />
     <ClInclude Include="CEnemyFactory.h" />
@@ -188,6 +189,7 @@
     <ClInclude Include="CSpear.h" />
     <ClInclude Include="CState.h" />
     <ClInclude Include="CState_Attack.h" />
+    <ClInclude Include="CState_Dead.h" />
     <ClInclude Include="CState_Hit.h" />
     <ClInclude Include="CState_Idle.h" />
     <ClInclude Include="CState_Trace.h" />
@@ -220,6 +222,7 @@
     </ClCompile>
     <ClCompile Include="CD2DImage.cpp" />
     <ClCompile Include="CEffect.cpp" />
+    <ClCompile Include="CEffect_Spear.cpp" />
     <ClCompile Include="CEffect_SwordSlash.cpp" />
     <ClCompile Include="CEnemy.cpp" />
     <ClCompile Include="CEnemyFactory.cpp" />
@@ -249,6 +252,7 @@
     <ClCompile Include="CSpear.cpp" />
     <ClCompile Include="CState.cpp" />
     <ClCompile Include="CState_Attack.cpp" />
+    <ClCompile Include="CState_Dead.cpp" />
     <ClCompile Include="CState_Hit.cpp" />
     <ClCompile Include="CState_Idle.cpp" />
     <ClCompile Include="CState_Trace.cpp" />

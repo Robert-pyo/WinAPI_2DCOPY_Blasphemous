@@ -10,6 +10,8 @@ private:
 
 	CGameObject* m_pOwner;
 
+	fVector2D m_fvDir;
+
 	float m_fFxDuration;
 	bool  m_bIsStart;
 
@@ -31,6 +33,9 @@ public:
 
 	void  SetDuration(float fDuration) { m_fFxDuration = fDuration; }
 	float GetDuration() { return m_fFxDuration; }
+
+	void SetFxDir(fVector2D dir) { m_fvDir = dir; }
+	fVector2D GetFxDir() { return m_fvDir; }
 
 	bool IsFxStart() { return m_bIsStart; }
 	void SetFxStart(bool bIsStart) { m_bIsStart = bIsStart; }

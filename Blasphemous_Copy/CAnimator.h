@@ -24,7 +24,9 @@ public:
 	CAnimation* FindAnimation(const wstring& strName);
 	// 애니메이션 재생
 	void Play(const wstring& strName);
-
+	
+public:
 	CGameObject* GetOwnerObj();
+	CAnimation* GetCurAnim() { return m_pCurAnim; }
 };
 

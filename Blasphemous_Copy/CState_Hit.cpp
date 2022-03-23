@@ -20,26 +20,37 @@ static float fHitAccTime;
 void CState_Hit::update()
 {
 	fHitAccTime += fDeltaTime;
-	
-	if (GetEnemy()->GetEnemyInfo().fInvTime <= fHitAccTime)
+	CEnemy* pEnemy = GetEnemy();
+
+	if (pEnemy->GetAnimator()->GetCurAnim()->GetAnimDuration() <= fHitAccTime
+		&& pEnemy->GetAnimator()->GetCurAnim()->IsAnimDone())
 	{
-		// 무적시간이 끝났으면 trace 상태로 전환
 		ChangeAIState(GetAI(), ENEMY_STATE::TRACE);
 		fHitAccTime = 0.f;
-		GetEnemy()->SetInvincible(false);
+	}
+
+	CPlayer* pPlayer = CPlayer::GetPlayer();
+	fVector2D fvPlayerPos = pPlayer->GetPos();
+	fVector2D fvEnemyPos = GetEnemy()->GetPos();
+
+	fVector2D fvEnemyDir = fvPlayerPos - fvEnemyPos;
+	float fLength = fvEnemyDir.Length();
+
+	static float fAttAccTime;
+	fAttAccTime += fDeltaTime;
+	if (GetEnemy()->GetEnemyInfo().fAttDelayTime <= fAttAccTime)
+	{
+		/*if (fLength < GetEnemy()->GetEnemyInfo().fAttRange && GetEnemy()->GetEnemyInfo().iAttCount == 0)
+		{
+			ChangeAIState(GetAI(), ENEMY_STATE::ATTACK);
+			fHitAccTime = 0.f;
+		}*/
 	}
 }
 
 void CState_Hit::Enter()
 {
 	fHitAccTime = 0.f;
-	GetEnemy()->SetInvincible(true);
-	
-	if (L"Acolyte" == GetEnemy()->GetName())
-	{
-		GetEnemy()->GetAnimator()->FindAnimation(L"Acolyte_Hit_R")->SetFrame(0);
-		GetEnemy()->GetAnimator()->FindAnimation(L"Acolyte_Hit_L")->SetFrame(0);
-	}
 }
 
 void CState_Hit::Exit()

@@ -115,9 +115,6 @@
     <Filter Include="Object\Weapon\PlayerSword">
       <UniqueIdentifier>{8e57a9dd-476d-4e27-93f1-dd18c61cda22}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Object\WarpPoint">
-      <UniqueIdentifier>{35caece4-8c49-4eec-82fd-ca9a160d95b8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Engine\Component\AI">
       <UniqueIdentifier>{a8815483-f064-426a-a2f8-81ba25343650}</UniqueIdentifier>
     </Filter>
@@ -153,6 +150,12 @@
     </Filter>
     <Filter Include="Object\Enemy\Acolyte">
       <UniqueIdentifier>{3f4132e9-fb17-4ac3-8e48-f01474a3953e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Component\AI\State\Dead">
+      <UniqueIdentifier>{f278e624-ab89-4add-9385-e3848db23f6b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\WarpPoint">
+      <UniqueIdentifier>{35caece4-8c49-4eec-82fd-ca9a160d95b8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -321,6 +324,12 @@
     <ClInclude Include="CState_Hit.h">
       <Filter>Engine\Component\AI\State\Hit</Filter>
     </ClInclude>
+    <ClInclude Include="CState_Dead.h">
+      <Filter>Engine\Component\AI\State\Dead</Filter>
+    </ClInclude>
+    <ClInclude Include="CEffect_Spear.h">
+      <Filter>Object\Effect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CCore.cpp">
@@ -466,6 +475,12 @@
     </ClCompile>
     <ClCompile Include="CState_Hit.cpp">
       <Filter>Engine\Component\AI\State\Hit</Filter>
+    </ClCompile>
+    <ClCompile Include="CState_Dead.cpp">
+      <Filter>Engine\Component\AI\State\Dead</Filter>
+    </ClCompile>
+    <ClCompile Include="CEffect_Spear.cpp">
+      <Filter>Object\Effect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

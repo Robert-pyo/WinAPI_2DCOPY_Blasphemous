@@ -15,7 +15,7 @@ CState_Trace::~CState_Trace()
 
 void CState_Trace::update()
 {
-	CPlayer* pPlayer = CSceneManager::GetInst()->GetCurrentScene()->GetPlayer();
+	CPlayer* pPlayer = CPlayer::GetPlayer();
 	fVector2D fvPlayerPos = pPlayer->GetPos();
 	fVector2D fvEnemyPos = GetEnemy()->GetPos();
 

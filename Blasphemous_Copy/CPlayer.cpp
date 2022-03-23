@@ -6,6 +6,9 @@
 #include "CAnimation.h"
 #include "CPlayerSword.h"
 #include "CScene.h"
+#include "CEnemy.h"
+
+CPlayer* CPlayer::instance = nullptr;
 
 CPlayer::CPlayer()
 {
@@ -135,6 +138,8 @@ void CPlayer::update_state()
 		{
 			GetAnimator()->FindAnimation(L"Player_Dodge_Right")->SetFrame(0);
 			GetAnimator()->FindAnimation(L"Player_Dodge_Left")->SetFrame(0);
+			GetCollider()->SetScale(fPoint(GetCollider()->GetScale().x * 2.f, GetCollider()->GetScale().y / 2.f));
+			GetCollider()->SetOffsetPos(fPoint(GetCollider()->GetOffsetPos().x, GetCollider()->GetOffsetPos().y * 2.f));
 		}
 
 		m_eCurState = PLAYER_STATE::DODGE;
@@ -150,6 +155,8 @@ void CPlayer::update_state()
 			m_fDodgeAccTime = 0.f;
 			m_fDodgeDelayAccTime = 0.f;
 			m_fMaxVelocity = MAX_SPEED;
+			GetCollider()->SetScale(fPoint(GetCollider()->GetScale().x / 2.f, GetCollider()->GetScale().y * 2.f));
+			GetCollider()->SetOffsetPos(fPoint(GetCollider()->GetOffsetPos().x, GetCollider()->GetOffsetPos().y / 2.f));
 		}
 	}
 	m_fAtkAccTime += fDeltaTime;
@@ -207,8 +214,8 @@ void CPlayer::update_move()
 {
 	if (PRESS_KEY('A') && !m_bIsAttacking)
 	{
-		if (m_fVelocity == 0.f && !PRESS_KEY('D'))
-			m_fVelocity += 200.f;
+		if (m_fVelocity == 0.f)
+			m_fVelocity += 300.f;
 
 		if (!PRESS_KEY('D') && m_eCurState != PLAYER_STATE::DODGE)
 		{
@@ -216,26 +223,19 @@ void CPlayer::update_move()
 		}
 
 		m_fVelocity += 1000.f * fDeltaTime;
-		if (PRESS_KEY('D'))
-		{
-			m_fVelocity = 0.f;
-		}
 	}
 	
 	if (PRESS_KEY('D') && !m_bIsAttacking)
 	{
-		if (m_fVelocity == 0.f && !PRESS_KEY('A'))
-			m_fVelocity += 200.f;
+		if (m_fVelocity == 0.f)
+			m_fVelocity += 300.f;
 
 		if (!PRESS_KEY('A') && m_eCurState != PLAYER_STATE::DODGE)
 		{
 			m_fvCurDir.x = 1;
 		}
+
 		m_fVelocity += 1000.f * fDeltaTime;
-		if (PRESS_KEY('A'))
-		{
-			m_fVelocity = 0.f;
-		}
 	}
 
 	if (m_eCurState == PLAYER_STATE::JUMP && m_bIsGrounded)
@@ -397,6 +397,18 @@ void CPlayer::update_animation()
 			GetAnimator()->Play(L"Player_Dodge_Right");
 		}
 	}break;
+
+	case PLAYER_STATE::HIT:
+	{
+		if (-1 == m_fvCurDir.x)
+		{
+			//GetAnimator()->Play(L"");
+		}
+		else
+		{
+			//GetAnimator()->Play(L"");
+		}
+	}break;
 	}
 }
 
@@ -458,7 +470,7 @@ void CPlayer::debug_render()
 		fptRenderPos.y - GetScale().y / 1.5f,
 		fptRenderPos.x + GetScale().x,
 		fptRenderPos.y,
-		15, RGB(0, 255, 0));
+		13, RGB(0, 255, 0));
 
 	wstring strInv = L"Inv : ";
 	if (m_bIsInvincible)
@@ -476,6 +488,17 @@ void CPlayer::debug_render()
 		fptRenderPos.x + GetScale().x,
 		fptRenderPos.y,
 		13, RGB(0, 255, 0));
+
+	WCHAR hp[5];
+	swprintf_s(hp, L"%4d", (int)m_tAbility.fCurHp);
+	wstring strHp = L"Current HP : ";
+	strHp += hp;
+	CRenderManager::GetInst()->RenderText(strHp,
+		fptRenderPos.x - GetScale().x,
+		fptRenderPos.y + GetScale().y / 1.5f,
+		fptRenderPos.x + GetScale().x,
+		fptRenderPos.y,
+		15, RGB(0, 255, 0));
 }
 
 
@@ -489,6 +512,16 @@ void CPlayer::Dash()
 {
 	m_fMaxVelocity = 500.f;
 	m_fVelocity = 500.f;
+}
+
+void CPlayer::Hit(CGameObject* other)
+{
+	CEnemy* pEnemy = (CEnemy*)other;
+
+	m_tAbility.fCurHp -= pEnemy->GetEnemyInfo().fAtt;
+
+	m_eCurState = PLAYER_STATE::HIT;
+	//m_bIsInvincible = true;
 }
 
 const float CPlayer::GetVelocity()
@@ -506,7 +539,7 @@ const tPlayerAbility& CPlayer::GetPlayerAbility()
 	return m_tAbility;
 }
 
-void CPlayer::SetPlayerAbility(tPlayerAbility tAbility)
+void CPlayer::SetPlayerAbility(const tPlayerAbility& tAbility)
 {
 	m_tAbility = tAbility;
 }

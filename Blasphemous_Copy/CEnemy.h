@@ -48,6 +48,7 @@ public:
 	virtual void debug_render();
 
 	virtual void Update_Animation() = 0;
+	virtual void Init_Animation() = 0;
 
 public:
 	float GetVelocity() { return m_tEnmInfo.fVelocity; }

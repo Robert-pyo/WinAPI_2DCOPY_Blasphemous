@@ -1,7 +1,13 @@
 #pragma once
 #include "CWeapon.h"
+
+class CEffect_Spear;
+
 class CSpear : public CWeapon
 {
+private:
+	CEffect_Spear* m_pFx;
+
 public:
 	CSpear();
 	~CSpear();

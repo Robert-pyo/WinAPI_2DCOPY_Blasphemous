@@ -11,8 +11,9 @@ CAnimation::CAnimation()
 	m_pImg			= nullptr;
 	m_iCurFrm		= 0;
 	m_fAccTime		= 0.f;
-	m_bIsLoop		= false;
 	m_fCurAnimDuration = 0.f;
+	m_bIsLoop		= false;
+	m_bIsAnimDone	= false;
 }
 
 CAnimation::~CAnimation()
@@ -61,9 +62,13 @@ void CAnimation::update()
 			if (m_iCurFrm == m_vecAnimFrm.size())
 			{
 				m_iCurFrm = (int)m_vecAnimFrm.size() - 1;
+				m_bIsAnimDone = true;
 
 				if (m_fCurAnimDuration <= m_fAccTime)
+				{
 					m_iCurFrm = 0;
+					m_fAccTime = 0.f;
+				}
 			}
 		}
 	}
