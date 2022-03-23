@@ -10,7 +10,7 @@ CAnimator::CAnimator()
 
 CAnimator::CAnimator(const CAnimator& pOther)
 {
-	for (map<wstring, CAnimation*>::const_iterator iter = pOther.m_mapAni.begin(); iter != pOther.m_mapAni.end(); iter++)
+	for (map<wstring, CAnimation*>::const_iterator iter = pOther.m_mapAnim.begin(); iter != pOther.m_mapAnim.end(); iter++)
 	{
 		CAnimation* newAni = new CAnimation(*iter->second);
 		m_mapAnim.insert(make_pair(newAni->GetName(), newAni));
