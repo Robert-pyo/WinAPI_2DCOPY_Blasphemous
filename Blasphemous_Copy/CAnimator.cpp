@@ -8,6 +8,18 @@ CAnimator::CAnimator()
 	m_pCurAnim	= nullptr;
 }
 
+CAnimator::CAnimator(const CAnimator& pOther)
+{
+	for (map<wstring, CAnimation*>::const_iterator iter = pOther.m_mapAni.begin(); iter != pOther.m_mapAni.end(); iter++)
+	{
+		CAnimation* newAni = new CAnimation(*iter->second);
+		m_mapAnim.insert(make_pair(newAni->GetName(), newAni));
+		newAni->m_pAnimator = this;
+	}
+	m_pCurAnim = FindAnimation(pOther.m_pCurAnim->GetName());
+	m_pOwner = nullptr;
+}
+
 CAnimator::~CAnimator()
 {
 	// 등록되어있던 애니메이션들 지워주기

@@ -28,6 +28,7 @@ private:
 
 public:
 	CAnimation();
+	CAnimation(const CAnimation& pOther);
 	~CAnimation();
 
 public:

@@ -16,6 +16,21 @@ CAnimation::CAnimation()
 	m_bIsAnimDone	= false;
 }
 
+CAnimation::CAnimation(const CAnimation& pOther)
+{
+	m_strAnimName = pOther.m_strAnimName;
+	for (int i = 0; i < pOther.m_vecAnimFrm.size(); i++)
+	{
+		m_vecAnimFrm.push_back(pOther.m_vecAnimFrm[i]);
+	}
+	m_iCurFrm = pOther.m_iCurFrm;
+	m_fAccTime = pOther.m_fAccTime;
+	m_bReverse = pOther.m_bReverse;
+
+	m_pAnimator = nullptr;
+	m_pImg = pOther.m_pImg;
+}
+
 CAnimation::~CAnimation()
 {
 }

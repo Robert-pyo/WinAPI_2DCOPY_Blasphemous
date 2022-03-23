@@ -14,6 +14,7 @@ private:
 
 public:
 	CAnimator();
+	CAnimator(const CAnimator& pOther);
 	~CAnimator();
 
 	void update();

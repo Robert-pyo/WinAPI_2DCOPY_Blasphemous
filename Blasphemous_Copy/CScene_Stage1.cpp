@@ -133,13 +133,14 @@ void CScene_Stage1::Enter()
 
 void CScene_Stage1::Exit()
 {
-	/*for (UINT i = 0; i < (UINT)GROUP_GAMEOBJ::SIZE; ++i)
+	for (UINT i = 0; i < (UINT)GROUP_GAMEOBJ::SIZE; ++i)
 	{
 		if ((GROUP_GAMEOBJ)i == GROUP_GAMEOBJ::PLAYER || (GROUP_GAMEOBJ)i == GROUP_GAMEOBJ::ENEMY
-			|| (GROUP_GAMEOBJ)i == GROUP_GAMEOBJ::PLAYER_ATT_FX) continue;
+			|| (GROUP_GAMEOBJ)i == GROUP_GAMEOBJ::PLAYER_ATT_FX || (GROUP_GAMEOBJ)i == GROUP_GAMEOBJ::ENEMY_ATT_FX
+			|| (GROUP_GAMEOBJ)i == GROUP_GAMEOBJ::WEAPON) continue;
 
 		ClearGroup((GROUP_GAMEOBJ)i);
-	}*/
+	}
 
 	CPlayer::GetPlayer()->SetPos(fPoint(CPlayer::GetPlayer()->GetPos().x - 100.f, CPlayer::GetPlayer()->GetPos().y));
 
