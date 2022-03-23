@@ -127,6 +127,8 @@ void CEnemy::Hit(CGameObject* pPlayer)
 	CPlayer* player = (CPlayer*)pPlayer;
 	m_tEnmInfo.fHP -= player->GetPlayerAbility().fAtt;
 
+	if (GetAI()->GetCurState()->GetState() == ENEMY_STATE::DEAD) return;
+
 	if (m_tEnmInfo.fHP <= 0.f)
 	{
 		Die();

@@ -40,11 +40,11 @@ void CState_Hit::update()
 	fAttAccTime += fDeltaTime;
 	if (GetEnemy()->GetEnemyInfo().fAttDelayTime <= fAttAccTime)
 	{
-		/*if (fLength < GetEnemy()->GetEnemyInfo().fAttRange && GetEnemy()->GetEnemyInfo().iAttCount == 0)
+		if (fLength < GetEnemy()->GetEnemyInfo().fAttRange && GetEnemy()->GetEnemyInfo().iAttCount == 0)
 		{
 			ChangeAIState(GetAI(), ENEMY_STATE::ATTACK);
 			fHitAccTime = 0.f;
-		}*/
+		}
 	}
 }
 
