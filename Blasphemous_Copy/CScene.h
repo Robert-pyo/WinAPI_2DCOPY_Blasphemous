@@ -55,7 +55,6 @@ public:
 	// 현재 씬에 게임 오브젝트 추가
 	void AddObject(CGameObject* pGameObj, GROUP_GAMEOBJ type);
 
-	void CreateTile(UINT xSize, UINT ySize);
 	void LoadTile(const wstring& strPath);
 
 	void ClearGroup(GROUP_GAMEOBJ group);

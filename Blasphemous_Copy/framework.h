@@ -57,6 +57,17 @@ enum class GROUP_SCENE
 	SIZE,
 };
 
+enum class GROUP_TILE
+{
+	NONE,
+	GROUND,
+	PLATFORM,
+	WALL,
+	SLOPE,
+
+	SIZE,
+};
+
 //========================================
 //##			이벤트 타입 그룹			##
 //========================================

@@ -330,6 +330,9 @@
     <ClInclude Include="CEffect_Spear.h">
       <Filter>Object\Effect</Filter>
     </ClInclude>
+    <ClInclude Include="CTileButton.h">
+      <Filter>Object\UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CCore.cpp">
@@ -481,6 +484,9 @@
     </ClCompile>
     <ClCompile Include="CEffect_Spear.cpp">
       <Filter>Object\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="CTileButton.cpp">
+      <Filter>Object\UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

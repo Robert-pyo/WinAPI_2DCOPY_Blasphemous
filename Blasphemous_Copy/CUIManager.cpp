@@ -15,9 +15,6 @@ CUIManager::~CUIManager()
 void CUIManager::update()
 {
 	m_pFocusedUI = GetFocusedUI();
-
-	if (nullptr == m_pFocusedUI) return;
-
 	CUI* pTargetUI = GetTargetUI(m_pFocusedUI);
 
 	if (nullptr != pTargetUI)
@@ -46,7 +43,7 @@ void CUIManager::update()
 void CUIManager::SetFocusedUI(CUI* pUI)
 {
 	// 捞固 pUI啊 器目教等 UI老 版快
-	if (m_pFocusedUI == pUI || m_pFocusedUI == nullptr || pUI == nullptr)
+	if (m_pFocusedUI == pUI || m_pFocusedUI == nullptr)
 	{
 		m_pFocusedUI = pUI;
 		return;
@@ -81,6 +78,9 @@ CUI* CUIManager::GetTargetUI(CUI* pParentUI)
 	list<CUI*> pUIList;
 	vector<CUI*> vecNoneTarget;
 	CUI* pTargetUI = nullptr;
+
+	if (nullptr == pParentUI)
+		return nullptr;
 
 	pUIList.push_back(pParentUI);
 

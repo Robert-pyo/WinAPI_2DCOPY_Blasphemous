@@ -70,7 +70,6 @@ void CUI::finalUpdate()
 void CUI::render()
 {
 	fPoint fptFinalPos = GetFinalPos();
-	fPoint fptPos	= GetPos();
 	fPoint fptScale = GetScale();
 
 	// 카메라 영향을 받는다면 렌더링 좌표를 카메라 기준으로
@@ -81,20 +80,34 @@ void CUI::render()
 
 	if (m_bLBtnDown)
 	{
+		CRenderManager::GetInst()->RenderFillRectangle(
+			fptFinalPos.x,
+			fptFinalPos.y,
+			fptFinalPos.x + fptScale.x,
+			fptFinalPos.y + fptScale.y,
+			D2D1::ColorF(255, 255, 255)
+		);
 		CRenderManager::GetInst()->RenderRectangle(
-			fptPos.x,
-			fptPos.y,
-			fptPos.x + fptScale.x,
-			fptPos.y + fptScale.y,
+			fptFinalPos.x,
+			fptFinalPos.y,
+			fptFinalPos.x + fptScale.x,
+			fptFinalPos.y + fptScale.y,
 			RGB(0, 255, 0));
 	}
 	else
 	{
+		CRenderManager::GetInst()->RenderFillRectangle(
+			fptFinalPos.x,
+			fptFinalPos.y,
+			fptFinalPos.x + fptScale.x,
+			fptFinalPos.y + fptScale.y,
+			D2D1::ColorF(255, 255, 255)
+		);
 		CRenderManager::GetInst()->RenderRectangle(
-			fptPos.x,
-			fptPos.y,
-			fptPos.x + fptScale.x,
-			fptPos.y + fptScale.y,
+			fptFinalPos.x,
+			fptFinalPos.y,
+			fptFinalPos.x + fptScale.x,
+			fptFinalPos.y + fptScale.y,
 			RGB(0, 0, 0));
 	}
 
@@ -180,7 +193,6 @@ void CUI::AddChild(CUI* pUI)
 {
 	m_vecChildUI.push_back(pUI);
 	pUI->m_pParentUI = this;
-	pUI->SetCamAffected(this->m_bCamAffected);
 }
 
 void CUI::LoadImg(const wstring& strKey, const wstring& strRelativePath)

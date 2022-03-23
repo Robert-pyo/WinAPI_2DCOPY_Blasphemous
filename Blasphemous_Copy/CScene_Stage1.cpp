@@ -48,12 +48,22 @@ CScene_Stage1::~CScene_Stage1()
 void CScene_Stage1::update()
 {
 	CScene::update();
+
+	if (PRESS_KEY_DOWN(VK_TAB))
+	{
+		ChangeToNextScene(GROUP_SCENE::TOOL);
+	}
 }
 
 void CScene_Stage1::Enter()
 {
 	CSoundManager::GetInst()->AddSound(L"Tutorial_BGM", L"sound\\BGM\\Churches Field_MASTER.wav", true);
 	CSoundManager::GetInst()->Play(L"Tutorial_BGM");
+
+	// 타일 로딩
+	wstring path = CPathManager::GetInst()->GetContentPath();
+	path += L"texture\\Map\\Tileset\\Tilemaps\\GroundTiles.tile";
+	LoadTile(path);
 
 	// Background 생성
 	CBackground* background = new CBackground;

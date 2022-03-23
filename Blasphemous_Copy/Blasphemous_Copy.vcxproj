@@ -193,6 +193,7 @@
     <ClInclude Include="CState_Hit.h" />
     <ClInclude Include="CState_Idle.h" />
     <ClInclude Include="CState_Trace.h" />
+    <ClInclude Include="CTileButton.h" />
     <ClInclude Include="CWarpPoint.h" />
     <ClInclude Include="CWeapon.h" />
     <ClInclude Include="CTexture.h" />
@@ -256,6 +257,7 @@
     <ClCompile Include="CState_Hit.cpp" />
     <ClCompile Include="CState_Idle.cpp" />
     <ClCompile Include="CState_Trace.cpp" />
+    <ClCompile Include="CTileButton.cpp" />
     <ClCompile Include="CWarpPoint.cpp" />
     <ClCompile Include="CWeapon.cpp" />
     <ClCompile Include="CTexture.cpp" />

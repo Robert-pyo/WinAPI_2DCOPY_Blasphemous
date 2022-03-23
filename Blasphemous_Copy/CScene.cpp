@@ -4,6 +4,7 @@
 #include "CTile.h"
 #include "CTexture.h"
 #include "CUI.h"
+#include "CCollider.h"
 
 CScene::CScene()
 {
@@ -87,29 +88,9 @@ void CScene::render()
 void CScene::render_tile()
 {
 	const vector<CGameObject*>& vecTile = GetObjGroup(GROUP_GAMEOBJ::TILE);
-
-	// 보이는 타일 영역만 그려주기
-
-	fPoint fptCamLook = CCameraManager::GetInst()->GetLookAt();
-	fPoint fptLeftTop = fptCamLook - fPoint(WINSIZE_X, WINSIZE_Y) / 2.f;
-
-	int iLeftTopX = (int)fptLeftTop.x / CTile::SIZE_TILE;
-	int iLeftTopY = (int)fptLeftTop.y / CTile::SIZE_TILE;
-
-	int iClientWidth = (int)WINSIZE_X / CTile::SIZE_TILE;
-	int iClientHeight = (int)WINSIZE_Y / CTile::SIZE_TILE;
-
-	for (int row = iLeftTopY; row <= (iLeftTopY + iClientHeight); ++row)
+	for (UINT i = 0; i < vecTile.size(); i++)
 	{
-		for (int col = iLeftTopX; col <= (iLeftTopX + iClientWidth); ++col)
-		{
-			// 타일이 없는경우 무시
-			// 가로 타일 전체 갯수와 세로 타일 전체 갯수가 row와 col보다 적을 때
-			if (row < 0 || m_iTileY <= (UINT)row || col < 0 || m_iTileX <= (UINT)col) continue;
-
-			int iIndex = col + row * m_iTileX;
-			vecTile[iIndex]->render();
-		}
+		vecTile[i]->render();
 	}
 }
 
@@ -232,56 +213,46 @@ vector<CGameObject*>& CScene::GetUIGroup()
 	return m_arrObj[(int)GROUP_GAMEOBJ::UI];
 }
 
-void CScene::CreateTile(UINT xSize, UINT ySize)
-{
-	// 이미 생성했던 타일이 있다면 지워주기
-	ClearGroup(GROUP_GAMEOBJ::TILE);
-
-	m_iTileX = xSize;
-	m_iTileY = ySize;
-
-	CD2DImage* pImg = CResourceManager::GetInst()->LoadD2DImage(L"Tile", L"texture\\tile\\tilemap.bmp");
-
-	// Tile 생성
-	for (UINT i = 0; i < m_iTileY; ++i)
-	{
-		for (UINT j = 0; j < m_iTileX; ++j)
-		{
-			CTile* pTile = new CTile();
-			pTile->SetPos(fPoint((float)(j * CTile::SIZE_TILE), (float)(i * CTile::SIZE_TILE)));
-			pTile->SetTexture(pImg);
-			AddObject(pTile, GROUP_GAMEOBJ::TILE);
-		}
-	}
-}
-
 void CScene::LoadTile(const wstring& strPath)
 {
-	wstring strFilePath = strPath;
+	ClearGroup(GROUP_GAMEOBJ::TILE);
 
 	FILE* pFile = nullptr;
 
-	// 파일을 여는 함수
-	_wfopen_s(&pFile, strFilePath.c_str(), L"rb");		// w : write, b : binary
-	assert(pFile);	// 파일을 열지 못했다면 assert
+	_wfopen_s(&pFile, strPath.c_str(), L"rb");      // w : write, b : binary
+	assert(pFile);
 
-	UINT xCount = GetTileX();
-	UINT yCount = GetTileY();
+	UINT xCount = 0;
+	UINT yCount = 0;
+	UINT tileCount = 0;
 
-	// 파일에 쓰는 함수
 	fread(&xCount, sizeof(UINT), 1, pFile);
 	fread(&yCount, sizeof(UINT), 1, pFile);
+	fread(&tileCount, sizeof(UINT), 1, pFile);
 
-	CreateTile(xCount, yCount);
+	CD2DImage* pImg = CResourceManager::GetInst()->LoadD2DImage(L"Tile", L"texture\\Map\\Tileset\\tilemap.bmp");
 
-	const vector<CGameObject*>& vecTile = GetObjGroup(GROUP_GAMEOBJ::TILE);
-
-	for (UINT i = 0; i < vecTile.size(); ++i)
+	for (UINT i = 0; i < tileCount; i++)
 	{
-		((CTile*)vecTile[i])->Load(pFile);
+		CTile* newTile = new CTile;
+		newTile->Load(pFile);
+		newTile->SetD2DImage(pImg);
+		newTile->SetPos(fPoint((float)(newTile->GetX() * CTile::SIZE_TILE), (float)(newTile->GetY() * CTile::SIZE_TILE)));
+
+		if (GROUP_TILE::SLOPE == newTile->GetGroup())
+		{
+			// TODO : OBB 충돌체 추가
+		}
+		else if (GROUP_TILE::NONE != newTile->GetGroup())
+		{
+			newTile->CreateCollider();
+			newTile->GetCollider()->SetScale(fPoint(CTile::SIZE_TILE, CTile::SIZE_TILE));
+			newTile->GetCollider()->SetOffsetPos(fPoint(CTile::SIZE_TILE / 2.f, CTile::SIZE_TILE / 2.f));
+		}
+
+		AddObject(newTile, GROUP_GAMEOBJ::TILE);
 	}
 
-	// 파일 닫기
 	fclose(pFile);
 }
 

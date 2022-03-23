@@ -72,7 +72,11 @@ void CGameObject::component_render()
 		if (nullptr != m_pCollider)
 		{
 			m_pCollider->render();
-			debug_render();
+			
+			if (GetObjGroup() != GROUP_GAMEOBJ::TILE)
+			{
+				debug_render();
+			}
 		}
 	}
 }

@@ -20,6 +20,7 @@ private:
 	// UI가 이전 프레임에 눌렸었다면 true, 아니라면 false
 	bool m_bLBtnDown;
 
+protected:
 	CD2DImage*	m_pImg;
 
 	wstring		m_strText;

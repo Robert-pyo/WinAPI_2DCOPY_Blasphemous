@@ -22,22 +22,33 @@ void CButtonUI::render()
 	if (GetText() != L"")
 	{
 		CRenderManager::GetInst()->RenderText(GetText(),
-			GetPos().x - GetScale().x,
-			GetPos().y - GetScale().y + 2.f,
-			GetPos().x + GetScale().x * 2.f,
-			(GetPos().y + GetScale().y * 2.f) + 2.f,
+			GetFinalPos().x - GetScale().x,
+			GetFinalPos().y - GetScale().y + 2.f,
+			GetFinalPos().x + GetScale().x * 2.f,
+			(GetFinalPos().y + GetScale().y * 2.f) + 2.f,
 			30, GetTxtShadowColor());
 
 		CRenderManager::GetInst()->RenderText(GetText(),
-			GetPos().x - GetScale().x,
-			GetPos().y - GetScale().y,
-			GetPos().x + GetScale().x * 2.f,
-			GetPos().y + GetScale().y * 2.f,
+			GetFinalPos().x - GetScale().x,
+			GetFinalPos().y - GetScale().y,
+			GetFinalPos().x + GetScale().x * 2.f,
+			GetFinalPos().y + GetScale().y * 2.f,
 			30, GetTextColor());
 	}
 	else
 	{
 		CUI::render();
+	}
+
+	if (nullptr != m_pImg)
+	{
+		CRenderManager::GetInst()->RenderImage(
+			m_pImg,
+			GetFinalPos().x,
+			GetFinalPos().y,
+			GetFinalPos().x + GetScale().x,
+			GetFinalPos().y + GetScale().y
+		);
 	}
 }
 
@@ -63,6 +74,16 @@ void CButtonUI::MouseLBtnClicked()
 	{
 		m_pFunc(m_pParam1, m_pParam2);
 	}
+}
+
+void CButtonUI::SetImage(CD2DImage* img)
+{
+	m_pImg = img;
+}
+
+void CButtonUI::SetText(const wstring& str)
+{
+	m_strText = str;
 }
 
 void CButtonUI::SetClickCallBack(BTN_FUNC pFunc, DWORD_PTR param1, DWORD_PTR param2)
