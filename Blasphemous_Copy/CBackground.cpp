@@ -68,10 +68,10 @@ void CBackground::render()
 	{
 		CRenderManager::GetInst()->RenderFrame(
 			m_pImg,
-			fptRenderPos.x,
-			fptRenderPos.y - WINSIZE_Y / 2.f,
-			fptRenderPos.x + fptScale.x * 2.f,
-			fptRenderPos.y + WINSIZE_Y / 1.5f,
+			fptRenderPos.x - fptScale.x,
+			fptRenderPos.y - fptScale.y,
+			fptRenderPos.x + fptScale.x,
+			fptRenderPos.y + fptScale.y,
 			m_fptTargetTexLT.x,
 			m_fptTargetTexLT.y,
 			m_fptTargetTexLT.x + fptScale.x,

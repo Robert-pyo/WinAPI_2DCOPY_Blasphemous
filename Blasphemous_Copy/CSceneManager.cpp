@@ -4,6 +4,7 @@
 #include "CScene_Stage1.h"
 #include "CScene_Tool.h"
 #include "CScene_Title.h"
+#include "CScene_Tutorial.h"
 
 CSceneManager::CSceneManager()
 {
@@ -62,7 +63,10 @@ void CSceneManager::init()
 	m_arrScene[(int)GROUP_SCENE::TITLE] = new CScene_Title();
 	m_arrScene[(int)GROUP_SCENE::TITLE]->SetName(L"Title");
 
-	m_pCurScene = m_arrScene[(int)GROUP_SCENE::STAGE_01];
+	m_arrScene[(int)GROUP_SCENE::TUTORIAL] = new CScene_Tutorial();
+	m_arrScene[(int)GROUP_SCENE::TUTORIAL]->SetName(L"Tutorial");
+
+	m_pCurScene = m_arrScene[(int)GROUP_SCENE::TUTORIAL];
 	m_pCurScene->Enter();
 }
 

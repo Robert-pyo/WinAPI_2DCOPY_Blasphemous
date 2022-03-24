@@ -3,15 +3,17 @@
 
 class CD2DImage;
 
-class CPlatform : public CGameObject
+class CMap : public CGameObject
 {
+public:
 	CD2DImage* m_pImg;
 
-public:
-	CPlatform();
-	virtual ~CPlatform();
-	virtual CPlatform* Clone();
+	CMap();
+	~CMap();
 
+	void Load(wstring strKey, wstring strPath);
+
+	virtual CMap* Clone();
 	virtual void update();
 	virtual void render();
 };

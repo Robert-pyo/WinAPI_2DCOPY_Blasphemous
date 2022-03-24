@@ -37,6 +37,11 @@ void CTimeManager::update()
 		updateCount = 0;
 		updateOneSecond = 0;
 	}
+
+	if (m_dDeltaTime > 1.f / 60.f)
+	{
+		m_dDeltaTime = 1.f / 60.f;
+	}
 }
 
 void CTimeManager::init()

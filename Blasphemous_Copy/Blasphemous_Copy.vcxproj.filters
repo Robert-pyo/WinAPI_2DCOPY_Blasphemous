@@ -91,9 +91,6 @@
     <Filter Include="Object\UI">
       <UniqueIdentifier>{b09f0863-ae12-40ea-ac37-f8ba442c8a7a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Object\Platform">
-      <UniqueIdentifier>{4690b2f9-7a8f-4064-b01d-35ed3f811a36}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Scene">
       <UniqueIdentifier>{0aaf5b87-3026-45be-bc35-9a564a9f0019}</UniqueIdentifier>
     </Filter>
@@ -156,6 +153,15 @@
     </Filter>
     <Filter Include="Object\WarpPoint">
       <UniqueIdentifier>{35caece4-8c49-4eec-82fd-ca9a160d95b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\UI\HUD">
+      <UniqueIdentifier>{44a3085a-ee8e-467a-8392-e62a5404797d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\UI\HUD\PlayerInfo">
+      <UniqueIdentifier>{f8e4930a-77c9-4b90-9377-a59341e9e45e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Ground">
+      <UniqueIdentifier>{4690b2f9-7a8f-4064-b01d-35ed3f811a36}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -261,8 +267,8 @@
     <ClInclude Include="CSoundManager.h">
       <Filter>Engine\Manager\SoundManager</Filter>
     </ClInclude>
-    <ClInclude Include="CPlatform.h">
-      <Filter>Object\Platform</Filter>
+    <ClInclude Include="CGround.h">
+      <Filter>Object\Ground</Filter>
     </ClInclude>
     <ClInclude Include="Blasphemous_Copy.h">
       <Filter>헤더 파일</Filter>
@@ -332,6 +338,18 @@
     </ClInclude>
     <ClInclude Include="CTileButton.h">
       <Filter>Object\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="CHUD.h">
+      <Filter>Object\UI\HUD</Filter>
+    </ClInclude>
+    <ClInclude Include="CHUD_PlayerInfo.h">
+      <Filter>Object\UI\HUD\PlayerInfo</Filter>
+    </ClInclude>
+    <ClInclude Include="CScene_Tutorial.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="CMap.h">
+      <Filter>Object\Ground</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -416,8 +434,8 @@
     <ClCompile Include="CSoundManager.cpp">
       <Filter>Engine\Manager\SoundManager</Filter>
     </ClCompile>
-    <ClCompile Include="CPlatform.cpp">
-      <Filter>Object\Platform</Filter>
+    <ClCompile Include="CGround.cpp">
+      <Filter>Object\Ground</Filter>
     </ClCompile>
     <ClCompile Include="Blasphemous_Copy.cpp">
       <Filter>소스 파일</Filter>
@@ -487,6 +505,18 @@
     </ClCompile>
     <ClCompile Include="CTileButton.cpp">
       <Filter>Object\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="CHUD.cpp">
+      <Filter>Object\UI\HUD</Filter>
+    </ClCompile>
+    <ClCompile Include="CHUD_PlayerInfo.cpp">
+      <Filter>Object\UI\HUD\PlayerInfo</Filter>
+    </ClCompile>
+    <ClCompile Include="CScene_Tutorial.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="CMap.cpp">
+      <Filter>Object\Ground</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

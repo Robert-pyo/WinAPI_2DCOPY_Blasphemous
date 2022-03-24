@@ -62,7 +62,10 @@ void CUI::finalUpdate()
 		m_fptFinalPos += fptParentPos;
 	}
 
-	MouseOnCheck();
+	if (!CUIManager::GetInst()->IsKeyControlled())
+	{
+		MouseOnCheck();
+	}
 
 	finalUpdate_child();
 }

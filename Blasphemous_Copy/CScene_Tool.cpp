@@ -90,6 +90,8 @@ void CScene_Tool::Enter()
 	CCameraManager::GetInst()->SetLookAt(fPoint(WINSIZE_X / 2.f, WINSIZE_Y / 2.f));
 	CCameraManager::GetInst()->FollowTargetObj(nullptr, false, false);
 	CCameraManager::GetInst()->SetBoundary(false);
+
+	CUIManager::GetInst()->SetKeyControl(false);
 }
 
 void CScene_Tool::Exit()

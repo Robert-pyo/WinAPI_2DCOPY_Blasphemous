@@ -40,12 +40,13 @@ struct tPlayerAbility
 	float fMaxMp;
 	float fCurMp;
 
-	UINT  iHpPotionCount;
+	USHORT sHpPotionCount;
+	USHORT sMaxPotionCount;
 	float fHpRecoveryAmount;
 
 	float fAtt;
 
-	USHORT  sMoney;
+	UINT  sMoney;
 };
 
 class CPlayer : public CGameObject
@@ -114,7 +115,7 @@ public:
 
 public:
 	void Jump();
-	void Dash();
+	void Dodge();
 
 	void Hit(CGameObject* other);
 
@@ -130,6 +131,9 @@ public:
 	void SetWeapon(CPlayerSword* weapon) { m_pSword = weapon; } // TODO : 필요성 검토
 
 	bool IsInvincible() { return m_bIsInvincible; }
+
+private:
+	void InitDodgeState();
 
 public:
 	virtual void OnCollision(CCollider* target) override;

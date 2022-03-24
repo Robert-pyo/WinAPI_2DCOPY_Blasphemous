@@ -37,6 +37,12 @@ void CScene_Title::Enter()
 	// 시작 시 커서 없애기
 	ShowCursor(false);
 
+	CCameraManager::GetInst()->FadeIn(2.f);
+
+	CCameraManager::GetInst()->SetLookAt(fPoint(WINSIZE_X / 2.f, WINSIZE_Y / 2.f));
+	CCameraManager::GetInst()->FollowTargetObj(nullptr, false, false);
+	CCameraManager::GetInst()->SetBoundary(false);
+
 	CSoundManager::GetInst()->AddSound(L"ChangeSelection", L"sound\\SoundEffects\\UI\\CHANGE_SELECTION.wav", false);
 	CSoundManager::GetInst()->AddSound(L"ChangeTab", L"sound\\SoundEffects\\UI\\CHANGE_TAB.wav", false);
 	CSoundManager::GetInst()->AddSound(L"MainMenu_BGM", L"sound\\SoundEffects\\UI\\MainMenu_BGM\\Stairs_MASTER.wav", false);

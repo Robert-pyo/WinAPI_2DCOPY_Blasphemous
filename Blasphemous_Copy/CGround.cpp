@@ -1,9 +1,9 @@
 #include "framework.h"
-#include "CPlatform.h"
+#include "CGround.h"
 #include "CTexture.h"
 #include "CCollider.h"
 
-CPlatform::CPlatform()
+CGround::CGround()
 {
 	m_pImg = CResourceManager::GetInst()->LoadD2DImage(L"Platform_Floor", L"texture\\Map\\TutorialScene\\Floor\\brotherhood_floor.png");
 
@@ -15,20 +15,20 @@ CPlatform::CPlatform()
 	GetCollider()->SetScale(fPoint(GetScale().x * 2.f, GetScale().y - 10.f));
 }
 
-CPlatform::~CPlatform()
+CGround::~CGround()
 {
 }
 
-CPlatform* CPlatform::Clone()
+CGround* CGround::Clone()
 {
-	return new CPlatform(*this);
+	return new CGround(*this);
 }
 
-void CPlatform::update()
+void CGround::update()
 {
 }
 
-void CPlatform::render()
+void CGround::render()
 {
 	fPoint fptRenderPos = CCameraManager::GetInst()->GetRenderPos(GetPos());
 

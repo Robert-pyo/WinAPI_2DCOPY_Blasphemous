@@ -52,7 +52,7 @@ enum class GROUP_SCENE
 	TOOL,
 	TITLE,
 	STAGE_01,
-	STAGE_02,
+	TUTORIAL,
 
 	SIZE,
 };

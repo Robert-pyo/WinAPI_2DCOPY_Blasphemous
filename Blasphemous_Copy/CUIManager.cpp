@@ -6,6 +6,7 @@
 CUIManager::CUIManager()
 {
 	m_pFocusedUI = nullptr;
+	m_bIsKeyControl = true;
 }
 
 CUIManager::~CUIManager()

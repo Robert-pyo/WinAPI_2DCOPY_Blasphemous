@@ -1,7 +1,7 @@
 #include "framework.h"
 #include "CScene_Stage1.h"
 #include "CBackground.h"
-#include "CPlatform.h"
+#include "CGround.h"
 #include "CPrayerTable.h"
 #include "CPlayer.h"
 #include "CEnemy.h"
@@ -88,22 +88,22 @@ void CScene_Stage1::Enter()
 
 
 	// ¹Ù´Ú »ý¼º
-	CPlatform* floor1 = new CPlatform;
+	CGround* floor1 = new CGround;
 	floor1->SetPos(fPoint(background_bigDoor->GetPos().x + background_bigDoor->GetScale().x * 2.f + floor1->GetScale().x, floor1->GetPos().y));
 	floor1->SetName(L"Floor1");
 	AddObject(floor1, GROUP_GAMEOBJ::FLOOR);
 
-	CPlatform* floor2 = floor1->Clone();
+	CGround* floor2 = floor1->Clone();
 	floor2->SetPos(fPoint((floor1->GetPos().x + floor1->GetScale().x * 2.f - 1.f), floor1->GetPos().y));
 	floor2->SetName(L"Floor2");
 	AddObject(floor2, GROUP_GAMEOBJ::FLOOR);
 
-	CPlatform* floor3 = floor1->Clone();
+	CGround* floor3 = floor1->Clone();
 	floor3->SetPos(fPoint(floor1->GetPos().x - floor3->GetScale().x * 2.f, floor1->GetPos().y));
 	floor3->SetName(L"Floor3");
 	AddObject(floor3, GROUP_GAMEOBJ::FLOOR);
 
-	CPlatform* floor4 = floor1->Clone();
+	CGround* floor4 = floor1->Clone();
 	floor4->SetPos(fPoint((floor2->GetPos().x + floor1->GetScale().x * 2.f), floor1->GetPos().y));
 	floor4->SetName(L"Floor4");
 	AddObject(floor4, GROUP_GAMEOBJ::FLOOR);
