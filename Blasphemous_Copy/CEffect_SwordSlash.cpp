@@ -6,6 +6,7 @@
 #include "CEnemy.h"
 #include "CPlayer.h"
 #include "CPlayerSword.h"
+#include <time.h>
 
 CEffect_SwordSlash::CEffect_SwordSlash()
 {
@@ -163,5 +164,28 @@ void CEffect_SwordSlash::OnCollisionEnter(CCollider* other)
 		enemy->Hit(user);
 
 		user->SetAttackCount(user->GetAttackCount() + 1);
+
+		srand(time(NULL));
+
+		USHORT randNum = rand() % 4;
+
+		switch (randNum)
+		{
+		case 0:
+			CSoundManager::GetInst()->Play(L"Enemy_Hit1");
+			break;
+		case 1:
+			CSoundManager::GetInst()->Play(L"Enemy_Hit2");
+			break;
+		case 2:
+			CSoundManager::GetInst()->Play(L"Enemy_Hit3");
+			break;
+		case 3:
+			CSoundManager::GetInst()->Play(L"Enemy_Hit4");
+			break;
+		default:
+			assert(nullptr);
+			break;
+		}
 	}
 }

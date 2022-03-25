@@ -22,12 +22,12 @@ void CScene_Tutorial::update()
 {
 	CScene::update();
 
-	/*if (PRESS_KEY_DOWN(VK_TAB))
+	if (PRESS_KEY_DOWN(VK_TAB))
 	{
 		ChangeToNextScene(GROUP_SCENE::TOOL);
 	}
 
-	if (PRESS_KEY('A'))
+	/*if (PRESS_KEY('A'))
 	{
 		CCameraManager::GetInst()->Scroll(fVector2D(-1, 0), 500.f);
 	}

@@ -190,6 +190,7 @@
     <ClInclude Include="CSingleton.h" />
     <ClInclude Include="CSound.h" />
     <ClInclude Include="CSoundManager.h" />
+    <ClInclude Include="CSpawnPoint.h" />
     <ClInclude Include="CSpear.h" />
     <ClInclude Include="CState.h" />
     <ClInclude Include="CState_Attack.h" />
@@ -206,6 +207,8 @@
     <ClInclude Include="CUI.h" />
     <ClInclude Include="CUIManager.h" />
     <ClInclude Include="framework.h" />
+    <ClInclude Include="json\json-forwards.h" />
+    <ClInclude Include="json\json.h" />
     <ClInclude Include="Logger.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="struct.h" />
@@ -258,6 +261,7 @@
     <ClCompile Include="CScene_Tutorial.cpp" />
     <ClCompile Include="CSound.cpp" />
     <ClCompile Include="CSoundManager.cpp" />
+    <ClCompile Include="CSpawnPoint.cpp" />
     <ClCompile Include="CSpear.cpp" />
     <ClCompile Include="CState.cpp" />
     <ClCompile Include="CState_Attack.cpp" />
@@ -276,6 +280,10 @@
     <ClCompile Include="Blasphemous_Copy.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="jsoncpp.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

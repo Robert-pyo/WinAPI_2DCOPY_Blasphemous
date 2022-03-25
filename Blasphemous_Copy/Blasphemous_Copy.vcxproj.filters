@@ -163,6 +163,9 @@
     <Filter Include="Object\Ground">
       <UniqueIdentifier>{4690b2f9-7a8f-4064-b01d-35ed3f811a36}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Object\SpawnPoint">
+      <UniqueIdentifier>{808259de-6147-4b8d-93be-3114c953aafe}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -351,6 +354,15 @@
     <ClInclude Include="CMap.h">
       <Filter>Object\Ground</Filter>
     </ClInclude>
+    <ClInclude Include="CSpawnPoint.h">
+      <Filter>Object\SpawnPoint</Filter>
+    </ClInclude>
+    <ClInclude Include="json\json-forwards.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="json\json.h">
+      <Filter>Util</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CCore.cpp">
@@ -517,6 +529,12 @@
     </ClCompile>
     <ClCompile Include="CMap.cpp">
       <Filter>Object\Ground</Filter>
+    </ClCompile>
+    <ClCompile Include="CSpawnPoint.cpp">
+      <Filter>Object\SpawnPoint</Filter>
+    </ClCompile>
+    <ClCompile Include="jsoncpp.cpp">
+      <Filter>Util</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

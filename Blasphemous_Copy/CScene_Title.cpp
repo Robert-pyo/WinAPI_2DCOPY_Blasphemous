@@ -18,7 +18,7 @@ CScene_Title::~CScene_Title()
 
 void ButtonStartClicked(DWORD_PTR param1, DWORD_PTR param2)
 {
-	ChangeToNextScene(GROUP_SCENE::STAGE_01);
+	ChangeToNextScene(GROUP_SCENE::TUTORIAL);
 }
 
 void ButtonQuitClicked(DWORD_PTR param1, DWORD_PTR param2)
@@ -36,7 +36,7 @@ void CScene_Title::update()
 void CScene_Title::Enter()
 {
 	// 시작 시 커서 없애기
-	ShowCursor(false);
+	//ShowCursor(false);
 
 	CCameraManager::GetInst()->FadeIn(2.f);
 

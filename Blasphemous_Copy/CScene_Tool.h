@@ -11,11 +11,15 @@ private:
 
 	HWND m_hWnd;
 	UINT m_iIdx;
+	HWND m_hTileInfoWnd;
+	UINT m_iInfoWndCount;
 	GROUP_TILE m_gTile;
 	float m_velocity;
 
 	UINT m_iTileX;
 	UINT m_iTileY;
+
+	fPoint m_fptSelectedPos;
 
 public:
 	CScene_Tool();
@@ -27,11 +31,17 @@ public:
 	virtual void Enter();
 	virtual void Exit();
 
+public:
+	const UINT  GetInfoWndCount() { return m_iInfoWndCount; }
+	void		SetInfoWndCount(const UINT iCount) { m_iInfoWndCount = iCount; }
+
+public:
 	void SetIdx(UINT idx);
 	void SetTileIdx();		// 마우스와 상호작용해서 타일을 바꿈.
 	void SetGroup(GROUP_TILE group);
 	void SetTileGroup();
 
+public:
 	void CreateTile(UINT xSize, UINT ySize);
 	void SaveTile(const wstring& strPath);
 	void LoadTile(const wstring& strPath);
@@ -41,6 +51,8 @@ public:
 
 	void ClickTileGroup(CButtonUI* button);
 	void ClickTile(CTileButton* button);
+
+	const fPoint& GetSelectedPos() { return m_fptSelectedPos; }
 
 private:
 	void CreateTilePanel();

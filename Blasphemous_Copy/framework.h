@@ -65,6 +65,7 @@ enum class GROUP_TILE
 	PLATFORM,
 	WALL,
 	SLOPE,
+	SPAWNPOINT,
 
 	SIZE,
 };

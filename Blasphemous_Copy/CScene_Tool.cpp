@@ -9,8 +9,11 @@
 #include "CPanelUI.h"
 #include "CButtonUI.h"
 #include "CTileButton.h"
+#include <fstream>
+#include "json/json.h"
 
 INT_PTR CALLBACK TileWinProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam);
+INT_PTR CALLBACK TileInfoWinProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam);
 
 CScene_Tool::CScene_Tool()
 {
@@ -18,10 +21,13 @@ CScene_Tool::CScene_Tool()
 
 	m_hWnd = 0;
 	m_iIdx = 0;
+	m_hTileInfoWnd = 0;
+	m_iInfoWndCount = 0;
 	m_gTile = GROUP_TILE::NONE;
 	m_velocity = 500;
 	m_iTileX = 0;
 	m_iTileY = 0;
+	m_fptSelectedPos = {};
 }
 
 CScene_Tool::~CScene_Tool()
@@ -125,6 +131,7 @@ void CScene_Tool::SetTileIdx()
 		}
 
 		UINT iIdx = iRow * iTileX + iCol;
+		m_fptSelectedPos = fPoint(iCol, iRow);
 		const vector<CGameObject*>& vecTile = GetObjGroup(GROUP_GAMEOBJ::TILE);
 		if (PRESS_KEY(VK_LBUTTON))
 			((CTile*)vecTile[iIdx])->SetImgIdx(m_iIdx);
@@ -160,7 +167,16 @@ void CScene_Tool::SetTileGroup()
 		UINT iIdx = iRow * iTileX + iCol;
 		const vector<CGameObject*>& vecTile = GetObjGroup(GROUP_GAMEOBJ::TILE);
 		if (PRESS_KEY(VK_LBUTTON))
+		{
 			((CTile*)vecTile[iIdx])->SetGroup(m_gTile);
+			
+			if (m_iInfoWndCount == 0 && m_gTile == GROUP_TILE::SPAWNPOINT)
+			{
+				m_hTileInfoWnd = CreateDialog(hInst, MAKEINTRESOURCE(IDD_SETTILEINFO), m_hTileInfoWnd, TileInfoWinProc);
+				ShowWindow(m_hTileInfoWnd, SW_SHOW);
+				m_iInfoWndCount++;
+			}
+		}
 		else if (PRESS_KEY(VK_RBUTTON))
 			((CTile*)vecTile[iIdx])->SetGroup(GROUP_TILE::NONE);
 	}
@@ -354,6 +370,11 @@ void CScene_Tool::ClickTileGroup(CButtonUI* button)
 	}
 	else if (m_gTile == GROUP_TILE::WALL)
 	{
+		m_gTile = GROUP_TILE::SPAWNPOINT;
+		button->SetText(L"SPAWNPOINT");
+	}
+	else if (m_gTile == GROUP_TILE::SPAWNPOINT)
+	{
 		m_gTile = GROUP_TILE::NONE;
 		button->SetText(L"NONE");
 	}
@@ -480,6 +501,17 @@ void CScene_Tool::PrintTileGroup()
 				3.f
 			);
 		}
+		else if (GROUP_TILE::SPAWNPOINT == pTile->GetGroup())
+		{
+			CRenderManager::GetInst()->RenderEllipse(
+				pTile->GetPos().x + CTile::SIZE_TILE / 2.f - pos.x,
+				pTile->GetPos().y + CTile::SIZE_TILE / 2.f - pos.y,
+				CTile::SIZE_TILE / 2.f,
+				CTile::SIZE_TILE / 2.f,
+				RGB(0, 0, 255),
+				3.f
+			);
+		}
 	}
 }
 
@@ -538,6 +570,65 @@ INT_PTR CALLBACK TileWinProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lPar
 
 			pToolScene->ClearGroup(GROUP_GAMEOBJ::TILE);
 			pToolScene->CreateTile(x, y);
+		}
+		break;
+	}
+	return (INT_PTR)FALSE;
+}
+
+INT_PTR CALLBACK TileInfoWinProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
+{
+	UNREFERENCED_PARAMETER(lParam);
+	switch (message)
+	{
+	case WM_INITDIALOG:
+		return (INT_PTR)TRUE;
+
+	case WM_COMMAND:
+		if (LOWORD(wParam) == IDOK)
+		{
+			CScene* pCurScene = CSceneManager::GetInst()->GetCurrentScene();
+
+			CScene_Tool* pToolScene = dynamic_cast<CScene_Tool*>(pCurScene);
+			assert(pToolScene);
+
+			WCHAR strName[255];
+			GetDlgItemTextW(hDlg, IDC_EDIT_NAME, strName, 255);
+			char name[255];
+			wcstombs_s(nullptr, name, strName, 255);
+
+			wstring path = CPathManager::GetInst()->GetContentPath();
+			path += L"json\\";
+			path += strName;
+			path += L".json";
+
+			Json::Value root;
+			root["ObjectName"] = name;
+			root["PositionX"] = pToolScene->GetSelectedPos().x;
+			root["PositionY"] = pToolScene->GetSelectedPos().y;
+
+			// 원하는 수정을 거친 후 formating json
+			Json::StyledWriter writer;
+			string result = writer.write(root);
+
+			// output to json file
+			ofstream output_file(path);
+			output_file << result;
+			output_file.close();
+
+			return (INT_PTR)TRUE;
+		}
+		else if (LOWORD(wParam) == IDCANCEL)
+		{
+			CScene* pCurScene = CSceneManager::GetInst()->GetCurrentScene();
+
+			CScene_Tool* pToolScene = dynamic_cast<CScene_Tool*>(pCurScene);
+			assert(pToolScene);
+			
+			pToolScene->SetInfoWndCount(0);
+			EndDialog(hDlg, LOWORD(wParam));
+
+			return (INT_PTR)TRUE;
 		}
 		break;
 	}
