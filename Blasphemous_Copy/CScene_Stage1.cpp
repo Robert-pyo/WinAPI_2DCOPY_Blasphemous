@@ -72,7 +72,7 @@ void CScene_Stage1::Enter()
 		CResourceManager::GetInst()->LoadD2DImage(L"Background", L"texture\\Map\\TutorialScene\\Background\\brotherhood-entrance-spritesheet.png"));
 	background->SetTexLeftTop(fPoint(6.f, 779.f));
 	background->SetName(L"Background");
-	AddObject(background, GROUP_GAMEOBJ::BACKGROUND_BACK);
+	AddObject(background, GROUP_GAMEOBJ::BACKGROUND_FIXED);
 
 	CBackground* background_rock = background->Clone();
 	background_rock->SetScale(fPoint(654.f, 306.f));
@@ -80,16 +80,16 @@ void CScene_Stage1::Enter()
 	background_rock->SetName(L"BG_Rock");
 	AddObject(background_rock, GROUP_GAMEOBJ::BACKGROUND_MIDDLE);
 
-	CBackground* background_bigDoor = background->Clone();
-	background_bigDoor->SetScale(fPoint(361.f, 360.f));
-	background_bigDoor->SetTexLeftTop(fPoint(3.f, 3.f));
-	background_bigDoor->SetName(L"BG_BigDoor");
-	AddObject(background_bigDoor, GROUP_GAMEOBJ::BACKGROUND_FRONT);
+	//CBackground* background_bigDoor = background->Clone();
+	//background_bigDoor->SetScale(fPoint(361.f, 360.f));
+	//background_bigDoor->SetTexLeftTop(fPoint(3.f, 3.f));
+	//background_bigDoor->SetName(L"BG_BigDoor");
+	//AddObject(background_bigDoor, GROUP_GAMEOBJ::BACKGROUND_FRONT);
 
 
 	// ¹Ù´Ú »ý¼º
 	CGround* floor1 = new CGround;
-	floor1->SetPos(fPoint(background_bigDoor->GetPos().x + background_bigDoor->GetScale().x * 2.f + floor1->GetScale().x, floor1->GetPos().y));
+	floor1->SetPos(fPoint(722.f + floor1->GetScale().x, floor1->GetPos().y));
 	floor1->SetName(L"Floor1");
 	AddObject(floor1, GROUP_GAMEOBJ::FLOOR);
 
@@ -122,12 +122,12 @@ void CScene_Stage1::Enter()
 
 	CCameraManager::GetInst()->SetBoundary(fPoint(0.f, 0.f), fPoint(background->GetPos().x + background->GetScale().x * 4.f, background->GetPos().y + background->GetScale().y * 2.f));
 
+	CCollisionManager::GetInst()->CheckGroup(GROUP_GAMEOBJ::PLAYER, GROUP_GAMEOBJ::TILE);
 	CCollisionManager::GetInst()->CheckGroup(GROUP_GAMEOBJ::PLAYER, GROUP_GAMEOBJ::ENEMY);
 	CCollisionManager::GetInst()->CheckGroup(GROUP_GAMEOBJ::PLAYER, GROUP_GAMEOBJ::FLOOR);
 	CCollisionManager::GetInst()->CheckGroup(GROUP_GAMEOBJ::PLAYER, GROUP_GAMEOBJ::BUILDING);
 	CCollisionManager::GetInst()->CheckGroup(GROUP_GAMEOBJ::PLAYER, GROUP_GAMEOBJ::DEFAULT);
 	CCollisionManager::GetInst()->CheckGroup(GROUP_GAMEOBJ::ENEMY, GROUP_GAMEOBJ::FLOOR);
-
 	CCameraManager::GetInst()->FadeIn(3.f);
 }
 
@@ -141,8 +141,6 @@ void CScene_Stage1::Exit()
 
 		ClearGroup((GROUP_GAMEOBJ)i);
 	}
-
-	CPlayer::GetPlayer()->SetPos(fPoint(CPlayer::GetPlayer()->GetPos().x - 100.f, CPlayer::GetPlayer()->GetPos().y));
 
 	CSoundManager::GetInst()->Stop(L"Tutorial_BGM");
 

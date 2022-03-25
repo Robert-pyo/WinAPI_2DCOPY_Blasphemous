@@ -34,14 +34,32 @@ void CBackground::render()
 	fPoint fptScale = GetScale();
 	fPoint fptRenderPos = CCameraManager::GetInst()->GetRenderPos(fptPos);
 
-	if (GetObjGroup() == GROUP_GAMEOBJ::BACKGROUND_BACK)
+	if (GetObjGroup() == GROUP_GAMEOBJ::BACKGROUND_FIXED)
 	{
 		CRenderManager::GetInst()->RenderFrame(
 			m_pImg,
-			fptPos.x,
-			fptPos.y,
-			fptPos.x + WINSIZE_X,
-			fptPos.y + WINSIZE_Y - 100.f,
+			0,
+			0,
+			WINSIZE_X,
+			WINSIZE_Y,
+			m_fptTargetTexLT.x,
+			m_fptTargetTexLT.y,
+			m_fptTargetTexLT.x + fptScale.x,
+			m_fptTargetTexLT.y + fptScale.y
+		);
+	}
+
+	if (GetObjGroup() == GROUP_GAMEOBJ::BACKGROUND_BACK)
+	{
+		fptRenderPos.x = fptPos.x + (fptRenderPos.x - fptPos.x) / 7.f;
+		fptRenderPos.y = fptPos.y - (fptPos.y - fptRenderPos.y) / 2.f;
+
+		CRenderManager::GetInst()->RenderFrame(
+			m_pImg,
+			fptRenderPos.x,
+			fptRenderPos.y,
+			fptRenderPos.x + fptScale.x,
+			fptRenderPos.y + fptScale.y,
 			m_fptTargetTexLT.x,
 			m_fptTargetTexLT.y,
 			m_fptTargetTexLT.x + fptScale.x,
@@ -68,9 +86,9 @@ void CBackground::render()
 	{
 		CRenderManager::GetInst()->RenderFrame(
 			m_pImg,
-			fptRenderPos.x - fptScale.x,
+			fptRenderPos.x,
 			fptRenderPos.y - fptScale.y,
-			fptRenderPos.x + fptScale.x,
+			fptRenderPos.x + fptScale.x * 2.f,
 			fptRenderPos.y + fptScale.y,
 			m_fptTargetTexLT.x,
 			m_fptTargetTexLT.y,

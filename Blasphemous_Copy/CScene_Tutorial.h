@@ -6,7 +6,6 @@ class CD2DImage;
 class CScene_Tutorial : public CScene
 {
 private:
-	CD2DImage* m_pMapImage;
 	CD2DImage* m_pBgImage;
 
 public:

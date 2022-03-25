@@ -29,6 +29,7 @@ using namespace std;
 //========================================
 enum class GROUP_GAMEOBJ
 {
+	BACKGROUND_FIXED,
 	BACKGROUND_BACK,
 	BACKGROUND_MIDDLE,
 	BACKGROUND_FRONT,

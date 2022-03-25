@@ -28,7 +28,9 @@ CScene::~CScene()
 		for (int j = 0; j < m_arrObj[i].size(); ++j)
 		{
 			if (nullptr != m_arrObj[i][j])
+			{
 				delete m_arrObj[i][j];
+			}
 		}
 	}
 }

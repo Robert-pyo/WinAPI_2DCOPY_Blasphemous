@@ -9,6 +9,10 @@
 CState_Hit::CState_Hit(ENEMY_STATE eState)
 	: CState(eState)
 {
+	CSoundManager::GetInst()->AddSound(L"Enemy_Hit1", L"sound\\SoundEffects\\Penitent\\PENITENT_ENEMY_HIT_1.wav", false);
+	CSoundManager::GetInst()->AddSound(L"Enemy_Hit2", L"sound\\SoundEffects\\Penitent\\PENITENT_ENEMY_HIT_2.wav", false);
+	CSoundManager::GetInst()->AddSound(L"Enemy_Hit3", L"sound\\SoundEffects\\Penitent\\PENITENT_ENEMY_HIT_3.wav", false);
+	CSoundManager::GetInst()->AddSound(L"Enemy_Hit4", L"sound\\SoundEffects\\Penitent\\PENITENT_ENEMY_HIT_4.wav", false);
 }
 
 CState_Hit::~CState_Hit()

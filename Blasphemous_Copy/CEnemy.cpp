@@ -4,6 +4,7 @@
 #include "AI.h"
 #include "CScene.h"
 #include "CPlayer.h"
+#include "CTile.h"
 
 CEnemy::CEnemy()
 {
@@ -148,7 +149,8 @@ void CEnemy::Die()
 
 void CEnemy::OnCollision(CCollider* target)
 {
-	if (GROUP_GAMEOBJ::FLOOR == target->GetOwnerObj()->GetObjGroup())
+	if (GROUP_GAMEOBJ::FLOOR == target->GetOwnerObj()->GetObjGroup() ||
+		GROUP_GAMEOBJ::TILE == target->GetOwnerObj()->GetObjGroup())
 	{
 		LONG yDiff = 0;
 		LONG xDiff = 0;
@@ -162,6 +164,8 @@ void CEnemy::OnCollision(CCollider* target)
 		}
 		else
 			xDiff = (GetCollider()->GetBorderPos().right - GetCollider()->GetBorderPos().left);
+
+		CTile* pTile = (CTile*)target->GetOwnerObj();
 
 		// 플레이어 바닥 및 벽 충돌 처리
 
@@ -193,8 +197,7 @@ void CEnemy::OnCollision(CCollider* target)
 				yDiff = (GetCollider()->GetBorderPos().bottom - target->GetBorderPos().top);
 
 				// 플레이어가 벽보다 왼쪽에 있을 때
-				if (yDiff > xDiff && GetCollider()->GetBorderPos().left < target->GetBorderPos().left
-					&& GetCollider()->GetBorderPos().right > target->GetBorderPos().left)
+				if (yDiff > xDiff && GetCollider()->GetBorderPos().left < target->GetBorderPos().left)
 				{
 					fPoint fptPos = GetPos();
 					fptPos.x -= (float)(GetCollider()->GetBorderPos().right - target->GetBorderPos().left);
@@ -203,7 +206,7 @@ void CEnemy::OnCollision(CCollider* target)
 			}
 		}
 
-		if (m_fAccelGravity > 0.f)
+		if (m_fAccelGravity > 0.f || pTile->GetGroup() == GROUP_TILE::GROUND)
 		{
 			// 아래쪽
 			if (GetCollider()->GetBorderPos().top < target->GetBorderPos().top

@@ -695,7 +695,8 @@ void CPlayer::InitAnimation()
 #pragma region CollisionCheck
 void CPlayer::OnCollision(CCollider* target)
 {
-	if (GROUP_GAMEOBJ::TILE == target->GetOwnerObj()->GetObjGroup())
+	if (GROUP_GAMEOBJ::TILE == target->GetOwnerObj()->GetObjGroup() || 
+		GROUP_GAMEOBJ::FLOOR == target->GetOwnerObj()->GetObjGroup())
 	{
 		LONG yDiff = 0;
 		LONG xDiff = 0;
@@ -728,6 +729,7 @@ void CPlayer::OnCollision(CCollider* target)
 				{
 					fPoint fptPos = GetPos();
 					fptPos.x += (float)(target->GetBorderPos().right - GetCollider()->GetBorderPos().left);
+					m_fVelocity = 0.f;
 					SetPos(fptPos);
 				}
 			}
@@ -742,11 +744,11 @@ void CPlayer::OnCollision(CCollider* target)
 				yDiff = (GetCollider()->GetBorderPos().bottom - target->GetBorderPos().top);
 
 				// 플레이어가 벽보다 왼쪽에 있을 때
-				if (yDiff > xDiff && GetCollider()->GetBorderPos().left < target->GetBorderPos().left
-					&& GetCollider()->GetBorderPos().right > target->GetBorderPos().left)
+				if (yDiff > xDiff && GetCollider()->GetBorderPos().left < target->GetBorderPos().left)
 				{
 					fPoint fptPos = GetPos();
 					fptPos.x -= (float)(GetCollider()->GetBorderPos().right - target->GetBorderPos().left);
+					m_fVelocity = 0.f;
 					SetPos(fptPos);
 				}
 			}
@@ -754,7 +756,7 @@ void CPlayer::OnCollision(CCollider* target)
 
 		if (m_fAccelGravity > 0.f)
 		{
-			if (pTile->GetGroup() == GROUP_TILE::GROUND)
+			if (pTile->GetGroup() == GROUP_TILE::GROUND || GROUP_GAMEOBJ::FLOOR == target->GetOwnerObj()->GetObjGroup())
 			{
 				// 위쪽
 				if (GetCollider()->GetBorderPos().bottom > target->GetBorderPos().bottom &&
@@ -821,15 +823,18 @@ void CPlayer::OnCollisionEnter(CCollider* target)
 	if (GROUP_GAMEOBJ::FLOOR == target->GetOwnerObj()->GetObjGroup()
 		|| GROUP_GAMEOBJ::TILE == target->GetOwnerObj()->GetObjGroup())
 	{
-		if (GetCollider()->GetBorderPos().top < target->GetBorderPos().top
-			&& GetCollider()->GetBorderPos().bottom >= target->GetBorderPos().top)
+		if (m_fAccelGravity > 0.f)
 		{
-			if (m_eCurState == PLAYER_STATE::JUMP)
+			if (GetCollider()->GetBorderPos().top < target->GetBorderPos().top
+				&& GetCollider()->GetBorderPos().bottom >= target->GetBorderPos().top)
 			{
-				GetAnimator()->FindAnimation(L"Player_Jumpoff_Right")->SetFrame(0);
-				GetAnimator()->FindAnimation(L"Player_Jumpoff_Left")->SetFrame(0);
+				if (m_eCurState == PLAYER_STATE::JUMP)
+				{
+					GetAnimator()->FindAnimation(L"Player_Jumpoff_Right")->SetFrame(0);
+					GetAnimator()->FindAnimation(L"Player_Jumpoff_Left")->SetFrame(0);
 
-				m_eCurState = PLAYER_STATE::JUMPOFF;
+					m_eCurState = PLAYER_STATE::JUMPOFF;
+				}
 			}
 		}
 	}

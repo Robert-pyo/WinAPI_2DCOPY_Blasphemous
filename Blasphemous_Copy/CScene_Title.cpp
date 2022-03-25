@@ -3,6 +3,7 @@
 #include "CBackground.h"
 #include "CAnimator.h"
 #include "CButtonUI.h"
+#include "CPlayer.h"
 
 CScene_Title::CScene_Title()
 {
