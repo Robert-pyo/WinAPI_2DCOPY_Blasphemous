@@ -3,6 +3,9 @@
 #include "CD2DImage.h"
 #include "CBackground.h"
 #include "CMap.h"
+#include "CJsonLoader.h"
+#include "CSpawnPoint.h"
+#include "CPlayer.h"
 
 CScene_Tutorial::CScene_Tutorial()
 {
@@ -52,8 +55,20 @@ void CScene_Tutorial::Enter()
 	path += L"texture\\Map\\Tileset\\Tilemaps\\GroundTiles.tile";
 	LoadTile(path);
 
+	CSpawnPoint* playerSpawnPoint = new CSpawnPoint;
+	m_mapSpawnPoint = CJsonLoader::LoadSpawnPoint();
+	map<string, fPoint>::iterator iter = m_mapSpawnPoint.find("Player");
+	if (m_mapSpawnPoint.end() != iter)
+	{
+		playerSpawnPoint->SetName(L"playerSpawnPoint");
+		playerSpawnPoint->SetPos(iter->second);
+	}
+	AddObject(playerSpawnPoint, GROUP_GAMEOBJ::DEFAULT);
+
 	// 플레이어 생성
-	AddObject(CPlayer::GetPlayer(), GROUP_GAMEOBJ::PLAYER);
+	CPlayer* pPlayer = CPlayer::GetPlayer();
+	pPlayer->SetPos(playerSpawnPoint->GetPos());
+	AddObject(pPlayer, GROUP_GAMEOBJ::PLAYER);
 
 	CBackground* pBackground = new CBackground;
 	pBackground->SetImage(m_pBgImage);
@@ -65,6 +80,7 @@ void CScene_Tutorial::Enter()
 	pMap->Load(L"TutorialMap", L"texture\\Map\\TutorialScene\\Forest_Map_01.png");
 	AddObject(pMap, GROUP_GAMEOBJ::FLOOR);
 
+	CCameraManager::GetInst()->FadeIn(2.f);
 
 	CCameraManager::GetInst()->SetBoundary(pMap->GetPos(), fPoint((float)m_pBgImage->GetWidth() * 2.f, (float)m_pBgImage->GetHeight() * 2.f));
 
@@ -79,4 +95,14 @@ void CScene_Tutorial::Enter()
 
 void CScene_Tutorial::Exit()
 {
+	for (UINT i = 0; i < (UINT)GROUP_GAMEOBJ::SIZE; ++i)
+	{
+		if ((GROUP_GAMEOBJ)i == GROUP_GAMEOBJ::PLAYER || (GROUP_GAMEOBJ)i == GROUP_GAMEOBJ::ENEMY
+			|| (GROUP_GAMEOBJ)i == GROUP_GAMEOBJ::PLAYER_ATT_FX || (GROUP_GAMEOBJ)i == GROUP_GAMEOBJ::ENEMY_ATT_FX
+			|| (GROUP_GAMEOBJ)i == GROUP_GAMEOBJ::WEAPON) continue;
+
+		ClearGroup((GROUP_GAMEOBJ)i);
+	}
+
+	CCameraManager::GetInst()->FadeOut(2.f);
 }

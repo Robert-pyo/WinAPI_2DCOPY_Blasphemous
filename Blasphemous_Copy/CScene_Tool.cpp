@@ -131,7 +131,7 @@ void CScene_Tool::SetTileIdx()
 		}
 
 		UINT iIdx = iRow * iTileX + iCol;
-		m_fptSelectedPos = fPoint(iCol, iRow);
+		m_fptSelectedPos = fPoint((float)fptMousePos.x, (float)fptMousePos.y);
 		const vector<CGameObject*>& vecTile = GetObjGroup(GROUP_GAMEOBJ::TILE);
 		if (PRESS_KEY(VK_LBUTTON))
 			((CTile*)vecTile[iIdx])->SetImgIdx(m_iIdx);
@@ -598,14 +598,26 @@ INT_PTR CALLBACK TileInfoWinProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM 
 			wcstombs_s(nullptr, name, strName, 255);
 
 			wstring path = CPathManager::GetInst()->GetContentPath();
-			path += L"json\\";
-			path += strName;
-			path += L".json";
+			path += L"data\\SpawnPoint.json";
+
+			ifstream stream;
+			stream.open(path);
 
 			Json::Value root;
-			root["ObjectName"] = name;
-			root["PositionX"] = pToolScene->GetSelectedPos().x;
-			root["PositionY"] = pToolScene->GetSelectedPos().y;
+			if (stream)
+			{
+				stream >> root;
+
+				root["ObjectName"].append(name);
+				root["PositionX"].append(pToolScene->GetSelectedPos().x);
+				root["PositionY"].append(pToolScene->GetSelectedPos().y);
+			}
+			else
+			{
+				root["ObjectName"].append(name);
+				root["PositionX"].append(pToolScene->GetSelectedPos().x);
+				root["PositionY"].append(pToolScene->GetSelectedPos().y);
+			}
 
 			// 원하는 수정을 거친 후 formating json
 			Json::StyledWriter writer;
@@ -615,6 +627,8 @@ INT_PTR CALLBACK TileInfoWinProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM 
 			ofstream output_file(path);
 			output_file << result;
 			output_file.close();
+
+			EndDialog(hDlg, LOWORD(wParam));
 
 			return (INT_PTR)TRUE;
 		}

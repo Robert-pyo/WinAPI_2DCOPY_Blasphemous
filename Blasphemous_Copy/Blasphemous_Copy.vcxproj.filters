@@ -363,6 +363,9 @@
     <ClInclude Include="json\json.h">
       <Filter>Util</Filter>
     </ClInclude>
+    <ClInclude Include="CJsonLoader.h">
+      <Filter>Util</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CCore.cpp">
@@ -534,6 +537,9 @@
       <Filter>Object\SpawnPoint</Filter>
     </ClCompile>
     <ClCompile Include="jsoncpp.cpp">
+      <Filter>Util</Filter>
+    </ClCompile>
+    <ClCompile Include="CJsonLoader.cpp">
       <Filter>Util</Filter>
     </ClCompile>
   </ItemGroup>

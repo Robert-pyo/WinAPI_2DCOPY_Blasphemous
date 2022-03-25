@@ -6,6 +6,9 @@
 #include "CUI.h"
 #include "CCollider.h"
 
+#include <fstream>
+#include "json/json.h"
+
 CScene::CScene()
 {
 	this->m_sceneName = L"";

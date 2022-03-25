@@ -7,6 +7,7 @@ class CScene_Tutorial : public CScene
 {
 private:
 	CD2DImage* m_pBgImage;
+	map<string, fPoint> m_mapSpawnPoint;
 
 public:
 	CScene_Tutorial();
