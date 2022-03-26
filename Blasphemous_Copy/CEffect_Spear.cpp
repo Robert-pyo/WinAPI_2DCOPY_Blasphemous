@@ -9,7 +9,7 @@ CEffect_Spear::CEffect_Spear()
 {
 	SetName(L"FxEnemySpear");
 	SetDuration(1.0f);
-	SetScale(fPoint(300.f, 60.f));
+	SetScale(fPoint(180.f, 60.f));
 
 	CreateCollider();
 	GetCollider()->SetScale(GetScale());
@@ -34,7 +34,7 @@ void CEffect_Spear::update()
 	{
 		fxAccTime += fDeltaTime;
 	}
-	if (GetDuration() <= fxAccTime)
+	if (GetDuration() - 0.2f <= fxAccTime)
 	{
 		fxAccTime = 0.f;
 		DeleteObj(this);
@@ -56,6 +56,7 @@ void CEffect_Spear::OnCollisionEnter(CCollider* other)
 		if (!CPlayer::GetPlayer()->IsInvincible())
 		{
 			CPlayer::GetPlayer()->Hit(pEnemy);
+			DeleteObj(this);
 		}
 	}
 }

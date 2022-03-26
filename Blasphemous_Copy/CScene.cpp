@@ -99,6 +99,10 @@ void CScene::render_tile()
 	}
 }
 
+void CScene::init()
+{
+}
+
 void CScene::SetName(const wstring& strName)
 {
 	this->m_sceneName = strName;

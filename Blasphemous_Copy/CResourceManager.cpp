@@ -139,7 +139,7 @@ CD2DImage* CResourceManager::LoadD2DImage(const wstring& strKey, const wstring& 
 	if (nullptr != pD2DImg)
 		return pD2DImg;
 
-	wstring strFilePath = CPathManager::GetInst()->GetRelativeContentPath();
+	wstring strFilePath = CPathManager::GetInst()->GetContentPath();
 	strFilePath += strRelativePath;
 
 	CD2DImage* img = new CD2DImage;

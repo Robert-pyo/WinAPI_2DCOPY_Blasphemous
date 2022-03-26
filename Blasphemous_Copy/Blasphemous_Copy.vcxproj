@@ -161,11 +161,13 @@
     <ClInclude Include="CCore.h" />
     <ClInclude Include="CD2DImage.h" />
     <ClInclude Include="CEffect.h" />
+    <ClInclude Include="CEffect_Rock.h" />
     <ClInclude Include="CEffect_Spear.h" />
     <ClInclude Include="CEffect_SwordSlash.h" />
     <ClInclude Include="CEnemy.h" />
     <ClInclude Include="CEnemyFactory.h" />
     <ClInclude Include="CEnemy_Acolyte.h" />
+    <ClInclude Include="CEnemy_Stoner.h" />
     <ClInclude Include="CEventManager.h" />
     <ClInclude Include="CHUD.h" />
     <ClInclude Include="CHUD_PlayerInfo.h" />
@@ -198,6 +200,7 @@
     <ClInclude Include="CState_Dead.h" />
     <ClInclude Include="CState_Hit.h" />
     <ClInclude Include="CState_Idle.h" />
+    <ClInclude Include="CState_Patrol.h" />
     <ClInclude Include="CState_Trace.h" />
     <ClInclude Include="CTileButton.h" />
     <ClInclude Include="CWarpPoint.h" />
@@ -231,11 +234,13 @@
     </ClCompile>
     <ClCompile Include="CD2DImage.cpp" />
     <ClCompile Include="CEffect.cpp" />
+    <ClCompile Include="CEffect_Rock.cpp" />
     <ClCompile Include="CEffect_Spear.cpp" />
     <ClCompile Include="CEffect_SwordSlash.cpp" />
     <ClCompile Include="CEnemy.cpp" />
     <ClCompile Include="CEnemyFactory.cpp" />
     <ClCompile Include="CEnemy_Acolyte.cpp" />
+    <ClCompile Include="CEnemy_Stoner.cpp" />
     <ClCompile Include="CEventManager.cpp" />
     <ClCompile Include="CGameObject.cpp" />
     <ClCompile Include="CHUD.cpp" />
@@ -270,6 +275,7 @@
     <ClCompile Include="CState_Dead.cpp" />
     <ClCompile Include="CState_Hit.cpp" />
     <ClCompile Include="CState_Idle.cpp" />
+    <ClCompile Include="CState_Patrol.cpp" />
     <ClCompile Include="CState_Trace.cpp" />
     <ClCompile Include="CTileButton.cpp" />
     <ClCompile Include="CWarpPoint.cpp" />

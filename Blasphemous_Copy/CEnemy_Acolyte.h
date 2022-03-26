@@ -26,7 +26,6 @@ public:
 
 public:
 	virtual void Attack();
-	virtual void Hit(CGameObject* other);
 
 public:
 	virtual void OnCollision(CCollider* other);

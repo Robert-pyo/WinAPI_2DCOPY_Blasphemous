@@ -25,6 +25,7 @@ CEffect_SwordSlash::CEffect_SwordSlash()
 	GetAnimator()->CreateAnimation(L"Sword_Combo_3_L", GetFxImg(), fPoint(546.f, 728.f), fPoint(110.f, 72.f), fPoint(110.f, 0.f), 0, 0.05f, 4, false, true);
 
 	CCollisionManager::GetInst()->CheckGroup(GROUP_GAMEOBJ::PLAYER_ATT_FX, GROUP_GAMEOBJ::ENEMY);
+	CCollisionManager::GetInst()->CheckGroup(GROUP_GAMEOBJ::PLAYER_ATT_FX, GROUP_GAMEOBJ::ENEMY_ATT_FX);
 
 #pragma region AnimationFrameEdit
 	CAnimation* pAnim = GetAnimator()->FindAnimation(L"Sword_Combo_1_R");

@@ -40,7 +40,7 @@ void CScene_Tool::update()
 
 	if (PRESS_KEY_DOWN(VK_TAB))
 	{
-		ChangeToNextScene(GROUP_SCENE::STAGE_01);
+		ChangeToNextScene(GROUP_SCENE::TUTORIAL);
 	}
 
 	if (PRESS_KEY('A'))

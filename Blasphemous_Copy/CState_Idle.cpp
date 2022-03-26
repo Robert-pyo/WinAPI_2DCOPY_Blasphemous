@@ -3,6 +3,7 @@
 #include "CScene.h"
 #include "CPlayer.h"
 #include "CEnemy.h"
+#include "CCollider.h"
 
 CState_Idle::CState_Idle(ENEMY_STATE eState)
 	: CState(ENEMY_STATE::IDLE)
@@ -27,8 +28,14 @@ void CState_Idle::update()
 
 	if (fLength < pEnemy->GetEnemyInfo().fRecogRange)
 	{
+		if (pPlayer->GetCollider()->GetBorderPos().bottom < pEnemy->GetCollider()->GetBorderPos().top)
+			return;
 		// 상태 변경 또한 EventManager로 진행되어야 프레임 동기화 가능
 		ChangeAIState(GetAI(), ENEMY_STATE::TRACE);
+	}
+	else
+	{
+		ChangeAIState(GetAI(), ENEMY_STATE::PATROL);
 	}
 }
 

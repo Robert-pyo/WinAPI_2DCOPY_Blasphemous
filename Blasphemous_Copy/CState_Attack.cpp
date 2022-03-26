@@ -4,6 +4,7 @@
 #include "CScene.h"
 #include "CEnemy.h"
 #include "CEnemy_Acolyte.h"
+#include "CEnemy_Stoner.h"
 #include "CWeapon.h"
 #include "CAnimation.h"
 
@@ -11,6 +12,7 @@ CState_Attack::CState_Attack(ENEMY_STATE eEnmState)
 	: CState(eEnmState)
 {
 	m_pEnemy = nullptr;
+	m_fAttAccTime = 0.f;
 }
 
 CState_Attack::~CState_Attack()
@@ -19,27 +21,22 @@ CState_Attack::~CState_Attack()
 
 void CState_Attack::update()
 {
-	static float fTime = 0.f;
-	fTime += fDeltaTime;
+	m_fAttAccTime += fDeltaTime;
 
 	m_pEnemy->Attack();
 
-	if (m_pEnemy->GetAnimator()->GetCurAnim()->GetAnimDuration() < fTime)
+	if (m_pEnemy->GetAnimator()->GetCurAnim()->GetAnimDuration() < m_fAttAccTime)
 	{
 		ChangeAIState(GetAI(), ENEMY_STATE::TRACE);
 		m_pEnemy->SetAttCount(0);
-		fTime = 0.f;
+		m_fAttAccTime = 0.f;
 	}
 }
 
 void CState_Attack::Enter()
 {
-	if (GetEnemy()->GetName() == L"Acolyte")
-	{
-		m_pEnemy = (CEnemy_Acolyte*)GetEnemy();
-		m_pEnemy->GetAnimator()->FindAnimation(L"Acolyte_Attack_R")->SetFrame(0);
-		m_pEnemy->GetAnimator()->FindAnimation(L"Acolyte_Attack_L")->SetFrame(0);
-	}
+	m_fAttAccTime = 0.f;
+	m_pEnemy = GetEnemy();
 }
 
 void CState_Attack::Exit()

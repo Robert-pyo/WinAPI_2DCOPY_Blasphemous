@@ -3,6 +3,7 @@
 #include "CPlayer.h"
 #include "CEnemy.h"
 #include "CScene.h"
+#include "CCollider.h"
 
 CState_Trace::CState_Trace(ENEMY_STATE eEnmState)
 	:CState(eEnmState)
@@ -19,6 +20,7 @@ void CState_Trace::update()
 	fVector2D fvPlayerPos = pPlayer->GetPos();
 	fVector2D fvEnemyPos = GetEnemy()->GetPos();
 
+	CEnemy* pEnemy = GetEnemy();
 	fVector2D fvEnemyDir = fvPlayerPos - fvEnemyPos;
 	float fLength = fvEnemyDir.Length();
 	fvEnemyDir.Normalize();
@@ -29,6 +31,10 @@ void CState_Trace::update()
 	GetEnemy()->SetDir(fvEnemyDir);
 
 	if (fLength > GetEnemy()->GetEnemyInfo().fRecogRange)
+	{
+		ChangeAIState(GetAI(), ENEMY_STATE::IDLE);
+	}
+	else if (pPlayer->GetCollider()->GetBorderPos().bottom < pEnemy->GetCollider()->GetBorderPos().top)
 	{
 		ChangeAIState(GetAI(), ENEMY_STATE::IDLE);
 	}

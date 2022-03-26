@@ -88,6 +88,23 @@ struct fPoint
 	{
 		return (float)sqrt((double)x * x + (double)y * y);
 	}
+
+	fPoint Right()
+	{
+		return fPoint(1.0f, 0.f);
+	}
+	fPoint Left()
+	{
+		return fPoint(-1.f, 0.f);
+	}
+	fPoint Up()
+	{
+		return fPoint(0.f, -1.f);
+	}
+	fPoint Down()
+	{
+		return fPoint(0.0f, 1.f);
+	}
 };
 
 typedef iPoint iVector2D;

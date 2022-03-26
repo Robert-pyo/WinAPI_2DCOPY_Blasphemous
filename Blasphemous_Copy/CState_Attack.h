@@ -5,6 +5,8 @@ class CState_Attack : public CState
 private:
 	CEnemy* m_pEnemy;
 
+	float m_fAttAccTime;
+
 public:
 	CState_Attack(ENEMY_STATE eEnmState);
 	~CState_Attack();

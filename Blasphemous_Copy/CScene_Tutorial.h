@@ -16,6 +16,8 @@ public:
 public:
 	virtual void update();
 
+	virtual void init();
+
 public:
 	virtual void Enter();
 	virtual void Exit();

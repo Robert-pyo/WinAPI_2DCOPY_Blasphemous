@@ -14,6 +14,15 @@ CEnemy::CEnemy()
 	m_tEnmInfo = {};
 	m_fvCurDir = {};
 	m_fvPrevDir = {GetPos().x, GetPos().y};
+
+	m_tEnmInfo.fHP = 0.f;
+	m_tEnmInfo.fAtt = 0.f;
+	m_tEnmInfo.fAttRange = 0.f;
+	m_tEnmInfo.fAttDelayTime = 0.f;
+	m_tEnmInfo.fRecogRange = 0.f;
+	m_tEnmInfo.fVelocity = 0.f;
+	m_tEnmInfo.fInvTime = 0.f;
+	m_tEnmInfo.iMoney = 0.f;
 }
 
 CEnemy::~CEnemy()
@@ -112,6 +121,16 @@ void CEnemy::debug_render()
 		14, RGB(0, 255, 0));
 }
 
+void CEnemy::SetImage(const wstring& strKey, const wstring& strPath)
+{
+	m_pImg = CResourceManager::GetInst()->LoadD2DImage(strKey, strPath);
+}
+
+CD2DImage* CEnemy::GetImage()
+{
+	return m_pImg;
+}
+
 AI* CEnemy::GetAI()
 {
 	return m_pAI;
@@ -133,7 +152,7 @@ void CEnemy::Hit(CGameObject* pPlayer)
 	if (m_tEnmInfo.fHP <= 0.f)
 	{
 		Die();
-		m_tEnmInfo.fHP = 0.f;
+		return;
 	}
 
 	if (GetAI()->GetCurState()->GetState() == ENEMY_STATE::ATTACK) return;
@@ -232,5 +251,12 @@ void CEnemy::OnCollision(CCollider* target)
 
 void CEnemy::OnCollisionEnter(CCollider* target)
 {
-	
+	if (GROUP_GAMEOBJ::TILE == target->GetOwnerObj()->GetObjGroup())
+	{
+		CTile* pTile = (CTile*)target->GetOwnerObj();
+		if (pTile->GetGroup() == GROUP_TILE::WALL)
+		{
+			SetDir(GetDir() * (-1));
+		}
+	}
 }

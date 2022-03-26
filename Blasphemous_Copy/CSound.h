@@ -11,7 +11,7 @@ private:
 	Channel*	m_pChannel;
 	Sound*		m_pSound;
 
-	float*		m_pVolume;
+	float		m_fVolume;
 
 public:
 	CSound();

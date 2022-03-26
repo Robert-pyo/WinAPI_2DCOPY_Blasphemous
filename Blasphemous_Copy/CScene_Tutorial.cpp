@@ -6,6 +6,9 @@
 #include "CJsonLoader.h"
 #include "CSpawnPoint.h"
 #include "CPlayer.h"
+#include "CEnemy.h"
+#include "CEnemyFactory.h"
+#include "CWeapon.h"
 
 CScene_Tutorial::CScene_Tutorial()
 {
@@ -29,32 +32,11 @@ void CScene_Tutorial::update()
 	{
 		ChangeToNextScene(GROUP_SCENE::TOOL);
 	}
-
-	/*if (PRESS_KEY('A'))
-	{
-		CCameraManager::GetInst()->Scroll(fVector2D(-1, 0), 500.f);
-	}
-	if (PRESS_KEY('D'))
-	{
-		CCameraManager::GetInst()->Scroll(fVector2D(1, 0), 500.f);
-	}
-	if (PRESS_KEY('W'))
-	{
-		CCameraManager::GetInst()->Scroll(fVector2D(0, -1), 500.f);
-	}
-	if (PRESS_KEY('S'))
-	{
-		CCameraManager::GetInst()->Scroll(fVector2D(0, 1), 500.f);
-	}*/
 }
 
-void CScene_Tutorial::Enter()
+void CScene_Tutorial::init()
 {
-	// 타일 로딩
-	wstring path = CPathManager::GetInst()->GetContentPath();
-	path += L"texture\\Map\\Tileset\\Tilemaps\\GroundTiles.tile";
-	LoadTile(path);
-
+	// 스폰 포인트 생성
 	CSpawnPoint* playerSpawnPoint = new CSpawnPoint;
 	m_mapSpawnPoint = CJsonLoader::LoadSpawnPoint();
 	map<string, fPoint>::iterator iter = m_mapSpawnPoint.find("Player");
@@ -65,10 +47,55 @@ void CScene_Tutorial::Enter()
 	}
 	AddObject(playerSpawnPoint, GROUP_GAMEOBJ::DEFAULT);
 
+	CSpawnPoint* acolyteSpawnPoint = new CSpawnPoint;
+	iter = m_mapSpawnPoint.find("Acolyte1");
+	if (m_mapSpawnPoint.end() != iter)
+	{
+		acolyteSpawnPoint->SetName(L"AcolyteSpawnPoint_1");
+		acolyteSpawnPoint->SetPos(iter->second);
+	}
+	AddObject(acolyteSpawnPoint, GROUP_GAMEOBJ::DEFAULT);
+
+	CSpawnPoint* acolyteSpawnPoint2 = new CSpawnPoint;
+	iter = m_mapSpawnPoint.find("Acolyte2");
+	if (m_mapSpawnPoint.end() != iter)
+	{
+		acolyteSpawnPoint2->SetName(L"AcolyteSpawnPoint_2");
+		acolyteSpawnPoint2->SetPos(iter->second);
+	}
+	AddObject(acolyteSpawnPoint2, GROUP_GAMEOBJ::DEFAULT);
+
 	// 플레이어 생성
 	CPlayer* pPlayer = CPlayer::GetPlayer();
 	pPlayer->SetPos(playerSpawnPoint->GetPos());
-	AddObject(pPlayer, GROUP_GAMEOBJ::PLAYER);
+	const vector<CGameObject*>& vecObj = GetObjGroup(GROUP_GAMEOBJ::PLAYER);
+	if (vecObj.size() == 0)
+		AddObject(pPlayer, GROUP_GAMEOBJ::PLAYER);
+
+	CEnemy* acolyte_front = CEnemyFactory::CreateEnemy(ENEMY_TYPE::NORMAL, acolyteSpawnPoint2->GetPos());
+	AddObject(acolyte_front, GROUP_GAMEOBJ::ENEMY);
+	AddObject(acolyte_front->GetEnemyInfo().pWeapon, GROUP_GAMEOBJ::WEAPON);
+
+	CEnemy* acolyte_middle = CEnemyFactory::CreateEnemy(ENEMY_TYPE::NORMAL, acolyteSpawnPoint2->GetPos());
+	AddObject(acolyte_middle, GROUP_GAMEOBJ::ENEMY);
+	AddObject(acolyte_middle->GetEnemyInfo().pWeapon, GROUP_GAMEOBJ::WEAPON);
+
+	CEnemy* stoner = CEnemyFactory::CreateEnemy(ENEMY_TYPE::RANGE, acolyteSpawnPoint->GetPos());
+	AddObject(stoner, GROUP_GAMEOBJ::ENEMY);
+}
+
+void CScene_Tutorial::Enter()
+{
+	CSoundManager::GetInst()->AddSound(L"Forest_BGM", L"sound\\BGM\\Forest_MASTER.wav", true);
+	CSoundManager::GetInst()->AddSound(L"Forest_Ambient", L"sound\\BGM\\Forest_ambient.wav", true);
+	CSoundManager::GetInst()->Play(L"Forest_BGM");
+	CSoundManager::GetInst()->Play(L"Forest_Ambient");
+	CSoundManager::GetInst()->SetVolume(L"Forest_Ambient", 0.8f);
+
+	// 타일 로딩
+	wstring path = CPathManager::GetInst()->GetContentPath();
+	path += L"texture\\Map\\Tileset\\Tilemaps\\GroundTiles.tile";
+	LoadTile(path);
 
 	CBackground* pBackground = new CBackground;
 	pBackground->SetImage(m_pBgImage);
@@ -103,6 +130,8 @@ void CScene_Tutorial::Exit()
 
 		ClearGroup((GROUP_GAMEOBJ)i);
 	}
+
+	CSoundManager::GetInst()->Stop(L"Forest_BGM");
 
 	CCameraManager::GetInst()->FadeOut(2.f);
 }

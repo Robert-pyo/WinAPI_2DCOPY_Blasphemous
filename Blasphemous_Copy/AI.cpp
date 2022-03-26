@@ -6,6 +6,7 @@ AI::AI()
 {
 	m_pOwner = nullptr;
 	m_pCurState = nullptr;
+	m_pPrevState = nullptr;
 }
 
 AI::~AI()
@@ -56,7 +57,7 @@ CState* AI::GetCurState()
 void AI::SetCurState(ENEMY_STATE eEnmState)
 {
 	m_pCurState = GetState(eEnmState);
-	
+
 	// m_pCurState에 nullptr이 들어갔다면 assert
 	assert(m_pCurState);
 }
@@ -69,5 +70,18 @@ void AI::ChangeState(ENEMY_STATE eNextState)
 	m_pCurState->Exit();
 	m_pCurState = pNextState;
 	m_pCurState->Enter();
+}
+
+CState* AI::GetPrevState()
+{
+	return m_pPrevState;
+}
+
+void AI::SetPrevState(ENEMY_STATE eEnmState)
+{
+	m_pPrevState = GetState(eEnmState);
+
+	// m_pCurState에 nullptr이 들어갔다면 assert
+	assert(m_pPrevState);
 }
 

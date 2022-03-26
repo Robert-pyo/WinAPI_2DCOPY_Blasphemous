@@ -5,6 +5,7 @@
 
 class AI;
 class CWeapon;
+class CD2DImage;
 
 struct tEnemyInfo
 {
@@ -24,6 +25,8 @@ struct tEnemyInfo
 class CEnemy : public CGameObject
 {
 private:
+	CD2DImage* m_pImg;
+
 	AI* m_pAI;
 	tEnemyInfo m_tEnmInfo;
 
@@ -51,6 +54,9 @@ public:
 	virtual void Init_Animation() = 0;
 
 public:
+	void SetImage(const wstring& strKey, const wstring& strPath);
+	CD2DImage* GetImage();
+
 	float GetVelocity() { return m_tEnmInfo.fVelocity; }
 	void  SetVelocity(float fSpeed) { m_tEnmInfo.fVelocity = fSpeed; }
 

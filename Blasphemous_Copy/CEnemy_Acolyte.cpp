@@ -20,7 +20,7 @@ CEnemy_Acolyte::CEnemy_Acolyte()
 	info.fHP = 150.f;
 	info.fAtt = 20.f;
 	info.fAttRange = 300.f;
-	info.fAttDelayTime = 2.f;
+	info.fAttDelayTime = 3.f;
 	info.fRecogRange = 400.f;
 	info.fVelocity = 100.f;
 	info.fInvTime = 0.1f;
@@ -44,7 +44,7 @@ CEnemy_Acolyte::~CEnemy_Acolyte()
 
 CEnemy_Acolyte* CEnemy_Acolyte::Clone()
 {
-	return nullptr;
+	return new CEnemy_Acolyte(*this);
 }
 
 void CEnemy_Acolyte::update()
@@ -63,16 +63,37 @@ void CEnemy_Acolyte::render()
 
 void CEnemy_Acolyte::Update_Animation()
 {
+	if (GetAI()->GetPrevState() != nullptr &&
+		GetAI()->GetCurState()->GetState() == GetAI()->GetPrevState()->GetState())
+	{
+		switch (GetAI()->GetCurState()->GetState())
+		{
+		case ENEMY_STATE::PATROL:
+		case ENEMY_STATE::TRACE:
+			if (GetDir().x > 0.f)
+			{
+				GetAnimator()->Play(L"Acolyte_Walk_R");
+			}
+			else
+			{
+				GetAnimator()->Play(L"Acolyte_Walk_L");
+			}
+		}
+		return;
+	}
+
 	switch (GetAI()->GetCurState()->GetState())
 	{
 	case ENEMY_STATE::IDLE:
 	{
 		if (GetDir().x > 0.f)
 		{
+			GetAnimator()->FindAnimation(L"Acolyte_Idle_R")->SetFrame(0);
 			GetAnimator()->Play(L"Acolyte_Idle_R");
 		}
 		else
 		{
+			GetAnimator()->FindAnimation(L"Acolyte_Idle_L")->SetFrame(0);
 			GetAnimator()->Play(L"Acolyte_Idle_L");
 		}
 	}break;
@@ -80,10 +101,25 @@ void CEnemy_Acolyte::Update_Animation()
 	{
 		if (GetDir().x > 0.f)
 		{
+			GetAnimator()->FindAnimation(L"Acolyte_Walk_R")->SetFrame(0);
 			GetAnimator()->Play(L"Acolyte_Walk_R");
 		}
 		else
 		{
+			GetAnimator()->FindAnimation(L"Acolyte_Walk_L")->SetFrame(0);
+			GetAnimator()->Play(L"Acolyte_Walk_L");
+		}
+	}break;
+	case ENEMY_STATE::PATROL:
+	{
+		if (GetDir().x > 0.f)
+		{
+			GetAnimator()->FindAnimation(L"Acolyte_Walk_R")->SetFrame(0);
+			GetAnimator()->Play(L"Acolyte_Walk_R");
+		}
+		else
+		{
+			GetAnimator()->FindAnimation(L"Acolyte_Walk_L")->SetFrame(0);
 			GetAnimator()->Play(L"Acolyte_Walk_L");
 		}
 	}break;
@@ -91,10 +127,12 @@ void CEnemy_Acolyte::Update_Animation()
 	{
 		if (GetDir().x > 0.f)
 		{
+			GetAnimator()->FindAnimation(L"Acolyte_Attack_R")->SetFrame(0);
 			GetAnimator()->Play(L"Acolyte_Attack_R");
 		}
 		else
 		{
+			GetAnimator()->FindAnimation(L"Acolyte_Attack_L")->SetFrame(0);
 			GetAnimator()->Play(L"Acolyte_Attack_L");
 		}
 	}break;
@@ -102,10 +140,12 @@ void CEnemy_Acolyte::Update_Animation()
 	{
 		if (GetDir().x > 0.f)
 		{
+			GetAnimator()->FindAnimation(L"Acolyte_Hit_R")->SetFrame(0);
 			GetAnimator()->Play(L"Acolyte_Hit_R");
 		}
 		else
 		{
+			GetAnimator()->FindAnimation(L"Acolyte_Hit_L")->SetFrame(0);
 			GetAnimator()->Play(L"Acolyte_Hit_L");
 		}
 	}break;
@@ -113,10 +153,12 @@ void CEnemy_Acolyte::Update_Animation()
 	{
 		if (GetDir().x > 0.f)
 		{
+			GetAnimator()->FindAnimation(L"Acolyte_Death_R")->SetFrame(0);
 			GetAnimator()->Play(L"Acolyte_Death_R");
 		}
 		else
 		{
+			GetAnimator()->FindAnimation(L"Acolyte_Death_L")->SetFrame(0);
 			GetAnimator()->Play(L"Acolyte_Death_L");
 		}
 	}break;
@@ -124,6 +166,8 @@ void CEnemy_Acolyte::Update_Animation()
 	default:
 		break;
 	}
+
+	GetAI()->SetPrevState(GetAI()->GetCurState()->GetState());
 }
 
 void CEnemy_Acolyte::Init_Animation()
@@ -246,14 +290,6 @@ void CEnemy_Acolyte::Attack()
 
 	fvPos.x += GetDir().x * fVelocity * fDeltaTime;
 	SetPos(fvPos);
-}
-
-void CEnemy_Acolyte::Hit(CGameObject* other)
-{
-	CEnemy::Hit(other);
-
-	GetAnimator()->FindAnimation(L"Acolyte_Hit_R")->SetFrame(0);
-	GetAnimator()->FindAnimation(L"Acolyte_Hit_L")->SetFrame(0);
 }
 
 void CEnemy_Acolyte::OnCollision(CCollider* other)

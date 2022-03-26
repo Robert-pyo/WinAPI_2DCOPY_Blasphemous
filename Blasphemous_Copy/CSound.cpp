@@ -5,7 +5,7 @@ CSound::CSound()
 {
 	m_pChannel = nullptr;
 	m_pSound = nullptr;
-	m_pVolume = nullptr;
+	m_fVolume = 0.f;
 }
 
 CSound::~CSound()
@@ -59,9 +59,12 @@ void CSound::SetVolume(float fVolume)
 
 float CSound::GetVolume()
 {
-	m_pChannel->getVolume(m_pVolume);
+	FMOD_RESULT result;
 
-	return *m_pVolume;
+	result = m_pChannel->getVolume(&m_fVolume);
+	assert(!result);
+
+	return m_fVolume;
 }
 
 bool CSound::IsPlaying()

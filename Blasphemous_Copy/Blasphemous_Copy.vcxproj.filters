@@ -166,6 +166,9 @@
     <Filter Include="Object\SpawnPoint">
       <UniqueIdentifier>{808259de-6147-4b8d-93be-3114c953aafe}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Object\Enemy\Stoner">
+      <UniqueIdentifier>{8c44e4b3-cc82-4348-b5a7-f595ee0bb4bd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -366,6 +369,15 @@
     <ClInclude Include="CJsonLoader.h">
       <Filter>Util</Filter>
     </ClInclude>
+    <ClInclude Include="CEnemy_Stoner.h">
+      <Filter>Object\Enemy\Stoner</Filter>
+    </ClInclude>
+    <ClInclude Include="CState_Patrol.h">
+      <Filter>Engine\Component\AI\State\Patrol</Filter>
+    </ClInclude>
+    <ClInclude Include="CEffect_Rock.h">
+      <Filter>Object\Effect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CCore.cpp">
@@ -541,6 +553,15 @@
     </ClCompile>
     <ClCompile Include="CJsonLoader.cpp">
       <Filter>Util</Filter>
+    </ClCompile>
+    <ClCompile Include="CEnemy_Stoner.cpp">
+      <Filter>Object\Enemy\Stoner</Filter>
+    </ClCompile>
+    <ClCompile Include="CState_Patrol.cpp">
+      <Filter>Engine\Component\AI\State\Patrol</Filter>
+    </ClCompile>
+    <ClCompile Include="CEffect_Rock.cpp">
+      <Filter>Object\Effect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

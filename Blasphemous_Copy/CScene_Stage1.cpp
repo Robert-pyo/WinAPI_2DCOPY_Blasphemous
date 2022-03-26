@@ -12,8 +12,6 @@
 #include "CWarpPoint.h"
 #include "CPlayerSword.h"
 
-CSound* pSound;
-
 CScene_Stage1::CScene_Stage1()
 {
 	// 플레이어 생성
@@ -41,18 +39,11 @@ CScene_Stage1::CScene_Stage1()
 
 CScene_Stage1::~CScene_Stage1()
 {
-	if (nullptr != pSound)
-		delete pSound;
 }
 
 void CScene_Stage1::update()
 {
 	CScene::update();
-
-	if (PRESS_KEY_DOWN(VK_TAB))
-	{
-		ChangeToNextScene(GROUP_SCENE::TOOL);
-	}
 }
 
 void CScene_Stage1::Enter()
