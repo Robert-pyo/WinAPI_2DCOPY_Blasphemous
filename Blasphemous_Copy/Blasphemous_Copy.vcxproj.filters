@@ -378,6 +378,9 @@
     <ClInclude Include="CEffect_Rock.h">
       <Filter>Object\Effect</Filter>
     </ClInclude>
+    <ClInclude Include="CScene_Church.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CCore.cpp">
@@ -562,6 +565,9 @@
     </ClCompile>
     <ClCompile Include="CEffect_Rock.cpp">
       <Filter>Object\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="CScene_Church.cpp">
+      <Filter>Scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

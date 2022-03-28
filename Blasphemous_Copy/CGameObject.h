@@ -16,7 +16,6 @@ private:
 	fPoint m_fptScale;
 
 	bool m_bIsActive;	// 오브젝트 현재 상태
-	void SetDisable();	// 비활성화 상태로 만듦
 
 	// Collider는 컴포넌트로써 존재한다.
 	// 각 오브젝트는 Collider를 가질 수도, 가지지 않을 수도 있다.
@@ -28,6 +27,9 @@ private:
 	CAnimator* m_pAnimator;
 
 	GROUP_GAMEOBJ objGroup;
+
+protected:
+	void SetDisable();	// 비활성화 상태로 만듦
 
 public:
 	CGameObject();

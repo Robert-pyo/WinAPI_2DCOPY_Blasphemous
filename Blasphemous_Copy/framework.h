@@ -44,6 +44,7 @@ enum class GROUP_GAMEOBJ
 	ENEMY_ATT_FX,
 	WEAPON,
 
+	OBJLOCATION,
 	UI,
 	SIZE,
 };
@@ -52,8 +53,10 @@ enum class GROUP_SCENE
 {
 	TOOL,
 	TITLE,
-	STAGE_01,
+	TESTSTAGE,
 	TUTORIAL,
+	CHURCH,
+	BOSSSTAGE,
 
 	SIZE,
 };

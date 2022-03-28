@@ -36,8 +36,6 @@ void CPathManager::init()
 
 	wcscat_s(m_szContentPath, MAXSIZE_PATH, L"\\Release\\Content\\");
 	// 최종경로 : "(게임 솔루션 경로)\Output\Release\\Content\\"
-
-	Logger::info(m_szContentPath);
 }
 
 const WCHAR* CPathManager::GetContentPath()

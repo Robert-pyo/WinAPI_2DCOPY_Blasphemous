@@ -12,7 +12,7 @@ CSound::~CSound()
 {
 	Stop();
 
-	if (nullptr != m_pSound)
+	if (nullptr != m_pSound && nullptr != m_pChannel)
 	{
 		m_pSound->release();
 	}
@@ -21,6 +21,8 @@ CSound::~CSound()
 void CSound::Play()
 {
 	FMOD_RESULT result;
+
+	if (m_pSound == nullptr) return;
 
 	result = CSoundManager::GetInst()->GetSystem()->playSound(m_pSound, nullptr, false, &m_pChannel);
 	assert(!result);

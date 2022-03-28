@@ -1,4 +1,5 @@
 #pragma once
+class CScene;
 
 class CJsonLoader
 {
@@ -7,6 +8,6 @@ public:
 	~CJsonLoader();
 
 public:
-	static map<string, fPoint> LoadSpawnPoint();
+	static multimap<string, fPoint> LoadSpawnPoint(CScene* mapName);
 };
 

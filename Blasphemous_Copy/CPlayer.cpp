@@ -26,8 +26,6 @@ CPlayer::CPlayer()
 	m_fJumpPower	= -650.f;
 	m_bIsGrounded	= false;
 
-	m_pSword = nullptr;
-
 	m_fAttackDelay  = 0.2f;
 	m_iComboCount	= 0;
 	m_bIsAttacking	= false;
@@ -37,14 +35,21 @@ CPlayer::CPlayer()
 	m_fDodgeDelayAccTime = 0.f;
 	m_bIsInvincible = false;
 
+	InitAbility();
+	InitAnimation();
+
 	m_eCurState = PLAYER_STATE::IDLE;
 	m_eCurAttState = PLAYER_ATTACK_STATE::NONE;
-
-	CreateAnimator();
 
 	CreateCollider();
 	GetCollider()->SetOffsetPos(fPoint(30.f, 20.f));
 	GetCollider()->SetScale(fPoint(36.f, 96.f));
+
+	CCollisionManager::GetInst()->CheckGroup(GROUP_GAMEOBJ::PLAYER, GROUP_GAMEOBJ::TILE);
+	CCollisionManager::GetInst()->CheckGroup(GROUP_GAMEOBJ::PLAYER, GROUP_GAMEOBJ::ENEMY);
+	CCollisionManager::GetInst()->CheckGroup(GROUP_GAMEOBJ::PLAYER, GROUP_GAMEOBJ::FLOOR);
+	CCollisionManager::GetInst()->CheckGroup(GROUP_GAMEOBJ::PLAYER, GROUP_GAMEOBJ::BUILDING);
+	CCollisionManager::GetInst()->CheckGroup(GROUP_GAMEOBJ::PLAYER, GROUP_GAMEOBJ::DEFAULT);
 }
 
 CPlayer::~CPlayer()
@@ -58,12 +63,16 @@ CPlayer* CPlayer::Clone()
 
 void CPlayer::update()
 {
-	/*if (PRESS_KEY(VK_LBUTTON))
+	if (m_eCurState == PLAYER_STATE::DEAD)
 	{
-		fPoint mousePos = CCameraManager::GetInst()->GetRealPos(MousePos());
-		m_fAccelGravity = 0.f;
-		SetPos(mousePos);
-	}*/
+		static float fDeathAccTime = 0.f;
+		fDeathAccTime += fDeltaTime;
+
+		if (fDeathAccTime > 2.0f)
+			DeleteObj(this);
+		
+		return;
+	}
 
 	update_move();
 	update_state();
@@ -218,8 +227,8 @@ void CPlayer::update_move()
 {
 	if (PRESS_KEY('A') && !m_bIsAttacking)
 	{
-		if (m_fVelocity == 0.f)
-			m_fVelocity += 300.f;
+		if (m_fVelocity < 250.f)
+			m_fVelocity += 100.f;
 
 		if (!PRESS_KEY('D') && m_eCurState != PLAYER_STATE::DODGE)
 		{
@@ -231,8 +240,8 @@ void CPlayer::update_move()
 	
 	if (PRESS_KEY('D') && !m_bIsAttacking)
 	{
-		if (m_fVelocity == 0.f)
-			m_fVelocity += 300.f;
+		if (m_fVelocity < 250.f)
+			m_fVelocity += 100.f;
 
 		if (!PRESS_KEY('A') && m_eCurState != PLAYER_STATE::DODGE)
 		{
@@ -469,6 +478,8 @@ void CPlayer::debug_render()
 
 	fPoint fptRenderPos = CCameraManager::GetInst()->GetRenderPos(GetCollider()->GetFinalPos());
 
+	// TODO : 이 부분에서 자꾸 메모리 누수 발생하는데 어디서 렌더 텍스트에 발생할만한 곳이 어딘지를 모르겠음
+	// 분명 다 release 해줬는데..
 	CRenderManager::GetInst()->RenderText(strCurState,
 		fptRenderPos.x - GetScale().x * 2.f,
 		fptRenderPos.y - GetScale().y / 1.5f,
@@ -493,7 +504,7 @@ void CPlayer::debug_render()
 		fptRenderPos.y,
 		13, RGB(0, 255, 0));
 
-	WCHAR hp[5];
+	static WCHAR hp[5];
 	swprintf_s(hp, L"%4d", (int)m_tAbility.fCurHp);
 	wstring strHp = L"Current HP : ";
 	strHp += hp;
@@ -530,12 +541,26 @@ void CPlayer::InitDodgeState()
 
 void CPlayer::Hit(CGameObject* other)
 {
+	if (m_eCurState == PLAYER_STATE::DEAD) return;
+
 	CEnemy* pEnemy = (CEnemy*)other;
 
 	m_tAbility.fCurHp -= pEnemy->GetEnemyInfo().fAtt;
 
 	m_eCurState = PLAYER_STATE::HIT;
-	//m_bIsInvincible = true;
+	
+	if (m_tAbility.fCurHp <= 0)
+	{
+		Die();
+	}
+}
+
+void CPlayer::Die()
+{
+	m_eCurState = PLAYER_STATE::DEAD;
+	m_eCurAttState = PLAYER_ATTACK_STATE::NONE;
+
+	CCameraManager::GetInst()->FadeOut(2.0f);
 }
 
 const float CPlayer::GetVelocity()
@@ -560,6 +585,10 @@ void CPlayer::SetPlayerAbility(const tPlayerAbility& tAbility)
 
 void CPlayer::InitAbility()
 {
+	CPlayerSword* pSword = new CPlayerSword;
+	pSword->SetOwnerObj(this);
+	m_pSword = pSword;
+
 	m_tAbility.fMaxHp = 100.f;
 	m_tAbility.fCurHp = 100.f;
 	m_tAbility.fMaxMp = 100.f;
@@ -577,6 +606,8 @@ void CPlayer::InitAbility()
 
 void CPlayer::InitAnimation()
 {
+	CreateAnimator();
+
 	GetAnimator()->CreateAnimation(L"Player_Idle_Right", m_pImg, fPoint(0.f, 0.f), fPoint(71.f, 77.f), fPoint(71.f, 0.f), 0, 0.1f, 13, true, false);
 	GetAnimator()->CreateAnimation(L"Player_Idle_Left", m_pImg, fPoint(29.f, 77.f), fPoint(71.f, 77.f), fPoint(71.f, 0.f), 0, 0.1f, 13, true, false);
 	GetAnimator()->CreateAnimation(L"Player_Running_Right", m_pImg, fPoint(0.f, 155.f), fPoint(77.f, 77.f), fPoint(78.f, 0.f), 0, 0.045f, 14, true, false);
@@ -698,57 +729,42 @@ void CPlayer::OnCollision(CCollider* target)
 	if (GROUP_GAMEOBJ::TILE == target->GetOwnerObj()->GetObjGroup() || 
 		GROUP_GAMEOBJ::FLOOR == target->GetOwnerObj()->GetObjGroup())
 	{
-		LONG yDiff = 0;
-		LONG xDiff = 0;
-		if (target->GetBorderPos().left > GetCollider()->GetBorderPos().left)
-		{
-			xDiff = (GetCollider()->GetBorderPos().right - target->GetBorderPos().left);
-		}
-		else if (target->GetBorderPos().right < GetCollider()->GetBorderPos().right)
-		{
-			xDiff = (target->GetBorderPos().right - GetCollider()->GetBorderPos().left);
-		}
-		else
-			xDiff = (GetCollider()->GetBorderPos().right - GetCollider()->GetBorderPos().left);
+		fVector2D fvDiff = CCollisionManager::GetInst()->GetColliderDiff(GetCollider(), target);
 
 		CTile* pTile = (CTile*)target->GetOwnerObj();
 
 		// 플레이어 바닥 및 벽 충돌 처리
 
 		// 왼쪽 벽
-		if (m_fvCurDir.x < 0.f)
+		if (m_fvCurDir.x < 0.f && 
+			(pTile->GetGroup() == GROUP_TILE::WALL || pTile->GetGroup() == GROUP_TILE::GROUND))
 		{
 			// y축 위치가 맞지 않는 경우 무시
 			if (target->GetBorderPos().top < GetCollider()->GetBorderPos().bottom
 				&& target->GetBorderPos().bottom > GetCollider()->GetBorderPos().top)
 			{
-				yDiff = (GetCollider()->GetBorderPos().bottom - target->GetBorderPos().top);
-
 				// 플레이어가 벽보다 오른쪽에 있을 때
-				if (yDiff > xDiff && GetCollider()->GetBorderPos().right > target->GetBorderPos().right)
+				if (fvDiff.y > fvDiff.x && GetCollider()->GetBorderPos().right > target->GetBorderPos().right)
 				{
 					fPoint fptPos = GetPos();
-					fptPos.x += (float)(target->GetBorderPos().right - GetCollider()->GetBorderPos().left);
-					m_fVelocity = 0.f;
+					fptPos.x += m_fVelocity * fDeltaTime;
 					SetPos(fptPos);
 				}
 			}
 		}
 		// 오른쪽 벽
-		if (m_fvCurDir.x > 0.f)
+		if (m_fvCurDir.x > 0.f &&
+			(pTile->GetGroup() == GROUP_TILE::WALL || pTile->GetGroup() == GROUP_TILE::GROUND))
 		{
 			// y축 위치가 맞지 않는 경우 무시
 			if (target->GetBorderPos().top < GetCollider()->GetBorderPos().bottom
 				&& target->GetBorderPos().bottom > GetCollider()->GetBorderPos().top)
 			{
-				yDiff = (GetCollider()->GetBorderPos().bottom - target->GetBorderPos().top);
-
 				// 플레이어가 벽보다 왼쪽에 있을 때
-				if (yDiff > xDiff && GetCollider()->GetBorderPos().left < target->GetBorderPos().left)
+				if (fvDiff.y > fvDiff.x && GetCollider()->GetBorderPos().left < target->GetBorderPos().left)
 				{
 					fPoint fptPos = GetPos();
-					fptPos.x -= (float)(GetCollider()->GetBorderPos().right - target->GetBorderPos().left);
-					m_fVelocity = 0.f;
+					fptPos.x -= m_fVelocity * fDeltaTime;
 					SetPos(fptPos);
 				}
 			}
@@ -762,13 +778,11 @@ void CPlayer::OnCollision(CCollider* target)
 				if (GetCollider()->GetBorderPos().bottom > target->GetBorderPos().bottom &&
 					GetCollider()->GetBorderPos().top <= target->GetBorderPos().bottom)
 				{
-					yDiff = (target->GetBorderPos().bottom - GetCollider()->GetBorderPos().top);
-
-					if (yDiff < xDiff)
+					if (fvDiff.y < fvDiff.x)
 					{
 						fPoint fptPos = GetPos();
 						// 충돌시 착지한 경계면에서 뚫고 들어간 정도를 계산하여 현재 위치에 더해줌
-						fptPos.y += (float)(target->GetBorderPos().bottom - GetCollider()->GetBorderPos().top);
+						fptPos.y += fvDiff.y;
 						SetPos(fptPos);
 					}
 				}
@@ -777,17 +791,12 @@ void CPlayer::OnCollision(CCollider* target)
 				if (GetCollider()->GetBorderPos().top < target->GetBorderPos().top
 					&& GetCollider()->GetBorderPos().bottom >= target->GetBorderPos().top)
 				{
-					yDiff = (GetCollider()->GetBorderPos().bottom - target->GetBorderPos().top);
-
-					if (yDiff < xDiff)
+					if (fvDiff.y < fvDiff.x)
 					{
 						fPoint fptPos = GetPos();
 						// 충돌시 착지한 경계면에서 뚫고 들어간 정도를 계산하여 현재 위치에 더해줌
-						fptPos.y -= (float)(GetCollider()->GetBorderPos().bottom - target->GetBorderPos().top);
+						fptPos.y -= fvDiff.y;
 						SetPos(fptPos);
-
-						m_bIsGrounded = true;
-
 						m_fAccelGravity = 0.f;
 					}
 				}
@@ -799,17 +808,12 @@ void CPlayer::OnCollision(CCollider* target)
 				if (GetCollider()->GetBorderPos().top < target->GetBorderPos().top
 					&& GetCollider()->GetBorderPos().bottom >= target->GetBorderPos().top)
 				{
-					yDiff = (GetCollider()->GetBorderPos().bottom - target->GetBorderPos().top);
-
-					if (yDiff < xDiff)
+					if (fvDiff.y < fvDiff.x)
 					{
 						fPoint fptPos = GetPos();
 						// 충돌시 착지한 경계면에서 뚫고 들어간 정도를 계산하여 현재 위치에 더해줌
-						fptPos.y -= (float)(GetCollider()->GetBorderPos().bottom - target->GetBorderPos().top);
+						fptPos.y -= fvDiff.y;
 						SetPos(fptPos);
-
-						m_bIsGrounded = true;
-
 						m_fAccelGravity = 0.f;
 					}
 				}
@@ -820,20 +824,27 @@ void CPlayer::OnCollision(CCollider* target)
 
 void CPlayer::OnCollisionEnter(CCollider* target)
 {
-	if (GROUP_GAMEOBJ::FLOOR == target->GetOwnerObj()->GetObjGroup()
-		|| GROUP_GAMEOBJ::TILE == target->GetOwnerObj()->GetObjGroup())
+	if (m_fAccelGravity > 0.f)
 	{
-		if (m_fAccelGravity > 0.f)
+		if (GROUP_GAMEOBJ::FLOOR == target->GetOwnerObj()->GetObjGroup()
+			|| GROUP_GAMEOBJ::TILE == target->GetOwnerObj()->GetObjGroup())
 		{
+			fVector2D fvDiff = CCollisionManager::GetInst()->GetColliderDiff(GetCollider(), target);
+
 			if (GetCollider()->GetBorderPos().top < target->GetBorderPos().top
 				&& GetCollider()->GetBorderPos().bottom >= target->GetBorderPos().top)
 			{
-				if (m_eCurState == PLAYER_STATE::JUMP)
+				if (fvDiff.y < fvDiff.x)
 				{
-					GetAnimator()->FindAnimation(L"Player_Jumpoff_Right")->SetFrame(0);
-					GetAnimator()->FindAnimation(L"Player_Jumpoff_Left")->SetFrame(0);
+					m_bIsGrounded = true;
 
-					m_eCurState = PLAYER_STATE::JUMPOFF;
+					if (m_eCurState == PLAYER_STATE::JUMP)
+					{
+						GetAnimator()->FindAnimation(L"Player_Jumpoff_Right")->SetFrame(0);
+						GetAnimator()->FindAnimation(L"Player_Jumpoff_Left")->SetFrame(0);
+
+						m_eCurState = PLAYER_STATE::JUMPOFF;
+					}
 				}
 			}
 		}
@@ -842,6 +853,5 @@ void CPlayer::OnCollisionEnter(CCollider* target)
 
 void CPlayer::OnCollisionExit(CCollider* target)
 {
-
 }
 #pragma endregion

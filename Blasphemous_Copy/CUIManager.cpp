@@ -72,6 +72,11 @@ void CUIManager::SetFocusedUI(CUI* pUI)
 	vecUI.push_back(m_pFocusedUI);
 }
 
+bool CUIManager::IsFocused()
+{
+	return m_pFocusedUI != nullptr;
+}
+
 CUI* CUIManager::GetTargetUI(CUI* pParentUI)
 {
 	// 깊이 우선 탐색하며 최상단에 있는 자식UI를 target으로 가져오자

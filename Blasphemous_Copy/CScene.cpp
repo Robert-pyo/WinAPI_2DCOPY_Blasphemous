@@ -5,6 +5,12 @@
 #include "CTexture.h"
 #include "CUI.h"
 #include "CCollider.h"
+#include "CJsonLoader.h"
+#include "CPlayer.h"
+#include "CPlayerSword.h"
+#include "CEnemy.h"
+#include "CEnemyFactory.h"
+#include "CWeapon.h"
 
 #include <fstream>
 #include "json/json.h"
@@ -14,6 +20,7 @@ CScene::CScene()
 	this->m_sceneName = L"";
 	m_iTileX = 0;
 	m_iTileY = 0;
+	m_IsPaused = false;
 
 	m_vecUI = {};
 }
@@ -40,6 +47,14 @@ CScene::~CScene()
 
 void CScene::update()
 {
+	// M 입력 시 일시정지
+	if (PRESS_KEY_DOWN('M'))
+	{
+		m_IsPaused = !m_IsPaused;
+	}
+
+	if (m_IsPaused) return;
+
 	// 씬에 속한 모든 오브젝트들의 업데이트를 수행
 	for (int i = 0; i < (int)GROUP_GAMEOBJ::SIZE; ++i)
 	{
@@ -56,6 +71,8 @@ void CScene::update()
 
 void CScene::finalUpdate()
 {
+	if (m_IsPaused) return;
+
 	// 씬에 속한 모든 오브젝트들의 finalUpdate를 수행
 	for (int i = 0; i < (int)GROUP_GAMEOBJ::SIZE; ++i)
 	{
@@ -180,8 +197,8 @@ void CScene::UIOptionSelector()
 
 				if (i < m_vecUI.size() - 1)
 				{
-					m_vecUI[i + 1]->SelectUI();
-					CUIManager::GetInst()->SetFocusedUI(m_vecUI[i + 1]);
+					m_vecUI[i+1]->SelectUI();
+					CUIManager::GetInst()->SetFocusedUI(m_vecUI[i+1]);
 				}
 				else
 				{
@@ -252,7 +269,8 @@ void CScene::LoadTile(const wstring& strPath)
 		{
 			// TODO : OBB 충돌체 추가
 		}
-		else if (GROUP_TILE::WALL == newTile->GetGroup() || GROUP_TILE::GROUND == newTile->GetGroup())
+		else if (GROUP_TILE::WALL == newTile->GetGroup() || GROUP_TILE::GROUND == newTile->GetGroup()
+			|| GROUP_TILE::PLATFORM == newTile->GetGroup())
 		{
 			newTile->CreateCollider();
 			newTile->GetCollider()->SetScale(fPoint(CTile::SIZE_TILE, CTile::SIZE_TILE));
@@ -263,6 +281,54 @@ void CScene::LoadTile(const wstring& strPath)
 	}
 
 	fclose(pFile);
+}
+
+void CScene::SpawnObjects(CScene* targetScene, const string objName)
+{
+	m_mapSpawnPoint = CJsonLoader::LoadSpawnPoint(targetScene);
+
+	int count = m_mapSpawnPoint.count(objName);
+	multimap<string, fPoint>::iterator iter = m_mapSpawnPoint.find(objName);
+
+	if (m_mapSpawnPoint.end() == iter) return;
+
+	for (int i = 0; i < count; ++i, ++iter)
+	{
+		if (objName == "Player")
+		{
+			CPlayer* pPlayer = CPlayer::GetPlayer();
+
+			if (pPlayer == nullptr)
+			{
+				pPlayer = new CPlayer;
+				pPlayer->SetPos(iter->second);
+				pPlayer->RegisterPlayer(pPlayer);
+				AddObject(pPlayer, GROUP_GAMEOBJ::PLAYER);
+				AddObject(pPlayer->GetWeapon(), GROUP_GAMEOBJ::WEAPON);
+			}
+			else
+			{
+				pPlayer->SetPos(iter->second);
+				AddObject(pPlayer, GROUP_GAMEOBJ::PLAYER);
+			}
+		}
+
+		else if (objName == "Acolyte")
+		{
+			CEnemy* pEnemy = CEnemyFactory::CreateEnemy(ENEMY_TYPE::NORMAL, iter->second);
+			AddObject(pEnemy, GROUP_GAMEOBJ::ENEMY);
+			if (pEnemy->GetEnemyInfo().pWeapon != nullptr)
+				AddObject(pEnemy->GetEnemyInfo().pWeapon, GROUP_GAMEOBJ::WEAPON);
+		}
+
+		else if (objName == "Stoner")
+		{
+			CEnemy* pEnemy = CEnemyFactory::CreateEnemy(ENEMY_TYPE::RANGE, iter->second);
+			AddObject(pEnemy, GROUP_GAMEOBJ::ENEMY);
+			if (pEnemy->GetEnemyInfo().pWeapon != nullptr)
+				AddObject(pEnemy->GetEnemyInfo().pWeapon, GROUP_GAMEOBJ::WEAPON);
+		}
+	}
 }
 
 void CScene::ClearGroup(GROUP_GAMEOBJ group)

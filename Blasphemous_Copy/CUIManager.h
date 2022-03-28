@@ -13,6 +13,7 @@ private:
 public:
 	void update();
 	void SetFocusedUI(CUI* pUI);
+	bool IsFocused();
 
 	void SetKeyControl(bool bRemote) { m_bIsKeyControl = bRemote; }
 	bool IsKeyControlled() { return m_bIsKeyControl; }

@@ -1,5 +1,6 @@
 #include "framework.h"
 #include "CButtonUI.h"
+#include "CD2DImage.h"
 
 CButtonUI::CButtonUI()
 {
@@ -54,7 +55,7 @@ void CButtonUI::render()
 
 void CButtonUI::MouseOn()
 {
-	if (GetText() != L"")
+	if (CUIManager::GetInst()->IsKeyControlled() && GetText() != L"")
 		SetTextColor(RGB(255, 255, 0));
 }
 
@@ -64,7 +65,7 @@ void CButtonUI::MouseLBtnDown()
 
 void CButtonUI::MouseLBtnUp()
 {
-	if (GetText() != L"")
+	if (CUIManager::GetInst()->IsKeyControlled() && GetText() != L"")
 		SetTextColor(RGB(255, 255, 255));
 }
 
@@ -79,6 +80,11 @@ void CButtonUI::MouseLBtnClicked()
 void CButtonUI::SetImage(CD2DImage* img)
 {
 	m_pImg = img;
+}
+
+CD2DImage* CButtonUI::GetImageInfo()
+{
+	return m_pImg;
 }
 
 void CButtonUI::SetText(const wstring& str)

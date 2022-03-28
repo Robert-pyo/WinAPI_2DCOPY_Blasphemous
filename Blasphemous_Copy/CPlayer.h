@@ -109,7 +109,7 @@ public:
 	virtual void component_render() final;
 	virtual void debug_render() final;
 
-public:
+private:
 	void InitAbility();
 	void InitAnimation();
 
@@ -129,8 +129,11 @@ public:
 	void SetAttackCount(const UINT count) { m_iComboCount = count; }
 
 	void SetWeapon(CPlayerSword* weapon) { m_pSword = weapon; } // TODO : 필요성 검토
+	CPlayerSword* GetWeapon() { return m_pSword; }
 
 	bool IsInvincible() { return m_bIsInvincible; }
+
+	void Die();
 
 private:
 	void InitDodgeState();

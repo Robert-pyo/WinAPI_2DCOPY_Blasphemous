@@ -9,6 +9,7 @@
 #include "CPanelUI.h"
 #include "CButtonUI.h"
 #include "CTileButton.h"
+#include "CPrayerTable.h"
 #include <fstream>
 #include "json/json.h"
 
@@ -32,6 +33,9 @@ CScene_Tool::CScene_Tool()
 
 CScene_Tool::~CScene_Tool()
 {
+	vector<CGameObject*>& vecObj = GetObjGroup(GROUP_GAMEOBJ::PLAYER);
+	if (vecObj.size() > 0)
+		vecObj.erase(vecObj.begin());
 }
 
 void CScene_Tool::update()
@@ -40,7 +44,7 @@ void CScene_Tool::update()
 
 	if (PRESS_KEY_DOWN(VK_TAB))
 	{
-		ChangeToNextScene(GROUP_SCENE::TUTORIAL);
+		ChangeToNextScene(GROUP_SCENE::CHURCH);
 	}
 
 	if (PRESS_KEY('A'))
@@ -72,7 +76,8 @@ void CScene_Tool::render()
 		vecTile[i]->render();
 	}
 
-	PrintMap();
+	//PrintMap();
+	PrintMap(fPoint(1, 1));
 	PrintTileLine();
 	PrintTileGroup();
 
@@ -90,8 +95,7 @@ void CScene_Tool::Enter()
 
 	CreateTile(20, 20);
 	CreateTilePanel();
-
-	CCameraManager::GetInst()->FadeIn(2.f);
+	//CreateObjPanel();
 
 	CCameraManager::GetInst()->SetLookAt(fPoint(WINSIZE_X / 2.f, WINSIZE_Y / 2.f));
 	CCameraManager::GetInst()->FollowTargetObj(nullptr, false, false);
@@ -133,7 +137,7 @@ void CScene_Tool::SetTileIdx()
 		UINT iIdx = iRow * iTileX + iCol;
 		m_fptSelectedPos = fPoint((float)fptMousePos.x, (float)fptMousePos.y);
 		const vector<CGameObject*>& vecTile = GetObjGroup(GROUP_GAMEOBJ::TILE);
-		if (PRESS_KEY(VK_LBUTTON))
+		if (PRESS_KEY(VK_LBUTTON) && !CUIManager::GetInst()->IsFocused())
 			((CTile*)vecTile[iIdx])->SetImgIdx(m_iIdx);
 		else if (PRESS_KEY(VK_RBUTTON))
 			((CTile*)vecTile[iIdx])->SetImgIdx(0);
@@ -166,7 +170,7 @@ void CScene_Tool::SetTileGroup()
 
 		UINT iIdx = iRow * iTileX + iCol;
 		const vector<CGameObject*>& vecTile = GetObjGroup(GROUP_GAMEOBJ::TILE);
-		if (PRESS_KEY(VK_LBUTTON))
+		if (PRESS_KEY(VK_LBUTTON && !CUIManager::GetInst()->IsFocused()))
 		{
 			((CTile*)vecTile[iIdx])->SetGroup(m_gTile);
 			
@@ -273,6 +277,7 @@ void CScene_Tool::LoadTile(const wstring& strPath)
 	}
 
 	fclose(pFile);
+	delete pTile;
 }
 
 void CScene_Tool::SaveTileData()
@@ -344,6 +349,7 @@ void CScene_Tool::LoadMap()
 	if (GetOpenFileName(&ofn))
 	{
 		m_pMap = CResourceManager::GetInst()->LoadToolD2DImage(szName);
+		SetCurEditName(szName);
 	}
 }
 
@@ -370,6 +376,11 @@ void CScene_Tool::ClickTileGroup(CButtonUI* button)
 	}
 	else if (m_gTile == GROUP_TILE::WALL)
 	{
+		m_gTile = GROUP_TILE::PLATFORM;
+		button->SetText(L"PLATFORM");
+	}
+	else if (m_gTile == GROUP_TILE::PLATFORM)
+	{
 		m_gTile = GROUP_TILE::SPAWNPOINT;
 		button->SetText(L"SPAWNPOINT");
 	}
@@ -393,6 +404,79 @@ void CScene_Tool::ClickTile(CTileButton* button)
 {
 	SetIdx(button->GetIdx());
 }
+
+void CScene_Tool::SetCurEditName(const wstring& curEdit)
+{
+	WCHAR editPath[255] = L"";
+	wcscat_s(editPath, 255, curEdit.c_str());
+
+	// 경로 문자열 길이
+	int strSize = (int)wcslen(editPath);
+	int dest = 0;
+
+	for (int i = strSize - 1; i > 0; --i)
+	{
+		// 처음으로 \\을 찾았다면
+		if ('\\' == editPath[i])
+		{
+			dest = ++i;
+			break;
+		}
+	}
+
+	if (dest == 0)
+	{
+		m_strCurEdit = curEdit;
+		return;
+	}
+
+	WCHAR strName[255] = L"";
+	int count = 0;
+	for (int i = dest; i < strSize - 4; ++i)
+	{
+		strName[count] = editPath[i];
+		count++;
+	}
+
+	m_strCurEdit = strName;
+}
+
+//void ClickObjButton(DWORD_PTR param1, DWORD_PTR param2)
+//{
+//	// param1 : Scene_tool
+//	// param2 : CGameObject*
+//	CScene_Tool* scene_tool = (CScene_Tool*)param1;
+//	CGameObject* obj = (CGameObject*)param2;
+//	obj->SetPos(CCameraManager::GetInst()->GetRealPos(MousePos()));
+//}
+
+//void CScene_Tool::CreateObjPanel()
+//{
+//	CPanelUI* panelObjMaster = new CPanelUI;
+//	panelObjMaster->SetPos(fPoint(0.f, 0.f));
+//	panelObjMaster->SetScale(fPoint(400.f, 600.f));
+//	AddObject(panelObjMaster, GROUP_GAMEOBJ::UI);
+//	RegisterUI(panelObjMaster);
+//
+//	CButtonUI* btnPrayObj = new CButtonUI;
+//	btnPrayObj->SetPos(fPoint(10.f, 10.f));
+//	btnPrayObj->SetImage(
+//		CResourceManager::GetInst()->LoadD2DImage(L"PrayerTable", L"texture\\Map\\PrayerTable\\priedieu_stand.png")
+//	);
+//	float width = (float)btnPrayObj->GetImageInfo()->GetWidth();
+//	float height = (float)btnPrayObj->GetImageInfo()->GetHeight();
+//	btnPrayObj->SetScale(fPoint(width, height));
+//	btnPrayObj->SetClickCallBack(ClickObjButton, (DWORD_PTR)this, (DWORD_PTR));
+//	panelObjMaster->AddChild(btnPrayObj);
+//
+//	CButtonUI* acolyteObjBtn = new CButtonUI;
+//	acolyteObjBtn->SetPos(fPoint(btnPrayObj->GetFinalPos().x + btnPrayObj->GetScale().x + 20.f, 10.f));
+//	acolyteObjBtn->SetImage(
+//		CResourceManager::GetInst()->LoadD2DImage(L"PrayerTable", L"texture\\Map\\PrayerTable\\priedieu_stand.png")
+//	);
+//	acolyteObjBtn->SetScale(fPoint(width, height));
+//	panelObjMaster->AddChild(acolyteObjBtn);
+//}
 
 void CScene_Tool::CreateTilePanel()
 {
@@ -427,7 +511,7 @@ void CScene_Tool::CreateTilePanel()
 	AddObject(panelTile, GROUP_GAMEOBJ::UI);
 }
 
-void CScene_Tool::PrintMap()
+void CScene_Tool::PrintMap(const fPoint& ratio)
 {
 	if (nullptr == m_pMap)
 		return;
@@ -439,8 +523,8 @@ void CScene_Tool::PrintMap()
 		m_pMap,
 		0 - pos.x,
 		0 - pos.y,
-		2 * m_pMap->GetWidth() - pos.x,
-		2 * m_pMap->GetHeight() - pos.y
+		ratio.x * m_pMap->GetWidth() - pos.x,
+		ratio.y * m_pMap->GetHeight() - pos.y
 	);
 }
 
@@ -509,6 +593,17 @@ void CScene_Tool::PrintTileGroup()
 				CTile::SIZE_TILE / 2.f,
 				CTile::SIZE_TILE / 2.f,
 				RGB(0, 0, 255),
+				3.f
+			);
+		}
+		else if (GROUP_TILE::PLATFORM == pTile->GetGroup())
+		{
+			CRenderManager::GetInst()->RenderEllipse(
+				pTile->GetPos().x + CTile::SIZE_TILE / 2.f - pos.x,
+				pTile->GetPos().y + CTile::SIZE_TILE / 2.f - pos.y,
+				CTile::SIZE_TILE / 2.f,
+				CTile::SIZE_TILE / 2.f,
+				RGB(255, 0, 255),
 				3.f
 			);
 		}
@@ -598,7 +693,10 @@ INT_PTR CALLBACK TileInfoWinProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM 
 			wcstombs_s(nullptr, name, strName, 255);
 
 			wstring path = CPathManager::GetInst()->GetContentPath();
-			path += L"data\\SpawnPoint.json";
+			path += L"data\\";
+			if (pToolScene->GetCurEditName().size() > 0)
+				path += pToolScene->GetCurEditName();
+			path += L"_SpawnPoint.json";
 
 			ifstream stream;
 			stream.open(path);
@@ -627,6 +725,9 @@ INT_PTR CALLBACK TileInfoWinProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM 
 			ofstream output_file(path);
 			output_file << result;
 			output_file.close();
+
+			pToolScene->SetInfoWndCount(0);
+			pToolScene->SpawnObjects(pToolScene, name);
 
 			EndDialog(hDlg, LOWORD(wParam));
 

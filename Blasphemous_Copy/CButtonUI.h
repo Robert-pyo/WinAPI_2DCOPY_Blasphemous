@@ -28,6 +28,7 @@ public:
 	virtual void MouseLBtnClicked() override;
 
 	void SetImage(CD2DImage* img);
+	CD2DImage* GetImageInfo();
 	void SetText(const wstring& str);
 
 	void SetClickCallBack(BTN_FUNC func, DWORD_PTR param1, DWORD_PTR param2);

@@ -15,10 +15,10 @@ CEnemy_Stoner::CEnemy_Stoner()
 
 	tEnemyInfo info = {};
 	info.fHP = 100.f;
-	info.fAtt = 15.f;
-	info.fAttRange = 800.f;
+	info.fAtt = 100.f;
+	info.fAttRange = 1000.f;
 	info.fAttDelayTime = 2.f;
-	info.fRecogRange = 800.f;
+	info.fRecogRange = 1000.f;
 	info.fVelocity = 0.f;
 	info.fInvTime = 0.1f;
 	info.iMoney = 20;

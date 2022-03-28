@@ -9,6 +9,7 @@
 #include "CEnemy.h"
 #include "CEnemyFactory.h"
 #include "CWeapon.h"
+#include "CWarpPoint.h"
 
 CScene_Tutorial::CScene_Tutorial()
 {
@@ -36,56 +37,17 @@ void CScene_Tutorial::update()
 
 void CScene_Tutorial::init()
 {
-	// 스폰 포인트 생성
-	CSpawnPoint* playerSpawnPoint = new CSpawnPoint;
-	m_mapSpawnPoint = CJsonLoader::LoadSpawnPoint();
-	map<string, fPoint>::iterator iter = m_mapSpawnPoint.find("Player");
-	if (m_mapSpawnPoint.end() != iter)
-	{
-		playerSpawnPoint->SetName(L"playerSpawnPoint");
-		playerSpawnPoint->SetPos(iter->second);
-	}
-	AddObject(playerSpawnPoint, GROUP_GAMEOBJ::DEFAULT);
+	//SpawnObjects(this, "Player");
+	//SpawnObjects(this, "Acolyte");
 
-	CSpawnPoint* acolyteSpawnPoint = new CSpawnPoint;
-	iter = m_mapSpawnPoint.find("Acolyte1");
-	if (m_mapSpawnPoint.end() != iter)
-	{
-		acolyteSpawnPoint->SetName(L"AcolyteSpawnPoint_1");
-		acolyteSpawnPoint->SetPos(iter->second);
-	}
-	AddObject(acolyteSpawnPoint, GROUP_GAMEOBJ::DEFAULT);
-
-	CSpawnPoint* acolyteSpawnPoint2 = new CSpawnPoint;
-	iter = m_mapSpawnPoint.find("Acolyte2");
-	if (m_mapSpawnPoint.end() != iter)
-	{
-		acolyteSpawnPoint2->SetName(L"AcolyteSpawnPoint_2");
-		acolyteSpawnPoint2->SetPos(iter->second);
-	}
-	AddObject(acolyteSpawnPoint2, GROUP_GAMEOBJ::DEFAULT);
-
-	// 플레이어 생성
-	CPlayer* pPlayer = CPlayer::GetPlayer();
-	pPlayer->SetPos(playerSpawnPoint->GetPos());
-	const vector<CGameObject*>& vecObj = GetObjGroup(GROUP_GAMEOBJ::PLAYER);
-	if (vecObj.size() == 0)
-		AddObject(pPlayer, GROUP_GAMEOBJ::PLAYER);
-
-	CEnemy* acolyte_front = CEnemyFactory::CreateEnemy(ENEMY_TYPE::NORMAL, acolyteSpawnPoint2->GetPos());
-	AddObject(acolyte_front, GROUP_GAMEOBJ::ENEMY);
-	AddObject(acolyte_front->GetEnemyInfo().pWeapon, GROUP_GAMEOBJ::WEAPON);
-
-	CEnemy* acolyte_middle = CEnemyFactory::CreateEnemy(ENEMY_TYPE::NORMAL, acolyteSpawnPoint2->GetPos());
-	AddObject(acolyte_middle, GROUP_GAMEOBJ::ENEMY);
-	AddObject(acolyte_middle->GetEnemyInfo().pWeapon, GROUP_GAMEOBJ::WEAPON);
-
-	CEnemy* stoner = CEnemyFactory::CreateEnemy(ENEMY_TYPE::RANGE, acolyteSpawnPoint->GetPos());
-	AddObject(stoner, GROUP_GAMEOBJ::ENEMY);
+	//CCameraManager::GetInst()->InitCameraPos(CPlayer::GetPlayer()->GetPos());
+	//CCameraManager::GetInst()->FollowTargetObj(CPlayer::GetPlayer(), true, true);
 }
 
 void CScene_Tutorial::Enter()
 {
+	CUIManager::GetInst()->SetKeyControl(false);
+
 	CSoundManager::GetInst()->AddSound(L"Forest_BGM", L"sound\\BGM\\Forest_MASTER.wav", true);
 	CSoundManager::GetInst()->AddSound(L"Forest_Ambient", L"sound\\BGM\\Forest_ambient.wav", true);
 	CSoundManager::GetInst()->Play(L"Forest_BGM");
@@ -104,20 +66,17 @@ void CScene_Tutorial::Enter()
 	AddObject(pBackground, GROUP_GAMEOBJ::BACKGROUND_BACK);
 
 	CMap* pMap = new CMap;
-	pMap->Load(L"TutorialMap", L"texture\\Map\\TutorialScene\\Forest_Map_01.png");
+	pMap->Load(L"TutorialMap", L"texture\\Map\\TutorialScene\\Tutorial.png");
 	AddObject(pMap, GROUP_GAMEOBJ::FLOOR);
+
+	CWarpPoint* warpToChurch = new CWarpPoint;
+	warpToChurch->SetName(L"Church");
+	warpToChurch->SetPos(fPoint(pBackground->GetScale().x - 100.f, pBackground->GetScale().y - 150.f));
+	AddObject(warpToChurch, GROUP_GAMEOBJ::DEFAULT);
 
 	CCameraManager::GetInst()->FadeIn(2.f);
 
 	CCameraManager::GetInst()->SetBoundary(pMap->GetPos(), fPoint((float)m_pBgImage->GetWidth() * 2.f, (float)m_pBgImage->GetHeight() * 2.f));
-
-	CCollisionManager::GetInst()->CheckGroup(GROUP_GAMEOBJ::PLAYER, GROUP_GAMEOBJ::TILE);
-	CCollisionManager::GetInst()->CheckGroup(GROUP_GAMEOBJ::PLAYER, GROUP_GAMEOBJ::ENEMY);
-	CCollisionManager::GetInst()->CheckGroup(GROUP_GAMEOBJ::PLAYER, GROUP_GAMEOBJ::FLOOR);
-	CCollisionManager::GetInst()->CheckGroup(GROUP_GAMEOBJ::PLAYER, GROUP_GAMEOBJ::BUILDING);
-	CCollisionManager::GetInst()->CheckGroup(GROUP_GAMEOBJ::PLAYER, GROUP_GAMEOBJ::DEFAULT);
-	CCollisionManager::GetInst()->CheckGroup(GROUP_GAMEOBJ::ENEMY, GROUP_GAMEOBJ::FLOOR);
-	CCollisionManager::GetInst()->CheckGroup(GROUP_GAMEOBJ::ENEMY, GROUP_GAMEOBJ::TILE);
 }
 
 void CScene_Tutorial::Exit()
@@ -132,6 +91,7 @@ void CScene_Tutorial::Exit()
 	}
 
 	CSoundManager::GetInst()->Stop(L"Forest_BGM");
+	CSoundManager::GetInst()->Stop(L"Forest_Ambient");
 
-	CCameraManager::GetInst()->FadeOut(2.f);
+	//CCameraManager::GetInst()->FadeOut(2.f);
 }

@@ -26,6 +26,9 @@ private:
 	// 충돌체 간의 이전 충돌 정보
 	map<ULONGLONG, bool> m_mapCollisionInfo;
 
+	// 충돌체 간의 충돌 시 거리 차이
+	fVector2D m_fvDiff;
+
 public:
 	void init();
 	void update();
@@ -44,5 +47,9 @@ public:
 
 	// 모든 충돌체에 대해 충돌 체크 해제
 	void Reset();
+
+public:
+	// 두 충돌체간의 충돌 시 거리차이 반환
+	const fVector2D& GetColliderDiff(CCollider* objLeft, CCollider* objRight);
 };
 

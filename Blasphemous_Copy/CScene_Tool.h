@@ -21,6 +21,8 @@ private:
 
 	fPoint m_fptSelectedPos;
 
+	wstring m_strCurEdit;
+
 public:
 	CScene_Tool();
 	~CScene_Tool();
@@ -54,10 +56,16 @@ public:
 
 	const fPoint& GetSelectedPos() { return m_fptSelectedPos; }
 
+	void SetCurEditName(const wstring& curEdit);
+	const wstring& GetCurEditName() { return m_strCurEdit; }
+
+//public:
+//	void CreateObjPanel();
+
 private:
 	void CreateTilePanel();
 
-	void PrintMap();
+	void PrintMap(const fPoint& ratio = {2, 2});
 	void PrintTileLine();
 	void PrintTileGroup();
 

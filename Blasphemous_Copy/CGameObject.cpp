@@ -95,8 +95,8 @@ void CGameObject::debug_render()
 		fptRenderPos.y,
 		20, RGB(0, 255, 0));
 
-	WCHAR posX[10] = {};
-	WCHAR posY[10] = {};
+	static WCHAR posX[10] = {};
+	static WCHAR posY[10] = {};
 	swprintf_s(posX, L"%.f", m_pCollider->GetFinalPos().x);
 	swprintf_s(posY, L"%.f", m_pCollider->GetFinalPos().y);
 	wstring strObjPos = L"(";

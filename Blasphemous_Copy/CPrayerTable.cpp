@@ -8,6 +8,7 @@ CPrayerTable::CPrayerTable()
 	m_pImg = CResourceManager::GetInst()->LoadD2DImage(L"PrayerTable", L"texture\\Map\\PrayerTable\\priedieu_stand_and_liton_anim.png");
 
 	InitObject(fPoint(0.f, 0.f), fPoint(132.f, 290.f));
+	SetName(L"PrayerTable");
 
 	m_bIsActive = false;
 

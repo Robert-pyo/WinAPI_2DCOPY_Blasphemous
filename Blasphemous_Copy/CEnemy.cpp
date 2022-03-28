@@ -23,6 +23,9 @@ CEnemy::CEnemy()
 	m_tEnmInfo.fVelocity = 0.f;
 	m_tEnmInfo.fInvTime = 0.f;
 	m_tEnmInfo.iMoney = 0.f;
+
+	CCollisionManager::GetInst()->CheckGroup(GROUP_GAMEOBJ::ENEMY, GROUP_GAMEOBJ::FLOOR);
+	CCollisionManager::GetInst()->CheckGroup(GROUP_GAMEOBJ::ENEMY, GROUP_GAMEOBJ::TILE);
 }
 
 CEnemy::~CEnemy()
@@ -171,18 +174,7 @@ void CEnemy::OnCollision(CCollider* target)
 	if (GROUP_GAMEOBJ::FLOOR == target->GetOwnerObj()->GetObjGroup() ||
 		GROUP_GAMEOBJ::TILE == target->GetOwnerObj()->GetObjGroup())
 	{
-		LONG yDiff = 0;
-		LONG xDiff = 0;
-		if (target->GetBorderPos().left > GetCollider()->GetBorderPos().left)
-		{
-			xDiff = (GetCollider()->GetBorderPos().right - target->GetBorderPos().left);
-		}
-		else if (target->GetBorderPos().right < GetCollider()->GetBorderPos().right)
-		{
-			xDiff = (target->GetBorderPos().right - GetCollider()->GetBorderPos().left);
-		}
-		else
-			xDiff = (GetCollider()->GetBorderPos().right - GetCollider()->GetBorderPos().left);
+		fVector2D fvDiff = CCollisionManager::GetInst()->GetColliderDiff(GetCollider(), target);
 
 		CTile* pTile = (CTile*)target->GetOwnerObj();
 
@@ -195,13 +187,11 @@ void CEnemy::OnCollision(CCollider* target)
 			if (target->GetBorderPos().top < GetCollider()->GetBorderPos().bottom
 				&& target->GetBorderPos().bottom > GetCollider()->GetBorderPos().top)
 			{
-				yDiff = (GetCollider()->GetBorderPos().bottom - target->GetBorderPos().top);
-
 				// 플레이어가 벽보다 오른쪽에 있을 때
-				if (yDiff > xDiff && GetCollider()->GetBorderPos().right > target->GetBorderPos().right)
+				if (fvDiff.y > fvDiff.x && GetCollider()->GetBorderPos().right > target->GetBorderPos().right)
 				{
 					fPoint fptPos = GetPos();
-					fptPos.x += (float)(target->GetBorderPos().right - GetCollider()->GetBorderPos().left);
+					fptPos.x += fvDiff.x;
 					SetPos(fptPos);
 				}
 			}
@@ -213,13 +203,11 @@ void CEnemy::OnCollision(CCollider* target)
 			if (target->GetBorderPos().top < GetCollider()->GetBorderPos().bottom
 				&& target->GetBorderPos().bottom > GetCollider()->GetBorderPos().top)
 			{
-				yDiff = (GetCollider()->GetBorderPos().bottom - target->GetBorderPos().top);
-
 				// 플레이어가 벽보다 왼쪽에 있을 때
-				if (yDiff > xDiff && GetCollider()->GetBorderPos().left < target->GetBorderPos().left)
+				if (fvDiff.y > fvDiff.x && GetCollider()->GetBorderPos().left < target->GetBorderPos().left)
 				{
 					fPoint fptPos = GetPos();
-					fptPos.x -= (float)(GetCollider()->GetBorderPos().right - target->GetBorderPos().left);
+					fptPos.x -= fvDiff.x;
 					SetPos(fptPos);
 				}
 			}
@@ -231,13 +219,11 @@ void CEnemy::OnCollision(CCollider* target)
 			if (GetCollider()->GetBorderPos().top < target->GetBorderPos().top
 				&& GetCollider()->GetBorderPos().bottom >= target->GetBorderPos().top)
 			{
-				yDiff = (GetCollider()->GetBorderPos().bottom - target->GetBorderPos().top);
-
-				if (yDiff < xDiff)
+				if (fvDiff.y < fvDiff.x)
 				{
 					fPoint fptPos = GetPos();
 					// 충돌시 착지한 경계면에서 뚫고 들어간 정도를 계산하여 현재 위치에 더해줌
-					fptPos.y -= (float)(GetCollider()->GetBorderPos().bottom - target->GetBorderPos().top);
+					fptPos.y -= fvDiff.y;
 					SetPos(fptPos);
 
 					m_bIsGrounded = true;

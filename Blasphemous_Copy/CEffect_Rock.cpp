@@ -5,6 +5,7 @@
 #include "CAnimation.h"
 #include "CPlayer.h"
 #include "CEnemy.h"
+#include "CTile.h"
 
 CEffect_Rock::CEffect_Rock()
 {
@@ -78,12 +79,15 @@ void CEffect_Rock::init()
 
 void CEffect_Rock::OnCollisionEnter(CCollider* other)
 {
-	if (other->GetOwnerObj()->GetObjGroup() == GROUP_GAMEOBJ::TILE ||
-		other->GetOwnerObj()->GetName() == L"FXSwordSlash")
+	if (other->GetOwnerObj()->GetObjGroup() == GROUP_GAMEOBJ::TILE)
 	{
-		GetAnimator()->Play(L"LandingRock");
+		CTile* pTile = (CTile*)other->GetOwnerObj();
 
-		m_fSpeed = 0.f;
+		if (pTile->GetGroup() == GROUP_TILE::GROUND || pTile->GetGroup() == GROUP_TILE::WALL)
+		{
+			GetAnimator()->Play(L"LandingRock");
+			m_fSpeed = 0.f;
+		}
 	}
 
 	if (other->GetOwnerObj()->GetName() == L"Player")
@@ -96,5 +100,11 @@ void CEffect_Rock::OnCollisionEnter(CCollider* other)
 
 			m_fSpeed = 0.f;
 		}
+	}
+
+	if (other->GetOwnerObj()->GetName() == L"FXSwordSlash")
+	{
+		GetAnimator()->Play(L"LandingRock");
+		m_fSpeed = 0.f;
 	}
 }

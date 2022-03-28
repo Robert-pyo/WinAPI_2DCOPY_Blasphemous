@@ -14,27 +14,6 @@
 
 CScene_Stage1::CScene_Stage1()
 {
-	// 플레이어 생성
-	CPlayer* pPlayer = new CPlayer;
-	pPlayer->InitAnimation();
-	AddObject(pPlayer, GROUP_GAMEOBJ::PLAYER);
-	pPlayer->RegisterPlayer(pPlayer);
-
-	CPlayerSword* pSword = new CPlayerSword;
-	pSword->SetOwnerObj(pPlayer);
-	AddObject(pSword, GROUP_GAMEOBJ::WEAPON);
-
-	// 플레이어 무기와 능력 초기화
-	pPlayer->SetWeapon(pSword);
-	pPlayer->InitAbility();
-
-	// 몬스터 생성
-	CEnemy* monster = CEnemyFactory::CreateEnemy(ENEMY_TYPE::NORMAL, pPlayer->GetPos() + fPoint(300.0f, 0.f));
-	AddObject(monster, GROUP_GAMEOBJ::ENEMY);
-	AddObject(monster->GetEnemyInfo().pWeapon, GROUP_GAMEOBJ::WEAPON);
-
-	CCameraManager::GetInst()->InitCameraPos(CPlayer::GetPlayer()->GetPos());
-	CCameraManager::GetInst()->FollowTargetObj(CPlayer::GetPlayer(), true, true);
 }
 
 CScene_Stage1::~CScene_Stage1()
@@ -48,6 +27,7 @@ void CScene_Stage1::update()
 
 void CScene_Stage1::Enter()
 {
+	CUIManager::GetInst()->SetKeyControl(false);
 	CSoundManager::GetInst()->AddSound(L"Tutorial_BGM", L"sound\\BGM\\Churches Field_MASTER.wav", true);
 	CSoundManager::GetInst()->Play(L"Tutorial_BGM");
 
@@ -102,7 +82,6 @@ void CScene_Stage1::Enter()
 	// 기도대 생성
 	CPrayerTable* prayTable = new CPrayerTable;
 	prayTable->SetPos(fPoint(floor4->GetPos().x - floor4->GetScale().x, floor4->GetPos().y - floor4->GetScale().y));
-	prayTable->SetName(L"PrayerTable");
 	AddObject(prayTable, GROUP_GAMEOBJ::BUILDING);
 
 	// 스테이지 2 씬으로 이동하도록 워프포인트 설정

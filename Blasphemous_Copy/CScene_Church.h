@@ -3,15 +3,14 @@
 
 class CD2DImage;
 
-class CScene_Tutorial : public CScene
+class CScene_Church : public CScene
 {
 private:
-	CD2DImage* m_pBgImage;
-	multimap<string, fPoint> m_mapSpawnPoint;
+	map<string, fPoint> m_mapSpawnPoint;
 
 public:
-	CScene_Tutorial();
-	~CScene_Tutorial();
+	CScene_Church();
+	~CScene_Church();
 
 public:
 	virtual void update();

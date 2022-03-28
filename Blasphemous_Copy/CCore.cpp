@@ -53,11 +53,11 @@ void CCore::init()
 	CPathManager::GetInst()->init();
 	CTimeManager::GetInst()->init();
 	CKeyManager::GetInst()->init();
-	CSoundManager::GetInst()->init();
 	CRenderManager::GetInst()->init();
 	CCameraManager::GetInst()->init();
+	CSoundManager::GetInst()->init();
+	CCollisionManager::GetInst()->init(); 
 	CSceneManager::GetInst()->init();
-	CCollisionManager::GetInst()->init();
 }
 
 HDC CCore::GetMainDC()

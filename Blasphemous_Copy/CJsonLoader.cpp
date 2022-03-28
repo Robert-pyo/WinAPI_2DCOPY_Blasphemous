@@ -1,5 +1,6 @@
 #include "framework.h"
 #include "CJsonLoader.h"
+#include "CScene.h"
 #include "json/json.h"
 #include <fstream>
 
@@ -11,12 +12,14 @@ CJsonLoader::~CJsonLoader()
 {
 }
 
-map<string, fPoint> CJsonLoader::LoadSpawnPoint()
+multimap<string, fPoint> CJsonLoader::LoadSpawnPoint(CScene* targetScene)
 {
-	map<string, fPoint> mapSpawnPoint = {};
+	multimap<string, fPoint> mapSpawnPoint = {};
 
 	wstring path = CPathManager::GetInst()->GetContentPath();
-	path += L"data\\SpawnPoint.json";
+	path += L"data\\";
+	path += targetScene->GetName();
+	path += L"_SpawnPoint.json";
 
 	ifstream stream;
 	stream.open(path);

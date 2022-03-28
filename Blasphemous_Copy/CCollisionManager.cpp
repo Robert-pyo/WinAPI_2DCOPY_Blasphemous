@@ -7,6 +7,7 @@
 CCollisionManager::CCollisionManager()
 {
 	m_arrCheckGroup[0] = 0;
+	m_fvDiff = {};
 }
 
 CCollisionManager::~CCollisionManager()
@@ -189,4 +190,22 @@ void CCollisionManager::Reset()
 {
 	// 사이즈(sizeof(UINT) * (UINT)eGroup_GameObj::Size)만큼 0으로 m_arrCheckGroup을 초기화
 	memset(m_arrCheckGroup, 0, sizeof(UINT) * (UINT)GROUP_GAMEOBJ::SIZE);
+}
+
+const fVector2D& CCollisionManager::GetColliderDiff(CCollider* objLeft, CCollider* objRight)
+{
+	if (objRight->GetBorderPos().left > objLeft->GetBorderPos().left)
+	{
+		m_fvDiff.x = (objLeft->GetBorderPos().right - objRight->GetBorderPos().left);
+	}
+	else if (objRight->GetBorderPos().right < objLeft->GetBorderPos().right)
+	{
+		m_fvDiff.x = (objRight->GetBorderPos().right - objLeft->GetBorderPos().left);
+	}
+	else
+		m_fvDiff.x = (objLeft->GetBorderPos().right - objLeft->GetBorderPos().left);
+
+	m_fvDiff.y = objLeft->GetBorderPos().bottom - objRight->GetBorderPos().top;
+
+	return m_fvDiff;
 }

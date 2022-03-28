@@ -21,6 +21,11 @@ private:
 
 	vector<CUI*> m_vecUI;
 
+	bool m_IsPaused;
+
+private:
+	multimap<string, fPoint> m_mapSpawnPoint;
+
 public:
 	CScene();
 	CScene(const wstring& sceneName);
@@ -58,6 +63,8 @@ public:
 	void AddObject(CGameObject* pGameObj, GROUP_GAMEOBJ type);
 
 	void LoadTile(const wstring& strPath);
+
+	void SpawnObjects(CScene* targetScene, const string objName);
 
 	void ClearGroup(GROUP_GAMEOBJ group);
 	void ClearAll();

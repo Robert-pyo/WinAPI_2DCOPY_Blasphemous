@@ -40,6 +40,8 @@ void CScene_Title::Enter()
 
 	CCameraManager::GetInst()->FadeIn(2.f);
 
+	CUIManager::GetInst()->SetKeyControl(true);
+
 	CCameraManager::GetInst()->SetLookAt(fPoint(WINSIZE_X / 2.f, WINSIZE_Y / 2.f));
 	CCameraManager::GetInst()->FollowTargetObj(nullptr, false, false);
 	CCameraManager::GetInst()->SetBoundary(false);

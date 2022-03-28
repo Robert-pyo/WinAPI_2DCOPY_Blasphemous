@@ -33,11 +33,17 @@ void CWarpPoint::OnCollisionEnter(CCollider* other)
 {
 	if (L"Player" == other->GetOwnerObj()->GetName())
 	{
-		CScene* pCurScene = CSceneManager::GetInst()->GetCurrentScene();
-
-		if (L"Stage_01" == pCurScene->GetName())
+		if (L"Tutorial" == GetName())
 		{
-			ChangeToNextScene(GROUP_SCENE::TOOL);
+			ChangeToNextScene(GROUP_SCENE::TUTORIAL);
+		}
+		else if (L"Church" == GetName())
+		{
+			ChangeToNextScene(GROUP_SCENE::CHURCH);
+		}
+		else if (L"Boss" == GetName())
+		{
+			ChangeToNextScene(GROUP_SCENE::BOSSSTAGE);
 		}
 	}
 }
