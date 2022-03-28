@@ -11,7 +11,8 @@ CKeyManager::CKeyManager()
 		m_arrCurKey[key] = false;
 		m_arrPrevKey[key] = false;
 	}
-	m_bIsAnyKeyPressed = false;
+	m_bIsAnyKeyCurPressed = false;
+	m_bIsAnyKeyPrePressed = false;
 }
 
 CKeyManager::~CKeyManager()
@@ -20,6 +21,12 @@ CKeyManager::~CKeyManager()
 
 void CKeyManager::update()
 {
+	m_bIsAnyKeyPrePressed = m_bIsAnyKeyCurPressed;
+
+	// 다음 프레임 시작 시 아직도 true 라면 false로 바꿔줌
+	if (m_bIsAnyKeyCurPressed)
+		m_bIsAnyKeyCurPressed = false;
+
 	// 만약 게임 윈도우가 선택된 윈도우가 아닐 경우
 	if (hWnd != GetFocus())
 	{
@@ -43,7 +50,7 @@ void CKeyManager::update()
 		if (GetAsyncKeyState(key) & 0x8000)
 		{
 			m_arrCurKey[key] = true;
-			m_bIsAnyKeyPressed = true;
+			m_bIsAnyKeyCurPressed = true;
 		}
 		else
 		{
@@ -82,9 +89,10 @@ bool CKeyManager::GetButtonUp(const int key)
 
 bool CKeyManager::GetAnyKeyDown()
 {
-	if (m_bIsAnyKeyPressed)
+	if (!m_bIsAnyKeyPrePressed && m_bIsAnyKeyCurPressed)
 	{
-		m_bIsAnyKeyPressed = false;
+		m_bIsAnyKeyCurPressed = false;
+
 		return true;
 	}
 	

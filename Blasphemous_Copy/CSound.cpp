@@ -12,10 +12,11 @@ CSound::~CSound()
 {
 	Stop();
 
-	if (nullptr != m_pSound && nullptr != m_pChannel)
+	// 자꾸 액세스위반 떠서 일단 주석 처리
+	/*if (nullptr != m_pSound && nullptr != m_pChannel)
 	{
 		m_pSound->release();
-	}
+	}*/
 }
 
 void CSound::Play()

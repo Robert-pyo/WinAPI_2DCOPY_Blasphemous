@@ -15,6 +15,8 @@ CPlayer::CPlayer()
 {
 	m_pImg = CResourceManager::GetInst()->LoadD2DImage(L"Player", L"texture\\Player\\penitent_anim_merge.png");
 	m_pDashImg = CResourceManager::GetInst()->LoadD2DImage(L"Player_Dodge", L"texture\\Player\\Dodge\\penitent_dodge.png");
+	m_pHitImg = CResourceManager::GetInst()->LoadD2DImage(L"Player_Hit", L"texture\\Player\\push_back\\penitent_pushback_grounded.png");
+
 	InitObject(fPoint(700.f, 0.f), fPoint(134.f, 144.f));
 	SetName(L"Player");
 	m_fvCurDir		= {1.0f, 0.f};
@@ -69,7 +71,10 @@ void CPlayer::update()
 		fDeathAccTime += fDeltaTime;
 
 		if (fDeathAccTime > 2.0f)
-			DeleteObj(this);
+		{
+			ChangeToNextScene(GROUP_SCENE::END);
+			instance = nullptr;
+		}
 		
 		return;
 	}
@@ -89,6 +94,8 @@ void CPlayer::update()
 
 void CPlayer::update_state()
 {
+	if (m_eCurState == PLAYER_STATE::HIT) return;
+
 	if (m_fVelocity < 0.1f)
 	{
 		if (m_fAttackDelay + 0.1f <= m_fAtkAccTime && m_bIsAttacking)
@@ -415,11 +422,11 @@ void CPlayer::update_animation()
 	{
 		if (-1 == m_fvCurDir.x)
 		{
-			//GetAnimator()->Play(L"");
+			GetAnimator()->Play(L"Player_Hit_Left");
 		}
 		else
 		{
-			//GetAnimator()->Play(L"");
+			GetAnimator()->Play(L"Player_Hit_Right");
 		}
 	}break;
 	}
@@ -626,6 +633,9 @@ void CPlayer::InitAnimation()
 
 	GetAnimator()->CreateAnimation(L"Player_Dodge_Right", m_pDashImg, fPoint(0.f, 0.f), fPoint(97.f, 72.f), fPoint(97.f, 0.f), 4, 0.03f, 24, false, false);
 	GetAnimator()->CreateAnimation(L"Player_Dodge_Left", m_pDashImg, fPoint(0.f, 0.f), fPoint(97.f, 72.f), fPoint(97.f, 0.f), 4, 0.03f, 24, false, true);
+
+	GetAnimator()->CreateAnimation(L"Player_Hit_Right", m_pHitImg, fPoint(0.f, 0.f), fPoint(100.f, 73.f), fPoint(100.f, 0.f), 5, 0.1f, 19, false, false);
+	GetAnimator()->CreateAnimation(L"Player_Hit_Left", m_pHitImg, fPoint(0.f, 0.f), fPoint(100.f, 73.f), fPoint(100.f, 0.f), 5, 0.1f, 19, false, true);
 
 #pragma region AnimationFrameEdit
 	CAnimation* pAnim;

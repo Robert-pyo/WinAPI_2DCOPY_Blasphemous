@@ -32,6 +32,15 @@ CScene::CScene(const wstring& sceneName)
 
 CScene::~CScene()
 {
+	vector<CGameObject*>& vecObj = GetObjGroup(GROUP_GAMEOBJ::PLAYER);
+	if (vecObj.size() > 0)
+	{
+		if (CPlayer::GetPlayer() == nullptr)
+		{
+			vecObj.erase(vecObj.begin());
+		}
+	}
+
 	// 씬이 끝났을 때 씬에 속하는 오브젝트들 모두 삭제
 	for (int i = 0; i < (int)GROUP_GAMEOBJ::SIZE; ++i)
 	{

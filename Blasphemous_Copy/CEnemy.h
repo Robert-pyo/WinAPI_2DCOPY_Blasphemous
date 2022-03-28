@@ -10,6 +10,7 @@ class CD2DImage;
 struct tEnemyInfo
 {
 	float fVelocity;
+	float fMaxVelocity;
 	float fHP;
 	float fRecogRange;
 	float fAttRange;

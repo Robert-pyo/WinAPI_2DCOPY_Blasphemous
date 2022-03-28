@@ -41,6 +41,7 @@ void CState_Idle::update()
 
 void CState_Idle::Enter()
 {
+	GetEnemy()->SetVelocity(GetEnemy()->GetEnemyInfo().fMaxVelocity);
 }
 
 void CState_Idle::Exit()

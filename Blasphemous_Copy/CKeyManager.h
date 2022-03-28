@@ -11,7 +11,8 @@ private:
 
 	fPoint m_fptCurMousePos;			// 현재 마우스 좌표
 
-	bool m_bIsAnyKeyPressed;
+	bool m_bIsAnyKeyCurPressed;
+	bool m_bIsAnyKeyPrePressed;
 
 public:
 	void update();

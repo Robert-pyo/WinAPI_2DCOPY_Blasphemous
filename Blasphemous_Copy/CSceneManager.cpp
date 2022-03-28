@@ -7,6 +7,7 @@
 #include "CScene_Title.h"
 #include "CScene_Tutorial.h"
 #include "CScene_Church.h"
+#include "CScene_End.h"
 
 CSceneManager::CSceneManager()
 {
@@ -16,7 +17,7 @@ CSceneManager::CSceneManager()
 	}
 
 	m_pCurScene = nullptr;
-
+	m_pPrevScene = nullptr;
 	m_bDebugMode = false;
 }
 
@@ -33,7 +34,7 @@ CSceneManager::~CSceneManager()
 void CSceneManager::ChangeScene(GROUP_SCENE scene)
 {
 	m_pCurScene->Exit();
-
+	m_pPrevScene = m_pCurScene;
 	m_pCurScene = m_arrScene[(int)scene];
 	m_pCurScene->Enter();
 }
@@ -76,6 +77,10 @@ void CSceneManager::init()
 	m_arrScene[(int)GROUP_SCENE::CHURCH]->SetName(L"Church");
 	m_arrScene[(int)GROUP_SCENE::CHURCH]->init();
 
+	m_arrScene[(int)GROUP_SCENE::END] = new CScene_End();
+	m_arrScene[(int)GROUP_SCENE::END]->SetName(L"End");
+	m_arrScene[(int)GROUP_SCENE::END]->init();
+
 	m_pCurScene = m_arrScene[(int)GROUP_SCENE::CHURCH];
 	m_pCurScene->Enter();
 }
@@ -83,4 +88,19 @@ void CSceneManager::init()
 CScene* CSceneManager::GetCurrentScene()
 {
 	return m_pCurScene;
+}
+
+CScene* CSceneManager::GetPrevScene()
+{
+	return m_pPrevScene;
+}
+
+void CSceneManager::RestartScenes()
+{
+	// 모든 씬 처음 상태로 복구
+	for (int i = 0; i < (int)GROUP_SCENE::SIZE; ++i)
+	{
+		m_arrScene[i]->ClearAll();
+		m_arrScene[i]->init();
+	}
 }

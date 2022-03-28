@@ -51,6 +51,7 @@ void CState_Trace::update()
 
 void CState_Trace::Enter()
 {
+	GetEnemy()->SetVelocity(GetEnemy()->GetEnemyInfo().fMaxVelocity);
 }
 
 void CState_Trace::Exit()

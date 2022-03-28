@@ -57,6 +57,7 @@ private:
 private:
 	CD2DImage* m_pImg;
 	CD2DImage* m_pDashImg;
+	CD2DImage* m_pHitImg;
 
 	PLAYER_STATE m_eCurState;		// 현재 플레이어의 상태
 	PLAYER_STATE m_ePrevState;		// 이전 플레이어의 상태

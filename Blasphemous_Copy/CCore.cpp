@@ -30,7 +30,10 @@ void CCore::render()
 {
 	CRenderManager::GetInst()->GetRenderTarget()->BeginDraw();
 
-	CRenderManager::GetInst()->RenderFillRectangle(-1, -1, WINSIZE_X + 1, WINSIZE_Y + 1, D2D1::ColorF(255.f, 255.f, 255.f, 1.f));
+	CRenderManager::GetInst()->RenderFillRectangle(
+		-1, -1, WINSIZE_X, WINSIZE_Y,
+		D2D1::ColorF(255.f, 255.f, 255.f, 1.f)
+	);
 
 	CSceneManager::GetInst()->render();
 	CCameraManager::GetInst()->render();

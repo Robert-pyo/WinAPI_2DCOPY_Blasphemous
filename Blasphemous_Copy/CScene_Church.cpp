@@ -7,6 +7,7 @@
 #include "CEnemyFactory.h"
 #include "CSpawnPoint.h"
 #include "CJsonLoader.h"
+#include "CWarpPoint.h"
 
 CScene_Church::CScene_Church()
 {
@@ -14,9 +15,6 @@ CScene_Church::CScene_Church()
 
 CScene_Church::~CScene_Church()
 {
-	vector<CGameObject*>& vecObj = GetObjGroup(GROUP_GAMEOBJ::PLAYER);
-	if (vecObj.size() > 0)
-		vecObj.erase(vecObj.begin());
 }
 
 void CScene_Church::update()
@@ -34,7 +32,6 @@ void CScene_Church::init()
 	SpawnObjects(this, "Stoner");
 	SpawnObjects(this, "Player");
 
-	CCameraManager::GetInst()->InitCameraPos(CPlayer::GetPlayer()->GetPos());
 	CCameraManager::GetInst()->FollowTargetObj(CPlayer::GetPlayer(), true, true);
 }
 
@@ -52,7 +49,19 @@ void CScene_Church::Enter()
 	pMap->SetScale(pMap->GetScale() / 2.f);
 	AddObject(pMap, GROUP_GAMEOBJ::FLOOR);
 
+	CWarpPoint* warpToTutorial = new CWarpPoint;
+	warpToTutorial->SetName(L"Tutorial");
+	warpToTutorial->SetPos(fPoint(pMap->GetPos().x + 100.f, pMap->GetPos().y + pMap->GetScale().y - 100.f));
+	AddObject(warpToTutorial, GROUP_GAMEOBJ::DEFAULT);
+
+	if (CSceneManager::GetInst()->GetPrevScene() != nullptr &&
+		CSceneManager::GetInst()->GetPrevScene()->GetName() == L"Tutorial")
+	{
+		CPlayer::GetPlayer()->SetPos(fPoint(warpToTutorial->GetPos().x + 80.f, warpToTutorial->GetPos().y));
+	}
+
 	CCameraManager::GetInst()->SetBoundary(fPoint(pMap->GetPos().x + 350.f, pMap->GetPos().y), pMap->GetPos() + pMap->GetScale());
+	CCameraManager::GetInst()->InitCameraPos((pMap->GetPos() + pMap->GetScale()) / 2.f);
 
 	CCameraManager::GetInst()->FadeIn(2.0f);
 }

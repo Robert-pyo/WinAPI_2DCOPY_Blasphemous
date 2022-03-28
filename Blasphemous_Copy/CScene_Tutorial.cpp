@@ -37,11 +37,7 @@ void CScene_Tutorial::update()
 
 void CScene_Tutorial::init()
 {
-	//SpawnObjects(this, "Player");
-	//SpawnObjects(this, "Acolyte");
-
-	//CCameraManager::GetInst()->InitCameraPos(CPlayer::GetPlayer()->GetPos());
-	//CCameraManager::GetInst()->FollowTargetObj(CPlayer::GetPlayer(), true, true);
+	SpawnObjects(this, "Acolyte");
 }
 
 void CScene_Tutorial::Enter()
@@ -59,6 +55,8 @@ void CScene_Tutorial::Enter()
 	path += L"texture\\Map\\Tileset\\Tilemaps\\GroundTiles.tile";
 	LoadTile(path);
 
+	SpawnObjects(this, "Player");
+
 	CBackground* pBackground = new CBackground;
 	pBackground->SetImage(m_pBgImage);
 	pBackground->SetTexLeftTop(fPoint(0.f, 0.f));
@@ -74,8 +72,13 @@ void CScene_Tutorial::Enter()
 	warpToChurch->SetPos(fPoint(pBackground->GetScale().x - 100.f, pBackground->GetScale().y - 150.f));
 	AddObject(warpToChurch, GROUP_GAMEOBJ::DEFAULT);
 
+	if (CSceneManager::GetInst()->GetPrevScene()->GetName() == L"Church")
+		CPlayer::GetPlayer()->SetPos(fPoint(warpToChurch->GetPos().x - 100.f, warpToChurch->GetPos().y));
+
 	CCameraManager::GetInst()->FadeIn(2.f);
 
+	CCameraManager::GetInst()->InitCameraPos(CPlayer::GetPlayer()->GetPos() - fPoint(500.f, 200.f));
+	CCameraManager::GetInst()->FollowTargetObj(CPlayer::GetPlayer(), true, true);
 	CCameraManager::GetInst()->SetBoundary(pMap->GetPos(), fPoint((float)m_pBgImage->GetWidth() * 2.f, (float)m_pBgImage->GetHeight() * 2.f));
 }
 

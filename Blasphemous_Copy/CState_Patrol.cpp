@@ -49,6 +49,7 @@ void CState_Patrol::update()
 void CState_Patrol::Enter()
 {
 	m_fMoveAccTime = 0;
+	GetEnemy()->SetVelocity(GetEnemy()->GetEnemyInfo().fMaxVelocity);
 }
 
 void CState_Patrol::Exit()

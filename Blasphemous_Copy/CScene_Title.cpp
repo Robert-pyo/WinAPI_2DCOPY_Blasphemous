@@ -18,7 +18,7 @@ CScene_Title::~CScene_Title()
 
 void ButtonStartClicked(DWORD_PTR param1, DWORD_PTR param2)
 {
-	ChangeToNextScene(GROUP_SCENE::TUTORIAL);
+	ChangeToNextScene(GROUP_SCENE::CHURCH);
 }
 
 void ButtonQuitClicked(DWORD_PTR param1, DWORD_PTR param2)
