@@ -7,6 +7,8 @@
 #include "CScene_Title.h"
 #include "CScene_Tutorial.h"
 #include "CScene_Church.h"
+#include "CScene_Boss.h"
+#include "CScene_CS_BossApear.h"
 #include "CScene_End.h"
 
 CSceneManager::CSceneManager()
@@ -59,29 +61,44 @@ void CSceneManager::init()
 {
 	m_arrScene[(int)GROUP_SCENE::TITLE] = new CScene_Title();
 	m_arrScene[(int)GROUP_SCENE::TITLE]->SetName(L"Title");
+	m_arrScene[(int)GROUP_SCENE::TITLE]->SetGroup(GROUP_SCENE::TITLE);
 	m_arrScene[(int)GROUP_SCENE::TITLE]->init();
 
 	m_arrScene[(int)GROUP_SCENE::TESTSTAGE] = new CScene_Stage1;
 	m_arrScene[(int)GROUP_SCENE::TESTSTAGE]->SetName(L"Stage_01");
+	m_arrScene[(int)GROUP_SCENE::TESTSTAGE]->SetGroup(GROUP_SCENE::TESTSTAGE);
 	m_arrScene[(int)GROUP_SCENE::TESTSTAGE]->init();
 
 	m_arrScene[(int)GROUP_SCENE::TOOL] = new CScene_Tool();
 	m_arrScene[(int)GROUP_SCENE::TOOL]->SetName(L"Tool");
+	m_arrScene[(int)GROUP_SCENE::TOOL]->SetGroup(GROUP_SCENE::TOOL);
 	m_arrScene[(int)GROUP_SCENE::TOOL]->init();
 
 	m_arrScene[(int)GROUP_SCENE::TUTORIAL] = new CScene_Tutorial();
 	m_arrScene[(int)GROUP_SCENE::TUTORIAL]->SetName(L"Tutorial");
+	m_arrScene[(int)GROUP_SCENE::TUTORIAL]->SetGroup(GROUP_SCENE::TUTORIAL);
 	m_arrScene[(int)GROUP_SCENE::TUTORIAL]->init();
 
 	m_arrScene[(int)GROUP_SCENE::CHURCH] = new CScene_Church();
 	m_arrScene[(int)GROUP_SCENE::CHURCH]->SetName(L"Church");
+	m_arrScene[(int)GROUP_SCENE::CHURCH]->SetGroup(GROUP_SCENE::CHURCH);
 	m_arrScene[(int)GROUP_SCENE::CHURCH]->init();
+
+	m_arrScene[(int)GROUP_SCENE::BOSS] = new CScene_Boss();
+	m_arrScene[(int)GROUP_SCENE::BOSS]->SetName(L"Boss");
+	m_arrScene[(int)GROUP_SCENE::BOSS]->SetGroup(GROUP_SCENE::BOSS);
+	m_arrScene[(int)GROUP_SCENE::BOSS]->init();
+
+	m_arrScene[(int)GROUP_SCENE::BOSSCUTSCENE] = new CScene_CS_BossApear();
+	m_arrScene[(int)GROUP_SCENE::BOSSCUTSCENE]->SetGroup(GROUP_SCENE::BOSSCUTSCENE);
+	m_arrScene[(int)GROUP_SCENE::BOSSCUTSCENE]->init();
 
 	m_arrScene[(int)GROUP_SCENE::END] = new CScene_End();
 	m_arrScene[(int)GROUP_SCENE::END]->SetName(L"End");
+	m_arrScene[(int)GROUP_SCENE::END]->SetGroup(GROUP_SCENE::END);
 	m_arrScene[(int)GROUP_SCENE::END]->init();
 
-	m_pCurScene = m_arrScene[(int)GROUP_SCENE::CHURCH];
+	m_pCurScene = m_arrScene[(int)GROUP_SCENE::BOSS];
 	m_pCurScene->Enter();
 }
 

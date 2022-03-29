@@ -22,7 +22,7 @@ CEnemy::CEnemy()
 	m_tEnmInfo.fRecogRange = 0.f;
 	m_tEnmInfo.fVelocity = 0.f;
 	m_tEnmInfo.fInvTime = 0.f;
-	m_tEnmInfo.iMoney = 0.f;
+	m_tEnmInfo.iMoney = 0;
 
 	CCollisionManager::GetInst()->CheckGroup(GROUP_GAMEOBJ::ENEMY, GROUP_GAMEOBJ::FLOOR);
 	CCollisionManager::GetInst()->CheckGroup(GROUP_GAMEOBJ::ENEMY, GROUP_GAMEOBJ::TILE);
@@ -237,12 +237,4 @@ void CEnemy::OnCollision(CCollider* target)
 
 void CEnemy::OnCollisionEnter(CCollider* target)
 {
-	if (GROUP_GAMEOBJ::TILE == target->GetOwnerObj()->GetObjGroup())
-	{
-		CTile* pTile = (CTile*)target->GetOwnerObj();
-		if (pTile->GetGroup() == GROUP_TILE::WALL)
-		{
-			SetDir(GetDir() * (-1));
-		}
-	}
 }

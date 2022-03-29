@@ -51,6 +51,7 @@ struct tPlayerAbility
 
 class CPlayer : public CGameObject
 {
+	friend class CGameManager;
 private:
 	static CPlayer* instance; // «√∑π¿ÃæÓ ¿”¿« ΩÃ±€≈Ê
 
@@ -89,6 +90,7 @@ private:
 	bool  m_bIsInvincible;
 
 	USHORT m_sHitCount;
+	bool m_bIsControllable;
 
 	CPlayerSword* m_pSword;
 
@@ -125,6 +127,7 @@ public:
 
 	const float		 GetVelocity();
 	const fVector2D& GetDirVector();
+	void SetDirection(const fVector2D& fvDir) { m_fvCurDir = fvDir; }
 
 	const tPlayerAbility& GetPlayerAbility();
 	void SetPlayerAbility(const tPlayerAbility& tAbility);
@@ -136,11 +139,13 @@ public:
 	CPlayerSword* GetWeapon() { return m_pSword; }
 
 	bool IsInvincible() { return m_bIsInvincible; }
+	bool IsControllable() { return m_bIsControllable; }
 
 	void Die();
 
 private:
 	void InitDodgeState();
+	void SetControllable(bool bRemote) { m_bIsControllable = bRemote; }
 
 public:
 	virtual void OnCollision(CCollider* target) override;

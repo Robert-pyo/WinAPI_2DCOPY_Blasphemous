@@ -76,8 +76,8 @@ void CScene_Tool::render()
 		vecTile[i]->render();
 	}
 
-	//PrintMap();
-	PrintMap(fPoint(1, 1));
+	PrintMap();
+	//PrintMap(fPoint(1, 1));
 	PrintTileLine();
 	PrintTileGroup();
 

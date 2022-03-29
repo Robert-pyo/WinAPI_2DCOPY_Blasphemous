@@ -50,8 +50,6 @@ public:
 
 public:
 	bool IsAnimDone() { return m_bIsAnimDone; }
-
-private:
 	void SetAnimDone(bool bIsDone) { m_bIsAnimDone = bIsDone; }
 };
 

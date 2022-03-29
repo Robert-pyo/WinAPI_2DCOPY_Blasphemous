@@ -38,6 +38,7 @@ CPlayer::CPlayer()
 	m_bIsInvincible = false;
 
 	m_sHitCount = 0;
+	m_bIsControllable = true;
 
 	InitAbility();
 	InitAnimation();
@@ -85,7 +86,7 @@ void CPlayer::update()
 	update_state();
 	update_animation();
 
-	CCameraManager::GetInst()->SetLookAt(GetPos());
+	CCameraManager::GetInst()->SetLookAt(fPoint(GetPos().x + (m_fvCurDir.x * 100.f), GetPos().y));
 
 	GetAnimator()->update();
 
@@ -96,6 +97,12 @@ void CPlayer::update()
 
 void CPlayer::update_state()
 {
+	if (!m_bIsControllable)
+	{
+		m_eCurState = PLAYER_STATE::IDLE;
+		return;
+	}
+
 	if (m_eCurState == PLAYER_STATE::HIT)
 	{
 		if (GetAnimator()->GetCurAnim()->IsAnimDone())
@@ -244,6 +251,8 @@ void CPlayer::update_state()
 
 void CPlayer::update_move()
 {
+	if (!m_bIsControllable) return;
+
 	if (PRESS_KEY('A') && !m_bIsAttacking && !m_bIsActing)
 	{
 		if (m_fVelocity < 250.f)
@@ -647,8 +656,8 @@ void CPlayer::InitAbility()
 	pSword->SetOwnerObj(this);
 	m_pSword = pSword;
 
-	m_tAbility.fMaxHp = 100.f;
-	m_tAbility.fCurHp = 100.f;
+	m_tAbility.fMaxHp = 300.f;
+	m_tAbility.fCurHp = 300.f;
 	m_tAbility.fMaxMp = 100.f;
 	m_tAbility.fCurMp = 100.f;
 

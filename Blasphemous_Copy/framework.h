@@ -56,7 +56,8 @@ enum class GROUP_SCENE
 	TESTSTAGE,
 	TUTORIAL,
 	CHURCH,
-	//BOSSSTAGE,
+	BOSS,
+	BOSSCUTSCENE,
 	END,
 
 	SIZE,
@@ -93,6 +94,7 @@ enum class TYPE_EVENT
 //========================================
 enum class ENEMY_STATE
 {
+	SLEEP,
 	IDLE,
 	PATROL,
 	TRACE,
@@ -107,6 +109,7 @@ enum class ENEMY_STATE
 #include "struct.h"
 
 #include "CCore.h"
+#include "CGameManager.h"
 #include "CPathManager.h"
 #include "CEventManager.h"
 #include "CTimeManager.h"

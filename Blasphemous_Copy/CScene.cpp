@@ -287,7 +287,7 @@ void CScene::SpawnObjects(CScene* targetScene, const string objName)
 {
 	m_mapSpawnPoint = CJsonLoader::LoadSpawnPoint(targetScene);
 
-	int count = m_mapSpawnPoint.count(objName);
+	int count = (int)m_mapSpawnPoint.count(objName);
 	multimap<string, fPoint>::iterator iter = m_mapSpawnPoint.find(objName);
 
 	if (m_mapSpawnPoint.end() == iter) return;
@@ -324,6 +324,62 @@ void CScene::SpawnObjects(CScene* targetScene, const string objName)
 		else if (objName == "Stoner")
 		{
 			CEnemy* pEnemy = CEnemyFactory::CreateEnemy(ENEMY_TYPE::RANGE, iter->second);
+			AddObject(pEnemy, GROUP_GAMEOBJ::ENEMY);
+			if (pEnemy->GetEnemyInfo().pWeapon != nullptr)
+				AddObject(pEnemy->GetEnemyInfo().pWeapon, GROUP_GAMEOBJ::WEAPON);
+		}
+	}
+}
+
+void CScene::SpawnObjects(const wstring& sceneName, const string objName)
+{
+	m_mapSpawnPoint = CJsonLoader::LoadSpawnPoint(sceneName);
+
+	int count = (int)m_mapSpawnPoint.count(objName);
+	multimap<string, fPoint>::iterator iter = m_mapSpawnPoint.find(objName);
+
+	if (m_mapSpawnPoint.end() == iter) return;
+
+	for (int i = 0; i < count; ++i, ++iter)
+	{
+		if (objName == "Player")
+		{
+			CPlayer* pPlayer = CPlayer::GetPlayer();
+
+			if (pPlayer == nullptr)
+			{
+				pPlayer = new CPlayer;
+				pPlayer->SetPos(iter->second);
+				pPlayer->RegisterPlayer(pPlayer);
+				AddObject(pPlayer, GROUP_GAMEOBJ::PLAYER);
+				AddObject(pPlayer->GetWeapon(), GROUP_GAMEOBJ::WEAPON);
+			}
+			else
+			{
+				pPlayer->SetPos(iter->second);
+				AddObject(pPlayer, GROUP_GAMEOBJ::PLAYER);
+			}
+		}
+
+		else if (objName == "Acolyte")
+		{
+			CEnemy* pEnemy = CEnemyFactory::CreateEnemy(ENEMY_TYPE::NORMAL, iter->second);
+			AddObject(pEnemy, GROUP_GAMEOBJ::ENEMY);
+			if (pEnemy->GetEnemyInfo().pWeapon != nullptr)
+				AddObject(pEnemy->GetEnemyInfo().pWeapon, GROUP_GAMEOBJ::WEAPON);
+		}
+
+		else if (objName == "Stoner")
+		{
+			CEnemy* pEnemy = CEnemyFactory::CreateEnemy(ENEMY_TYPE::RANGE, iter->second);
+			AddObject(pEnemy, GROUP_GAMEOBJ::ENEMY);
+			if (pEnemy->GetEnemyInfo().pWeapon != nullptr)
+				AddObject(pEnemy->GetEnemyInfo().pWeapon, GROUP_GAMEOBJ::WEAPON);
+		}
+
+		else if (objName == "Piedad")
+		{
+			CEnemy* pEnemy = CEnemyFactory::CreateEnemy(ENEMY_TYPE::BOSS, iter->second);
 			AddObject(pEnemy, GROUP_GAMEOBJ::ENEMY);
 			if (pEnemy->GetEnemyInfo().pWeapon != nullptr)
 				AddObject(pEnemy->GetEnemyInfo().pWeapon, GROUP_GAMEOBJ::WEAPON);

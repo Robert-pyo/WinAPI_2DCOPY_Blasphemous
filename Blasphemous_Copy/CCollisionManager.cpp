@@ -196,16 +196,16 @@ const fVector2D& CCollisionManager::GetColliderDiff(CCollider* objLeft, CCollide
 {
 	if (objRight->GetBorderPos().left > objLeft->GetBorderPos().left)
 	{
-		m_fvDiff.x = (objLeft->GetBorderPos().right - objRight->GetBorderPos().left);
+		m_fvDiff.x = ((float)objLeft->GetBorderPos().right - (float)objRight->GetBorderPos().left);
 	}
 	else if (objRight->GetBorderPos().right < objLeft->GetBorderPos().right)
 	{
-		m_fvDiff.x = (objRight->GetBorderPos().right - objLeft->GetBorderPos().left);
+		m_fvDiff.x = ((float)objRight->GetBorderPos().right - (float)objLeft->GetBorderPos().left);
 	}
 	else
-		m_fvDiff.x = (objLeft->GetBorderPos().right - objLeft->GetBorderPos().left);
+		m_fvDiff.x = ((float)objLeft->GetBorderPos().right - (float)objLeft->GetBorderPos().left);
 
-	m_fvDiff.y = objLeft->GetBorderPos().bottom - objRight->GetBorderPos().top;
+	m_fvDiff.y = (float)objLeft->GetBorderPos().bottom - (float)objRight->GetBorderPos().top;
 
 	return m_fvDiff;
 }

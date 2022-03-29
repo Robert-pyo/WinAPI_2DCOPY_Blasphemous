@@ -169,6 +169,15 @@
     <Filter Include="Object\Enemy\Stoner">
       <UniqueIdentifier>{8c44e4b3-cc82-4348-b5a7-f595ee0bb4bd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\Manager\GameManager">
+      <UniqueIdentifier>{9710db15-a1ba-404c-973b-edc2b9add308}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Enemy\Boss">
+      <UniqueIdentifier>{72afdd21-8827-4477-81a7-dfc16cff9d2c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Component\AI\State\Sleep">
+      <UniqueIdentifier>{86d5a489-6dc6-40aa-a9d2-427301a36cf4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -384,6 +393,21 @@
     <ClInclude Include="CScene_End.h">
       <Filter>Scene</Filter>
     </ClInclude>
+    <ClInclude Include="CScene_Boss.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="CScene_CS_BossApear.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="CGameManager.h">
+      <Filter>Engine\Manager\GameManager</Filter>
+    </ClInclude>
+    <ClInclude Include="CEnemy_Boss_Piedad.h">
+      <Filter>Object\Enemy\Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="CState_Sleep.h">
+      <Filter>Engine\Component\AI\State\Sleep</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CCore.cpp">
@@ -574,6 +598,21 @@
     </ClCompile>
     <ClCompile Include="CScene_End.cpp">
       <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="CScene_Boss.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="CScene_CS_BossApear.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="CGameManager.cpp">
+      <Filter>Engine\Manager\GameManager</Filter>
+    </ClCompile>
+    <ClCompile Include="CEnemy_Boss_Piedad.cpp">
+      <Filter>Object\Enemy\Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="CState_Sleep.cpp">
+      <Filter>Engine\Component\AI\State\Sleep</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

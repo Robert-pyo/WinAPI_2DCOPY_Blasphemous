@@ -43,7 +43,11 @@ void CWarpPoint::OnCollisionEnter(CCollider* other)
 		}
 		else if (L"Boss" == GetName())
 		{
-			//ChangeToNextScene(GROUP_SCENE::BOSSSTAGE);
+			ChangeToNextScene(GROUP_SCENE::BOSS);
+		}
+		else if (L"BossCutScene" == GetName())
+		{
+			ChangeToNextScene(GROUP_SCENE::BOSSCUTSCENE);
 		}
 	}
 }

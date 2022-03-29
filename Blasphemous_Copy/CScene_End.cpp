@@ -28,6 +28,16 @@ void CScene_End::update()
 	}
 }
 
+void CScene_End::render()
+{
+	CRenderManager::GetInst()->RenderFillRectangle(
+		-1, -1, WINSIZE_X, WINSIZE_Y,
+		D2D1::ColorF(0.f, 0.f, 0.f, 1.f)
+	);
+
+	CScene::render();
+}
+
 void CScene_End::init()
 {
 }
@@ -40,7 +50,7 @@ void CScene_End::Enter()
 
 	CBackground* pBackground = new CBackground;
 	pBackground->SetImage(m_pBGImg);
-	pBackground->SetScale(fPoint(m_pBGImg->GetWidth(), m_pBGImg->GetHeight()));
+	pBackground->SetScale(fPoint((float)m_pBGImg->GetWidth(), (float)m_pBGImg->GetHeight()));
 	AddObject(pBackground, GROUP_GAMEOBJ::BACKGROUND_FIXED);
 }
 

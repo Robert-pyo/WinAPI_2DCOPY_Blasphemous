@@ -167,8 +167,10 @@
     <ClInclude Include="CEnemy.h" />
     <ClInclude Include="CEnemyFactory.h" />
     <ClInclude Include="CEnemy_Acolyte.h" />
+    <ClInclude Include="CEnemy_Boss_Piedad.h" />
     <ClInclude Include="CEnemy_Stoner.h" />
     <ClInclude Include="CEventManager.h" />
+    <ClInclude Include="CGameManager.h" />
     <ClInclude Include="CHUD.h" />
     <ClInclude Include="CHUD_PlayerInfo.h" />
     <ClInclude Include="CJsonLoader.h" />
@@ -186,7 +188,9 @@
     <ClInclude Include="CResourceManager.h" />
     <ClInclude Include="CScene.h" />
     <ClInclude Include="CSceneManager.h" />
+    <ClInclude Include="CScene_Boss.h" />
     <ClInclude Include="CScene_Church.h" />
+    <ClInclude Include="CScene_CS_BossApear.h" />
     <ClInclude Include="CScene_End.h" />
     <ClInclude Include="CScene_Stage1.h" />
     <ClInclude Include="CScene_Title.h" />
@@ -203,6 +207,7 @@
     <ClInclude Include="CState_Hit.h" />
     <ClInclude Include="CState_Idle.h" />
     <ClInclude Include="CState_Patrol.h" />
+    <ClInclude Include="CState_Sleep.h" />
     <ClInclude Include="CState_Trace.h" />
     <ClInclude Include="CTileButton.h" />
     <ClInclude Include="CWarpPoint.h" />
@@ -242,8 +247,10 @@
     <ClCompile Include="CEnemy.cpp" />
     <ClCompile Include="CEnemyFactory.cpp" />
     <ClCompile Include="CEnemy_Acolyte.cpp" />
+    <ClCompile Include="CEnemy_Boss_Piedad.cpp" />
     <ClCompile Include="CEnemy_Stoner.cpp" />
     <ClCompile Include="CEventManager.cpp" />
+    <ClCompile Include="CGameManager.cpp" />
     <ClCompile Include="CGameObject.cpp" />
     <ClCompile Include="CHUD.cpp" />
     <ClCompile Include="CHUD_PlayerInfo.cpp" />
@@ -264,7 +271,9 @@
     <ClCompile Include="CResourceManager.cpp" />
     <ClCompile Include="CScene.cpp" />
     <ClCompile Include="CSceneManager.cpp" />
+    <ClCompile Include="CScene_Boss.cpp" />
     <ClCompile Include="CScene_Church.cpp" />
+    <ClCompile Include="CScene_CS_BossApear.cpp" />
     <ClCompile Include="CScene_End.cpp" />
     <ClCompile Include="CScene_Stage1.cpp" />
     <ClCompile Include="CScene_Title.cpp" />
@@ -280,6 +289,7 @@
     <ClCompile Include="CState_Hit.cpp" />
     <ClCompile Include="CState_Idle.cpp" />
     <ClCompile Include="CState_Patrol.cpp" />
+    <ClCompile Include="CState_Sleep.cpp" />
     <ClCompile Include="CState_Trace.cpp" />
     <ClCompile Include="CTileButton.cpp" />
     <ClCompile Include="CWarpPoint.cpp" />

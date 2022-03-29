@@ -21,6 +21,7 @@ void CCore::update()
 	CKeyManager::GetInst()->update();
 	CSoundManager::GetInst()->update();
 	CSceneManager::GetInst()->update();
+	CGameManager::GetInst()->update();
 	CCameraManager::GetInst()->update();
 	CUIManager::GetInst()->update();
 	CCollisionManager::GetInst()->update();
@@ -61,6 +62,7 @@ void CCore::init()
 	CSoundManager::GetInst()->init();
 	CCollisionManager::GetInst()->init(); 
 	CSceneManager::GetInst()->init();
+	CGameManager::GetInst()->init();
 }
 
 HDC CCore::GetMainDC()

@@ -15,6 +15,7 @@ private:
 	vector<CGameObject*> m_arrObj[(int)GROUP_GAMEOBJ::SIZE];
 	// 현재 Scene의 이름
 	wstring m_sceneName;
+	GROUP_SCENE m_sceneGroup;
 
 	UINT m_iTileX;
 	UINT m_iTileY;
@@ -45,6 +46,9 @@ public:
 	void SetName(const wstring& strName);
 	wstring GetName();
 
+	void SetGroup(GROUP_SCENE group) { m_sceneGroup = group; }
+	GROUP_SCENE GetSceneGroup() { return m_sceneGroup; }
+
 	UINT	GetTileX();
 	UINT	GetTileY();
 
@@ -65,6 +69,7 @@ public:
 	void LoadTile(const wstring& strPath);
 
 	void SpawnObjects(CScene* targetScene, const string objName);
+	void SpawnObjects(const wstring& sceneName, const string objName);
 
 	void ClearGroup(GROUP_GAMEOBJ group);
 	void ClearAll();

@@ -1,5 +1,5 @@
 #pragma once
-class CScene;
+#include "CScene.h"
 
 class CSceneManager
 {
@@ -27,9 +27,10 @@ public:
 
 	CScene* GetCurrentScene();
 	CScene* GetPrevScene();
-	void RestartScenes();
+	void	RestartScenes();
 
 public:
 	bool GetIsDebugging() { return m_bDebugMode; }
+	GROUP_SCENE GetCurSceneGroup() { return m_pCurScene->GetSceneGroup(); }
 };
 
