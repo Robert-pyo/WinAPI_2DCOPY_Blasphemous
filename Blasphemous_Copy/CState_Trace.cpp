@@ -8,6 +8,7 @@
 CState_Trace::CState_Trace(ENEMY_STATE eEnmState)
 	:CState(eEnmState)
 {
+	m_fAttAccTime = 0.f;
 }
 
 CState_Trace::~CState_Trace()
@@ -17,7 +18,11 @@ CState_Trace::~CState_Trace()
 void CState_Trace::update()
 {
 	CPlayer* pPlayer = CPlayer::GetPlayer();
-	fVector2D fvPlayerPos = pPlayer->GetPos();
+
+	float fvPlayerCenterX = (float)pPlayer->GetCollider()->GetBorderPos().left + pPlayer->GetCollider()->GetScale().x / 2.f;
+	float fvPlayerCenterY = (float)pPlayer->GetCollider()->GetBorderPos().top + pPlayer->GetCollider()->GetScale().y / 2.f;
+
+	fVector2D fvPlayerPos = fVector2D(fvPlayerCenterX, fvPlayerCenterY);
 	fVector2D fvEnemyPos = GetEnemy()->GetPos();
 
 	CEnemy* pEnemy = GetEnemy();
@@ -39,13 +44,12 @@ void CState_Trace::update()
 		ChangeAIState(GetAI(), ENEMY_STATE::IDLE);
 	}
 
-	static float fAttAccTime = 0.f;
-	fAttAccTime += fDeltaTime;
+	m_fAttAccTime += fDeltaTime;
 	if (fLength < GetEnemy()->GetEnemyInfo().fAttRange && GetEnemy()->GetEnemyInfo().iAttCount == 0
-		&& GetEnemy()->GetEnemyInfo().fAttDelayTime <= fAttAccTime)
+		&& GetEnemy()->GetEnemyInfo().fAttDelayTime <= m_fAttAccTime)
 	{
 		ChangeAIState(GetAI(), ENEMY_STATE::ATTACK);
-		fAttAccTime = 0.f;
+		m_fAttAccTime = 0.f;
 	}
 }
 

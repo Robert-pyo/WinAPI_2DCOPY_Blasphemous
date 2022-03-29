@@ -88,6 +88,8 @@ private:
 	float m_fDodgeDelayAccTime;
 	bool  m_bIsInvincible;
 
+	USHORT m_sHitCount;
+
 	CPlayerSword* m_pSword;
 
 public:
@@ -119,6 +121,7 @@ public:
 	void Dodge();
 
 	void Hit(CGameObject* other);
+	void Hit(const float attValue);
 
 	const float		 GetVelocity();
 	const fVector2D& GetDirVector();

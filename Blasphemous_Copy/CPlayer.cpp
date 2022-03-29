@@ -37,6 +37,8 @@ CPlayer::CPlayer()
 	m_fDodgeDelayAccTime = 0.f;
 	m_bIsInvincible = false;
 
+	m_sHitCount = 0;
+
 	InitAbility();
 	InitAnimation();
 
@@ -94,7 +96,17 @@ void CPlayer::update()
 
 void CPlayer::update_state()
 {
-	if (m_eCurState == PLAYER_STATE::HIT) return;
+	if (m_eCurState == PLAYER_STATE::HIT)
+	{
+		if (GetAnimator()->GetCurAnim()->IsAnimDone())
+		{
+			GetAnimator()->GetCurAnim()->SetFrame(0);
+			m_bIsActing = false;
+			m_eCurState = PLAYER_STATE::IDLE;
+		}
+
+		return;
+	}
 
 	if (m_fVelocity < 0.1f)
 	{
@@ -140,7 +152,7 @@ void CPlayer::update_state()
 	}
 
 	// space¹Ù ´­·¶À» ¶§ JUMP »óÅÂ
-	if (PRESS_KEY_DOWN(VK_SPACE) && m_bIsGrounded && !m_bIsAttacking)
+	if (PRESS_KEY_DOWN(VK_SPACE) && m_bIsGrounded && !m_bIsAttacking && !m_bIsActing)
 	{
 		if (m_eCurState == PLAYER_STATE::DODGE)
 		{
@@ -155,7 +167,7 @@ void CPlayer::update_state()
 	m_fDodgeDelayAccTime += fDeltaTime;
 	if (PRESS_KEY_DOWN(VK_LSHIFT) && m_bIsGrounded && !m_bIsAttacking && m_fDodgeDelay <= m_fDodgeDelayAccTime)
 	{
-		if (m_eCurState != PLAYER_STATE::DODGE)
+		if (m_eCurState != PLAYER_STATE::DODGE && !m_bIsActing)
 		{
 			GetAnimator()->FindAnimation(L"Player_Dodge_Right")->SetFrame(0);
 			GetAnimator()->FindAnimation(L"Player_Dodge_Left")->SetFrame(0);
@@ -232,7 +244,7 @@ void CPlayer::update_state()
 
 void CPlayer::update_move()
 {
-	if (PRESS_KEY('A') && !m_bIsAttacking)
+	if (PRESS_KEY('A') && !m_bIsAttacking && !m_bIsActing)
 	{
 		if (m_fVelocity < 250.f)
 			m_fVelocity += 100.f;
@@ -245,7 +257,7 @@ void CPlayer::update_move()
 		m_fVelocity += 1000.f * fDeltaTime;
 	}
 	
-	if (PRESS_KEY('D') && !m_bIsAttacking)
+	if (PRESS_KEY('D') && !m_bIsAttacking && !m_bIsActing)
 	{
 		if (m_fVelocity < 250.f)
 			m_fVelocity += 100.f;
@@ -266,6 +278,24 @@ void CPlayer::update_move()
 	if (m_eCurState == PLAYER_STATE::DODGE)
 	{
 		Dodge();
+	}
+
+	if (m_eCurState == PLAYER_STATE::HIT && m_sHitCount == 1)
+	{
+		m_fAccelGravity = 0.f;
+		if (m_fvCurDir.x > 0.f)
+		{
+			m_fVelocity += 300.f;
+			m_fvCurDir.x *= -1;
+			m_fAccelGravity += -300.f;
+		}
+		else
+		{
+			m_fVelocity += 300.f;
+			m_fvCurDir.x *= -1;
+			m_fAccelGravity += -300.f;
+		}
+		m_sHitCount = 0;
 	}
 
 	// ¸¶Âû·Â
@@ -422,11 +452,11 @@ void CPlayer::update_animation()
 	{
 		if (-1 == m_fvCurDir.x)
 		{
-			GetAnimator()->Play(L"Player_Hit_Left");
+			GetAnimator()->Play(L"Player_Hit_Right");
 		}
 		else
 		{
-			GetAnimator()->Play(L"Player_Hit_Right");
+			GetAnimator()->Play(L"Player_Hit_Left");
 		}
 	}break;
 	}
@@ -549,13 +579,34 @@ void CPlayer::InitDodgeState()
 void CPlayer::Hit(CGameObject* other)
 {
 	if (m_eCurState == PLAYER_STATE::DEAD) return;
+	if (m_eCurState == PLAYER_STATE::HIT) return;
+
+	m_bIsActing = true;
+	m_sHitCount++;
 
 	CEnemy* pEnemy = (CEnemy*)other;
-
 	m_tAbility.fCurHp -= pEnemy->GetEnemyInfo().fAtt;
 
 	m_eCurState = PLAYER_STATE::HIT;
 	
+	if (m_tAbility.fCurHp <= 0)
+	{
+		Die();
+	}
+}
+
+void CPlayer::Hit(const float attValue)
+{
+	if (m_eCurState == PLAYER_STATE::DEAD) return;
+	if (m_eCurState == PLAYER_STATE::HIT) return;
+
+	m_bIsActing = true;
+	m_sHitCount++;
+
+	m_tAbility.fCurHp -= attValue;
+
+	m_eCurState = PLAYER_STATE::HIT;
+
 	if (m_tAbility.fCurHp <= 0)
 	{
 		Die();
@@ -634,8 +685,8 @@ void CPlayer::InitAnimation()
 	GetAnimator()->CreateAnimation(L"Player_Dodge_Right", m_pDashImg, fPoint(0.f, 0.f), fPoint(97.f, 72.f), fPoint(97.f, 0.f), 4, 0.03f, 24, false, false);
 	GetAnimator()->CreateAnimation(L"Player_Dodge_Left", m_pDashImg, fPoint(0.f, 0.f), fPoint(97.f, 72.f), fPoint(97.f, 0.f), 4, 0.03f, 24, false, true);
 
-	GetAnimator()->CreateAnimation(L"Player_Hit_Right", m_pHitImg, fPoint(0.f, 0.f), fPoint(100.f, 73.f), fPoint(100.f, 0.f), 5, 0.1f, 19, false, false);
-	GetAnimator()->CreateAnimation(L"Player_Hit_Left", m_pHitImg, fPoint(0.f, 0.f), fPoint(100.f, 73.f), fPoint(100.f, 0.f), 5, 0.1f, 19, false, true);
+	GetAnimator()->CreateAnimation(L"Player_Hit_Right", m_pHitImg, fPoint(0.f, 0.f), fPoint(100.f, 73.f), fPoint(100.f, 0.f), 5, 0.06f, 19, false, false);
+	GetAnimator()->CreateAnimation(L"Player_Hit_Left", m_pHitImg, fPoint(0.f, 0.f), fPoint(100.f, 73.f), fPoint(100.f, 0.f), 5, 0.06f, 19, false, true);
 
 #pragma region AnimationFrameEdit
 	CAnimation* pAnim;
@@ -729,6 +780,18 @@ void CPlayer::InitAnimation()
 	for (int i = 0; i < 24; ++i)
 	{
 		pAnim->GetFrame(i).fptOffset.x += 30.f;
+	}
+
+	pAnim = GetAnimator()->FindAnimation(L"Player_Hit_Right");
+	for (int i = 0; i < 19; ++i)
+	{
+		pAnim->GetFrame(i).fptOffset.x += 15.f;
+	}
+
+	pAnim = GetAnimator()->FindAnimation(L"Player_Hit_Left");
+	for (int i = 0; i < 19; ++i)
+	{
+		pAnim->GetFrame(i).fptOffset.x += 20.f;
 	}
 #pragma endregion
 }
@@ -857,6 +920,14 @@ void CPlayer::OnCollisionEnter(CCollider* target)
 					}
 				}
 			}
+		}
+	}
+
+	if (target->GetOwnerObj()->GetObjGroup() == GROUP_GAMEOBJ::ENEMY)
+	{
+		if (!m_bIsInvincible)
+		{
+			Hit(10.f);
 		}
 	}
 }

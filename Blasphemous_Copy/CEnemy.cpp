@@ -191,8 +191,7 @@ void CEnemy::OnCollision(CCollider* target)
 				if (fvDiff.y > fvDiff.x && GetCollider()->GetBorderPos().right > target->GetBorderPos().right)
 				{
 					fPoint fptPos = GetPos();
-					fptPos.x += m_tEnmInfo.fVelocity * fDeltaTime;
-					m_tEnmInfo.fVelocity = 0.f;
+					fptPos.x += fvDiff.x;
 					SetPos(fptPos);
 				}
 			}
@@ -208,8 +207,7 @@ void CEnemy::OnCollision(CCollider* target)
 				if (fvDiff.y > fvDiff.x && GetCollider()->GetBorderPos().left < target->GetBorderPos().left)
 				{
 					fPoint fptPos = GetPos();
-					fptPos.x -= m_tEnmInfo.fVelocity * fDeltaTime;
-					m_tEnmInfo.fVelocity = 0.f;
+					fptPos.x -= fvDiff.x;
 					SetPos(fptPos);
 				}
 			}

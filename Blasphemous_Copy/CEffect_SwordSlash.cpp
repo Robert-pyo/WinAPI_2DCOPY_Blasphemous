@@ -102,7 +102,7 @@ void CEffect_SwordSlash::update()
 	case 0:
 	case 1:
 	{
-		GetCollider()->SetScale(fPoint(170.f, 70.f));
+		GetCollider()->SetScale(fPoint(170.f, 50.f));
 		SetDuration(GetAnimator()->FindAnimation(L"Sword_Combo_1_R")->GetAnimDuration());
 
 		if (GetFxDir().x > 0.f)
@@ -122,11 +122,11 @@ void CEffect_SwordSlash::update()
 
 		if (GetFxDir().x > 0.f)
 		{
-			GetCollider()->SetOffsetPos(fPoint(100.f, 20.f));
+			GetCollider()->SetOffsetPos(fPoint(110.f, 20.f));
 		}
 		else
 		{
-			GetCollider()->SetOffsetPos(fPoint(-35.f, 20.f));
+			GetCollider()->SetOffsetPos(fPoint(-45.f, 20.f));
 		}
 	}
 		break;

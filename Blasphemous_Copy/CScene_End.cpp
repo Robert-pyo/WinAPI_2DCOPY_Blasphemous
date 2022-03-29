@@ -34,6 +34,8 @@ void CScene_End::init()
 
 void CScene_End::Enter()
 {
+	vector<CGameObject*> vecObj = GetObjGroup(GROUP_GAMEOBJ::PLAYER);
+
 	CCameraManager::GetInst()->FadeIn(2.0f);
 
 	CBackground* pBackground = new CBackground;

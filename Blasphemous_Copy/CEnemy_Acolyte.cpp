@@ -19,9 +19,9 @@ CEnemy_Acolyte::CEnemy_Acolyte()
 	tEnemyInfo info = {};
 	info.fHP = 150.f;
 	info.fAtt = 20.f;
-	info.fAttRange = 300.f;
+	info.fAttRange = 400.f;
 	info.fAttDelayTime = 3.f;
-	info.fRecogRange = 400.f;
+	info.fRecogRange = 600.f;
 	info.fVelocity = 100.f;
 	info.fMaxVelocity = 100.f;
 	info.fInvTime = 0.1f;

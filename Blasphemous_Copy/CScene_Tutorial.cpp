@@ -3,7 +3,6 @@
 #include "CD2DImage.h"
 #include "CBackground.h"
 #include "CMap.h"
-#include "CJsonLoader.h"
 #include "CSpawnPoint.h"
 #include "CPlayer.h"
 #include "CEnemy.h"
@@ -18,11 +17,6 @@ CScene_Tutorial::CScene_Tutorial()
 
 CScene_Tutorial::~CScene_Tutorial()
 {
-	// 플레이어가 생성된 곳에서 delete 될 수 있도록
-	// 이 씬에서는 AddObject되었던 것을 벡터에서만 지워줌
-	vector<CGameObject*>& vecObj = GetObjGroup(GROUP_GAMEOBJ::PLAYER);
-	if (vecObj.size() > 0)
-		vecObj.erase(vecObj.begin());
 }
 
 void CScene_Tutorial::update()
@@ -87,10 +81,18 @@ void CScene_Tutorial::Exit()
 	for (UINT i = 0; i < (UINT)GROUP_GAMEOBJ::SIZE; ++i)
 	{
 		if ((GROUP_GAMEOBJ)i == GROUP_GAMEOBJ::PLAYER || (GROUP_GAMEOBJ)i == GROUP_GAMEOBJ::ENEMY
-			|| (GROUP_GAMEOBJ)i == GROUP_GAMEOBJ::PLAYER_ATT_FX || (GROUP_GAMEOBJ)i == GROUP_GAMEOBJ::ENEMY_ATT_FX
 			|| (GROUP_GAMEOBJ)i == GROUP_GAMEOBJ::WEAPON) continue;
 
 		ClearGroup((GROUP_GAMEOBJ)i);
+	}
+
+	// 플레이어가 이 씬을 나가면
+	// 이 씬에서는 AddObject되었던 것을 벡터에서만 지워줌
+	if (CPlayer::GetPlayer() != nullptr)
+	{
+		vector<CGameObject*>& vecObj = GetObjGroup(GROUP_GAMEOBJ::PLAYER);
+		if (vecObj.size() > 0)
+			vecObj.erase(vecObj.begin());
 	}
 
 	CSoundManager::GetInst()->Stop(L"Forest_BGM");
