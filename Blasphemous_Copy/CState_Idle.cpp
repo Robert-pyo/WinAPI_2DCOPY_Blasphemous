@@ -35,6 +35,11 @@ void CState_Idle::update()
 	}
 	else
 	{
+		if (GetEnemy()->GetName() == L"Piedad")
+		{
+			ChangeAIState(GetAI(), ENEMY_STATE::TRACE);
+			return;
+		}
 		ChangeAIState(GetAI(), ENEMY_STATE::PATROL);
 	}
 }

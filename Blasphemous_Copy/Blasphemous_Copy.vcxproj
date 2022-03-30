@@ -154,6 +154,7 @@
     <ClInclude Include="CAnimation.h" />
     <ClInclude Include="CAnimator.h" />
     <ClInclude Include="CBackground.h" />
+    <ClInclude Include="CBossPatern_GroundSmash.h" />
     <ClInclude Include="CButtonUI.h" />
     <ClInclude Include="CCameraManager.h" />
     <ClInclude Include="CCollider.h" />
@@ -161,6 +162,7 @@
     <ClInclude Include="CCore.h" />
     <ClInclude Include="CD2DImage.h" />
     <ClInclude Include="CEffect.h" />
+    <ClInclude Include="CEffect_GroundSmash.h" />
     <ClInclude Include="CEffect_Rock.h" />
     <ClInclude Include="CEffect_Spear.h" />
     <ClInclude Include="CEffect_SwordSlash.h" />
@@ -231,6 +233,7 @@
     <ClCompile Include="CAnimation.cpp" />
     <ClCompile Include="CAnimator.cpp" />
     <ClCompile Include="CBackground.cpp" />
+    <ClCompile Include="CBossPatern_GroundSmash.cpp" />
     <ClCompile Include="CButtonUI.cpp" />
     <ClCompile Include="CCameraManager.cpp" />
     <ClCompile Include="CCollider.cpp" />
@@ -241,6 +244,7 @@
     </ClCompile>
     <ClCompile Include="CD2DImage.cpp" />
     <ClCompile Include="CEffect.cpp" />
+    <ClCompile Include="CEffect_GroundSmash.cpp" />
     <ClCompile Include="CEffect_Rock.cpp" />
     <ClCompile Include="CEffect_Spear.cpp" />
     <ClCompile Include="CEffect_SwordSlash.cpp" />

@@ -1,8 +1,19 @@
 #pragma once
 #include "CHUD.h"
+
+class CD2DImage;
+
 class CHUD_PlayerInfo : public CHUD
 {
+	SINGLETON(CHUD_PlayerInfo);
 private:
+	CD2DImage* m_pPortraitImg;
+	CD2DImage* m_pHealthImg;
+	CD2DImage* m_pMpImg;
+
+	fPoint m_fHpPos;
+	fPoint m_fMpPos;
+
 	// 플레이어 체력
 	float m_fMaxHP;
 	float m_fCurHP;
@@ -16,12 +27,6 @@ private:
 	USHORT m_sMaxPotionCount;
 
 	// mp로 쓸 수 있는 스킬이 있을 것
-
-public:
-	CHUD_PlayerInfo();
-	~CHUD_PlayerInfo();
-
-	virtual CHUD_PlayerInfo* Clone();
 
 public:
 	virtual void update() final;

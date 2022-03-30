@@ -7,6 +7,7 @@
 #include "CEnemy_Stoner.h"
 #include "CWeapon.h"
 #include "CAnimation.h"
+#include "CCollider.h"
 
 CState_Attack::CState_Attack(ENEMY_STATE eEnmState)
 	: CState(eEnmState)
@@ -22,6 +23,28 @@ CState_Attack::~CState_Attack()
 void CState_Attack::update()
 {
 	m_fAttAccTime += fDeltaTime;
+
+	CPlayer* pPlayer = CPlayer::GetPlayer();
+
+	float fvPlayerCenterX = (float)pPlayer->GetCollider()->GetBorderPos().left + pPlayer->GetCollider()->GetScale().x / 2.f;
+	float fvPlayerCenterY = (float)pPlayer->GetCollider()->GetBorderPos().top + pPlayer->GetCollider()->GetScale().y / 2.f;
+
+	fVector2D fvPlayerPos = fVector2D(fvPlayerCenterX, fvPlayerCenterY);
+	fVector2D fvEnemyPos = GetEnemy()->GetPos();
+
+	CEnemy* pEnemy = GetEnemy();
+	fVector2D fvEnemyDir = fvPlayerPos - fvEnemyPos;
+	float fLength = fvEnemyDir.Length();
+	fvEnemyDir.Normalize();
+
+	if (m_pEnemy->GetName() == L"Piedad")
+	{
+		if (fLength < m_pEnemy->GetEnemyInfo().fAttRange / 2)
+		{
+			ChangeAIState(GetAI(), ENEMY_STATE::BOSSPATERN1);
+		}
+		return;
+	}
 
 	m_pEnemy->Attack();
 

@@ -28,17 +28,19 @@ CPlayer::CPlayer()
 	m_fJumpPower	= -650.f;
 	m_bIsGrounded	= false;
 
-	m_fAttackDelay  = 0.2f;
 	m_iComboCount	= 0;
 	m_bIsAttacking	= false;
 
-	m_fDodgeAccTime = 0.f;
 	m_fDodgeDelay = 1.f;
-	m_fDodgeDelayAccTime = 0.f;
 	m_bIsInvincible = false;
 
 	m_sHitCount = 0;
 	m_bIsControllable = true;
+
+	m_fAttackDelay  = 0.2f;
+	m_fDodgeAccTime = 0.f;
+	m_fDodgeDelayAccTime = 0.f;
+	m_fFootStepDelay = 0.f;
 
 	InitAbility();
 	InitAnimation();
@@ -55,6 +57,15 @@ CPlayer::CPlayer()
 	CCollisionManager::GetInst()->CheckGroup(GROUP_GAMEOBJ::PLAYER, GROUP_GAMEOBJ::FLOOR);
 	CCollisionManager::GetInst()->CheckGroup(GROUP_GAMEOBJ::PLAYER, GROUP_GAMEOBJ::BUILDING);
 	CCollisionManager::GetInst()->CheckGroup(GROUP_GAMEOBJ::PLAYER, GROUP_GAMEOBJ::DEFAULT);
+
+	CSoundManager::GetInst()->AddSound(L"Player_FootStep1", L"sound\\SoundEffects\\Penitent\\Run\\Stone\\PENITENT_RUN_STONE_1.wav", false);
+	CSoundManager::GetInst()->AddSound(L"Player_FootStep2", L"sound\\SoundEffects\\Penitent\\Run\\Stone\\PENITENT_RUN_STONE_2.wav", false);
+	CSoundManager::GetInst()->AddSound(L"Player_FootStep3", L"sound\\SoundEffects\\Penitent\\Run\\Stone\\PENITENT_RUN_STONE_3.wav", false);
+	CSoundManager::GetInst()->AddSound(L"Player_FootStep4", L"sound\\SoundEffects\\Penitent\\Run\\Stone\\PENITENT_RUN_STONE_4.wav", false);
+	CSoundManager::GetInst()->AddSound(L"Player_FootStep5", L"sound\\SoundEffects\\Penitent\\Run\\Stone\\PENITENT_RUN_STONE_5.wav", false);
+	CSoundManager::GetInst()->AddSound(L"Player_FootStep6", L"sound\\SoundEffects\\Penitent\\Run\\Stone\\PENITENT_RUN_STONE_6.wav", false);
+	CSoundManager::GetInst()->AddSound(L"Player_FootStep7", L"sound\\SoundEffects\\Penitent\\Run\\Stone\\PENITENT_RUN_STONE_7.wav", false);
+	CSoundManager::GetInst()->AddSound(L"Player_FootStep8", L"sound\\SoundEffects\\Penitent\\Run\\Stone\\PENITENT_RUN_STONE_8.wav", false);
 }
 
 CPlayer::~CPlayer()
@@ -256,7 +267,10 @@ void CPlayer::update_move()
 	if (PRESS_KEY('A') && !m_bIsAttacking && !m_bIsActing)
 	{
 		if (m_fVelocity < 250.f)
+		{
 			m_fVelocity += 100.f;
+			m_fFootStepDelay = 0.f;
+		}
 
 		if (!PRESS_KEY('D') && m_eCurState != PLAYER_STATE::DODGE)
 		{
@@ -264,12 +278,21 @@ void CPlayer::update_move()
 		}
 
 		m_fVelocity += 1000.f * fDeltaTime;
+		m_fFootStepDelay += fDeltaTime;
+		if (m_fFootStepDelay > 0.3f && m_bIsGrounded && !m_bIsAttacking && !m_bIsInvincible)
+		{
+			PlayFootStep();
+			m_fFootStepDelay -= m_fFootStepDelay;
+		}
 	}
 	
 	if (PRESS_KEY('D') && !m_bIsAttacking && !m_bIsActing)
 	{
 		if (m_fVelocity < 250.f)
+		{
 			m_fVelocity += 100.f;
+			m_fFootStepDelay -= m_fFootStepDelay;
+		}
 
 		if (!PRESS_KEY('A') && m_eCurState != PLAYER_STATE::DODGE)
 		{
@@ -277,6 +300,13 @@ void CPlayer::update_move()
 		}
 
 		m_fVelocity += 1000.f * fDeltaTime;
+
+		m_fFootStepDelay += fDeltaTime;
+		if (m_fFootStepDelay > 0.3f && m_bIsGrounded && !m_bIsAttacking && !m_bIsInvincible)
+		{
+			PlayFootStep();
+			m_fFootStepDelay = 0.f;
+		}
 	}
 
 	if (m_eCurState == PLAYER_STATE::JUMP && m_bIsGrounded)
@@ -656,8 +686,8 @@ void CPlayer::InitAbility()
 	pSword->SetOwnerObj(this);
 	m_pSword = pSword;
 
-	m_tAbility.fMaxHp = 300.f;
-	m_tAbility.fCurHp = 300.f;
+	m_tAbility.fMaxHp = 100.f;
+	m_tAbility.fCurHp = 100.f;
 	m_tAbility.fMaxMp = 100.f;
 	m_tAbility.fCurMp = 100.f;
 
@@ -803,6 +833,48 @@ void CPlayer::InitAnimation()
 		pAnim->GetFrame(i).fptOffset.x += 20.f;
 	}
 #pragma endregion
+}
+
+static USHORT iFootStepCount = 0;
+void CPlayer::PlayFootStep()
+{
+	switch (iFootStepCount)
+	{
+	case 0:
+		CSoundManager::GetInst()->Play(L"Player_FootStep1");
+		iFootStepCount++;
+		break;
+	case 1:
+		CSoundManager::GetInst()->Play(L"Player_FootStep2");
+		iFootStepCount++;
+		break;
+	case 2:
+		CSoundManager::GetInst()->Play(L"Player_FootStep3");
+		iFootStepCount++;
+		break;
+	case 3:
+		CSoundManager::GetInst()->Play(L"Player_FootStep4");
+		iFootStepCount++;
+		break;
+	case 4:
+		CSoundManager::GetInst()->Play(L"Player_FootStep5");
+		iFootStepCount++;
+		break;
+	case 5:
+		CSoundManager::GetInst()->Play(L"Player_FootStep6");
+		iFootStepCount++;
+		break;
+	case 6:
+		CSoundManager::GetInst()->Play(L"Player_FootStep7");
+		iFootStepCount++;
+		break;
+	case 7:
+		CSoundManager::GetInst()->Play(L"Player_FootStep8");
+		iFootStepCount = 0;
+		break;
+	default:
+		break;
+	}
 }
 
 #pragma region CollisionCheck

@@ -9,6 +9,7 @@
 #include "CState_Dead.h"
 #include "CState_Patrol.h"
 #include "CState_Sleep.h"
+#include "CBossPatern_GroundSmash.h"
 
 #include "CEnemy_Acolyte.h"
 #include "CEnemy_Stoner.h"
@@ -65,6 +66,10 @@ CEnemy* CEnemyFactory::CreateEnemy(ENEMY_TYPE eEnmType, fPoint pos)
 		pAI->AddState(new CState_Idle(ENEMY_STATE::IDLE));
 		pAI->AddState(new CState_Sleep(ENEMY_STATE::SLEEP));
 		pAI->AddState(new CState_Trace(ENEMY_STATE::TRACE));
+		pAI->AddState(new CState_Attack(ENEMY_STATE::ATTACK));
+		pAI->AddState(new CBossPatern_GroundSmash(ENEMY_STATE::BOSSPATERN1));
+		//pAI->AddState(new CBossPatern_GroundSmash(ENEMY_STATE::BOSSPATERN2));
+		//pAI->AddState(new CBossPatern_GroundSmash(ENEMY_STATE::BOSSPATERN3));
 		pAI->AddState(new CState_Dead(ENEMY_STATE::DEAD));
 		pAI->SetCurState(ENEMY_STATE::SLEEP);
 

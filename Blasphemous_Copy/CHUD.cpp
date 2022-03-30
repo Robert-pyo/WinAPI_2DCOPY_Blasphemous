@@ -4,7 +4,7 @@
 
 CHUD::CHUD()
 {
-	m_pPlayer = CPlayer::GetPlayer();
+	m_pPlayer = nullptr;
 	m_pImg = nullptr;
 }
 

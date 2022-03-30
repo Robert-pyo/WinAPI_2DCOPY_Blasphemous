@@ -10,6 +10,7 @@
 #include "CScene_Boss.h"
 #include "CScene_CS_BossApear.h"
 #include "CScene_End.h"
+#include "CHUD_PlayerInfo.h"
 
 CSceneManager::CSceneManager()
 {
@@ -50,11 +51,17 @@ void CSceneManager::update()
 
 	m_pCurScene->update();
 	m_pCurScene->finalUpdate();
+	CHUD_PlayerInfo::GetInst()->update();
 }
 
 void CSceneManager::render()
 {
 	m_pCurScene->render();
+
+	if (CGameManager::GetInst()->GetIsGameStarted())
+	{
+		CHUD_PlayerInfo::GetInst()->render();
+	}
 }
 
 void CSceneManager::init()
@@ -90,6 +97,7 @@ void CSceneManager::init()
 	m_arrScene[(int)GROUP_SCENE::BOSS]->init();
 
 	m_arrScene[(int)GROUP_SCENE::BOSSCUTSCENE] = new CScene_CS_BossApear();
+	m_arrScene[(int)GROUP_SCENE::BOSSCUTSCENE]->SetName(L"BossCutScene");
 	m_arrScene[(int)GROUP_SCENE::BOSSCUTSCENE]->SetGroup(GROUP_SCENE::BOSSCUTSCENE);
 	m_arrScene[(int)GROUP_SCENE::BOSSCUTSCENE]->init();
 
@@ -98,7 +106,7 @@ void CSceneManager::init()
 	m_arrScene[(int)GROUP_SCENE::END]->SetGroup(GROUP_SCENE::END);
 	m_arrScene[(int)GROUP_SCENE::END]->init();
 
-	m_pCurScene = m_arrScene[(int)GROUP_SCENE::BOSS];
+	m_pCurScene = m_arrScene[(int)GROUP_SCENE::TUTORIAL];
 	m_pCurScene->Enter();
 }
 
@@ -118,6 +126,7 @@ void CSceneManager::RestartScenes()
 	for (int i = 0; i < (int)GROUP_SCENE::SIZE; ++i)
 	{
 		m_arrScene[i]->ClearAll();
+		m_arrScene[i]->ResetKeyControlUI();
 		m_arrScene[i]->init();
 	}
 }

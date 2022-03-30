@@ -102,6 +102,9 @@ enum class ENEMY_STATE
 	RUN,
 	HIT,
 	DEAD,
+	BOSSPATERN1,
+	BOSSPATERN2,
+	BOSSPATERN3,
 };
 
 #include "Logger.h"

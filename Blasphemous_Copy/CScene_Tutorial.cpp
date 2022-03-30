@@ -63,16 +63,17 @@ void CScene_Tutorial::Enter()
 
 	CWarpPoint* warpToChurch = new CWarpPoint;
 	warpToChurch->SetName(L"Church");
-	warpToChurch->SetPos(fPoint(pBackground->GetScale().x - 100.f, pBackground->GetScale().y - 150.f));
+	warpToChurch->SetPos(fPoint(0.f, pBackground->GetScale().y - 150.f));
 	AddObject(warpToChurch, GROUP_GAMEOBJ::DEFAULT);
 
-	if (CSceneManager::GetInst()->GetPrevScene()->GetName() == L"Church")
+	if (CSceneManager::GetInst()->GetPrevScene() != nullptr &&
+		CSceneManager::GetInst()->GetPrevScene()->GetName() == L"Church")
 		CPlayer::GetPlayer()->SetPos(fPoint(warpToChurch->GetPos().x - 100.f, warpToChurch->GetPos().y));
 
 	CCameraManager::GetInst()->FadeIn(2.f);
 
 	CCameraManager::GetInst()->InitCameraPos(CPlayer::GetPlayer()->GetPos() - fPoint(500.f, 200.f));
-	CCameraManager::GetInst()->FollowTargetObj(CPlayer::GetPlayer(), true, true);
+	//CCameraManager::GetInst()->FollowTargetObj(CPlayer::GetPlayer(), true, true);
 	CCameraManager::GetInst()->SetBoundary(pMap->GetPos(), fPoint((float)m_pBgImage->GetWidth() * 2.f, (float)m_pBgImage->GetHeight() * 2.f));
 }
 

@@ -49,15 +49,20 @@ void CScene_Church::Enter()
 
 	CWarpPoint* warpToTutorial = new CWarpPoint;
 	warpToTutorial->SetName(L"Tutorial");
-	warpToTutorial->SetPos(fPoint(pMap->GetPos().x + 100.f, pMap->GetPos().y + pMap->GetScale().y - 100.f));
+	warpToTutorial->SetPos(fPoint(pMap->GetPos().x + pMap->GetScale().x - 100.f, pMap->GetPos().y + pMap->GetScale().y - 100.f));
 	AddObject(warpToTutorial, GROUP_GAMEOBJ::DEFAULT);
+
+	CWarpPoint* warpToBossRoom = new CWarpPoint;
+	warpToBossRoom->SetName(L"Boss");
+	warpToBossRoom->SetPos(fPoint(pMap->GetPos().x + 100.f, pMap->GetPos().y + pMap->GetScale().y - 100.f));
+	AddObject(warpToBossRoom, GROUP_GAMEOBJ::DEFAULT);
 
 	SpawnObjects(this, "Player");
 
 	if (CSceneManager::GetInst()->GetPrevScene() != nullptr &&
 		CSceneManager::GetInst()->GetPrevScene()->GetName() == L"Tutorial")
 	{
-		CPlayer::GetPlayer()->SetPos(fPoint(warpToTutorial->GetPos().x + 80.f, warpToTutorial->GetPos().y));
+		CPlayer::GetPlayer()->SetPos(fPoint(warpToTutorial->GetPos().x - 100.f, warpToTutorial->GetPos().y));
 	}
 
 	CCameraManager::GetInst()->SetBoundary(fPoint(pMap->GetPos().x + 350.f, pMap->GetPos().y), pMap->GetPos() + pMap->GetScale());

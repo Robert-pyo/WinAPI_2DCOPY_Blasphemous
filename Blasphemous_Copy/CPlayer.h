@@ -89,6 +89,8 @@ private:
 	float m_fDodgeDelayAccTime;
 	bool  m_bIsInvincible;
 
+	float m_fFootStepDelay;
+
 	USHORT m_sHitCount;
 	bool m_bIsControllable;
 
@@ -117,6 +119,7 @@ public:
 private:
 	void InitAbility();
 	void InitAnimation();
+	void PlayFootStep();
 
 public:
 	void Jump();

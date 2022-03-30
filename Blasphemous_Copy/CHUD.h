@@ -31,5 +31,6 @@ public:
 
 public:
 	void SetImage(CD2DImage* pImg) { m_pImg = pImg; }
+	CD2DImage* GetImageInfo() { return m_pImg; }
 };
 

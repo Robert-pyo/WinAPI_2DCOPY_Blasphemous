@@ -13,8 +13,20 @@ CScene_CS_BossApear::~CScene_CS_BossApear()
 {
 }
 
+void CScene_CS_BossApear::update()
+{
+	CScene::update();
+
+	if (!CGameManager::GetInst()->IsDisableControl())
+	{
+		ChangeToNextScene(GROUP_SCENE::BOSS);
+	}
+}
+
 void CScene_CS_BossApear::init()
 {
+	CSoundManager::GetInst()->AddSound(L"Piedad_WakeUp", L"sound\\SoundEffects\\Piedad\\WakeUp.wav", false);
+
 	SpawnObjects(L"Boss", "Piedad");
 }
 
@@ -23,6 +35,8 @@ void CScene_CS_BossApear::Enter()
 	CUIManager::GetInst()->SetKeyControl(false);
 
 	CGameManager::GetInst()->SetDisableControl(true);
+
+	CSoundManager::GetInst()->Play(L"Piedad_WakeUp");
 
 	// 타일 로딩
 	wstring path = CPathManager::GetInst()->GetContentPath();
@@ -53,5 +67,22 @@ void CScene_CS_BossApear::Enter()
 
 void CScene_CS_BossApear::Exit()
 {
-	CGameManager::GetInst()->SetDisableControl(false);
+	for (UINT i = 0; i < (UINT)GROUP_GAMEOBJ::SIZE; ++i)
+	{
+		if ((GROUP_GAMEOBJ)i == GROUP_GAMEOBJ::PLAYER || (GROUP_GAMEOBJ)i == GROUP_GAMEOBJ::WEAPON) continue;
+
+		ClearGroup((GROUP_GAMEOBJ)i);
+	}
+
+	CSoundManager::GetInst()->Stop(L"Piedad_BossRoom_Ambient");
+	CSoundManager::GetInst()->Play(L"Piedad_Boss_Fight");
+
+	// 플레이어가 이 씬을 나가면
+	// 이 씬에서는 AddObject되었던 것을 벡터에서만 지워줌
+	if (CPlayer::GetPlayer() != nullptr)
+	{
+		vector<CGameObject*>& vecObj = GetObjGroup(GROUP_GAMEOBJ::PLAYER);
+		if (vecObj.size() > 0)
+			vecObj.erase(vecObj.begin());
+	}
 }

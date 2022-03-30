@@ -5,6 +5,7 @@
 
 CGameManager::CGameManager()
 {
+	m_bGameStart = false;
 	m_bDisableControl = false;
 }
 
@@ -18,6 +19,11 @@ void CGameManager::update()
 	{
 		if (CPlayer::GetPlayer() != nullptr)
 			CPlayer::GetPlayer()->SetControllable(false);
+	}
+	else
+	{
+		if (CPlayer::GetPlayer() != nullptr)
+			CPlayer::GetPlayer()->SetControllable(true);
 	}
 }
 

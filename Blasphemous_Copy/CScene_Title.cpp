@@ -18,7 +18,8 @@ CScene_Title::~CScene_Title()
 
 void ButtonStartClicked(DWORD_PTR param1, DWORD_PTR param2)
 {
-	ChangeToNextScene(GROUP_SCENE::CHURCH);
+	ChangeToNextScene(GROUP_SCENE::TUTORIAL);
+	CGameManager::GetInst()->SetGameStart(true);
 }
 
 void ButtonQuitClicked(DWORD_PTR param1, DWORD_PTR param2)

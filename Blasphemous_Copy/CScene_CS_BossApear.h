@@ -13,6 +13,7 @@ public:
 	~CScene_CS_BossApear();
 
 public:
+	virtual void update();
 	virtual void init();
 
 public:

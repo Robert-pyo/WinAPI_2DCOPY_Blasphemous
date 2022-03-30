@@ -40,6 +40,8 @@ void CEnemy::update()
 	{
 		m_pAI->update();
 	}
+	
+	if (CGameManager::GetInst()->IsDisableControl()) return;
 
 	fPoint fptPos = GetPos();
 
@@ -160,6 +162,7 @@ void CEnemy::Hit(CGameObject* pPlayer)
 
 	if (GetAI()->GetCurState()->GetState() == ENEMY_STATE::ATTACK) return;
 	if (GetAI()->GetCurState()->GetState() == ENEMY_STATE::HIT) return;
+	if (GetName() == L"Piedad") return;
 	// 맞았으면 HIT 상태로 전환
 	ChangeAIState(m_pAI, ENEMY_STATE::HIT);
 }
@@ -171,6 +174,7 @@ void CEnemy::Die()
 
 void CEnemy::OnCollision(CCollider* target)
 {
+	if (CGameManager::GetInst()->IsDisableControl()) return;
 	if (GROUP_GAMEOBJ::FLOOR == target->GetOwnerObj()->GetObjGroup() ||
 		GROUP_GAMEOBJ::TILE == target->GetOwnerObj()->GetObjGroup())
 	{

@@ -55,6 +55,7 @@ public:
 public:
 	void RegisterUI(CUI* pUI);
 	CUI* GetUI(const CUI* pUI);
+	void ResetKeyControlUI();
 
 	void UIOptionSelector();
 
@@ -68,8 +69,8 @@ public:
 
 	void LoadTile(const wstring& strPath);
 
-	void SpawnObjects(CScene* targetScene, const string objName);
-	void SpawnObjects(const wstring& sceneName, const string objName);
+	CGameObject* SpawnObjects(CScene* targetScene, const string objName);
+	CGameObject* SpawnObjects(const wstring& sceneName, const string objName);
 
 	void ClearGroup(GROUP_GAMEOBJ group);
 	void ClearAll();

@@ -78,12 +78,7 @@ void CAnimation::update()
 			{
 				m_iCurFrm = (int)m_vecAnimFrm.size() - 1;
 				m_bIsAnimDone = true;
-
-				if (m_fCurAnimDuration <= m_fAccTime)
-				{
-					m_iCurFrm = 0;
-					m_fAccTime = 0.f;
-				}
+				m_fAccTime = 0.f;
 			}
 		}
 	}

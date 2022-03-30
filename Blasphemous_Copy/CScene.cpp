@@ -158,6 +158,11 @@ CUI* CScene::GetUI(const CUI* pUI)
 	return nullptr;
 }
 
+void CScene::ResetKeyControlUI()
+{
+	m_vecUI.clear();
+}
+
 void CScene::UIOptionSelector()
 {
 	if (PRESS_KEY_DOWN(VK_UP) || PRESS_KEY_DOWN('W'))
@@ -283,14 +288,16 @@ void CScene::LoadTile(const wstring& strPath)
 	fclose(pFile);
 }
 
-void CScene::SpawnObjects(CScene* targetScene, const string objName)
+CGameObject* CScene::SpawnObjects(CScene* targetScene, const string objName)
 {
 	m_mapSpawnPoint = CJsonLoader::LoadSpawnPoint(targetScene);
 
 	int count = (int)m_mapSpawnPoint.count(objName);
 	multimap<string, fPoint>::iterator iter = m_mapSpawnPoint.find(objName);
 
-	if (m_mapSpawnPoint.end() == iter) return;
+	if (m_mapSpawnPoint.end() == iter) return nullptr;
+
+	CEnemy* pEnemy = nullptr;
 
 	for (int i = 0; i < count; ++i, ++iter)
 	{
@@ -311,11 +318,12 @@ void CScene::SpawnObjects(CScene* targetScene, const string objName)
 				pPlayer->SetPos(iter->second);
 				AddObject(pPlayer, GROUP_GAMEOBJ::PLAYER);
 			}
+			return pPlayer;
 		}
 
 		else if (objName == "Acolyte")
 		{
-			CEnemy* pEnemy = CEnemyFactory::CreateEnemy(ENEMY_TYPE::NORMAL, iter->second);
+			pEnemy = CEnemyFactory::CreateEnemy(ENEMY_TYPE::NORMAL, iter->second);
 			AddObject(pEnemy, GROUP_GAMEOBJ::ENEMY);
 			if (pEnemy->GetEnemyInfo().pWeapon != nullptr)
 				AddObject(pEnemy->GetEnemyInfo().pWeapon, GROUP_GAMEOBJ::WEAPON);
@@ -323,22 +331,32 @@ void CScene::SpawnObjects(CScene* targetScene, const string objName)
 
 		else if (objName == "Stoner")
 		{
-			CEnemy* pEnemy = CEnemyFactory::CreateEnemy(ENEMY_TYPE::RANGE, iter->second);
+			pEnemy = CEnemyFactory::CreateEnemy(ENEMY_TYPE::RANGE, iter->second);
+			AddObject(pEnemy, GROUP_GAMEOBJ::ENEMY);
+			if (pEnemy->GetEnemyInfo().pWeapon != nullptr)
+				AddObject(pEnemy->GetEnemyInfo().pWeapon, GROUP_GAMEOBJ::WEAPON);
+		}
+
+		else if (objName == "Piedad")
+		{
+			pEnemy = CEnemyFactory::CreateEnemy(ENEMY_TYPE::BOSS, iter->second);
 			AddObject(pEnemy, GROUP_GAMEOBJ::ENEMY);
 			if (pEnemy->GetEnemyInfo().pWeapon != nullptr)
 				AddObject(pEnemy->GetEnemyInfo().pWeapon, GROUP_GAMEOBJ::WEAPON);
 		}
 	}
+
+	return pEnemy;
 }
 
-void CScene::SpawnObjects(const wstring& sceneName, const string objName)
+CGameObject* CScene::SpawnObjects(const wstring& sceneName, const string objName)
 {
 	m_mapSpawnPoint = CJsonLoader::LoadSpawnPoint(sceneName);
 
 	int count = (int)m_mapSpawnPoint.count(objName);
 	multimap<string, fPoint>::iterator iter = m_mapSpawnPoint.find(objName);
 
-	if (m_mapSpawnPoint.end() == iter) return;
+	if (m_mapSpawnPoint.end() == iter) return nullptr;
 
 	for (int i = 0; i < count; ++i, ++iter)
 	{
@@ -359,6 +377,7 @@ void CScene::SpawnObjects(const wstring& sceneName, const string objName)
 				pPlayer->SetPos(iter->second);
 				AddObject(pPlayer, GROUP_GAMEOBJ::PLAYER);
 			}
+			return pPlayer;
 		}
 
 		else if (objName == "Acolyte")
@@ -367,6 +386,7 @@ void CScene::SpawnObjects(const wstring& sceneName, const string objName)
 			AddObject(pEnemy, GROUP_GAMEOBJ::ENEMY);
 			if (pEnemy->GetEnemyInfo().pWeapon != nullptr)
 				AddObject(pEnemy->GetEnemyInfo().pWeapon, GROUP_GAMEOBJ::WEAPON);
+			return pEnemy;
 		}
 
 		else if (objName == "Stoner")
@@ -375,6 +395,7 @@ void CScene::SpawnObjects(const wstring& sceneName, const string objName)
 			AddObject(pEnemy, GROUP_GAMEOBJ::ENEMY);
 			if (pEnemy->GetEnemyInfo().pWeapon != nullptr)
 				AddObject(pEnemy->GetEnemyInfo().pWeapon, GROUP_GAMEOBJ::WEAPON);
+			return pEnemy;
 		}
 
 		else if (objName == "Piedad")
@@ -383,6 +404,7 @@ void CScene::SpawnObjects(const wstring& sceneName, const string objName)
 			AddObject(pEnemy, GROUP_GAMEOBJ::ENEMY);
 			if (pEnemy->GetEnemyInfo().pWeapon != nullptr)
 				AddObject(pEnemy->GetEnemyInfo().pWeapon, GROUP_GAMEOBJ::WEAPON);
+			return pEnemy;
 		}
 	}
 }

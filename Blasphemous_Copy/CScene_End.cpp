@@ -21,9 +21,8 @@ void CScene_End::update()
 	{
 		if (PRESS_ANY_KEY())
 		{
-			CCameraManager::GetInst()->FadeOut(2.f);
-			ChangeToNextScene(GROUP_SCENE::TITLE);
 			CSceneManager::GetInst()->RestartScenes();
+			ChangeToNextScene(GROUP_SCENE::TITLE);
 		}
 	}
 }
@@ -52,6 +51,8 @@ void CScene_End::Enter()
 	pBackground->SetImage(m_pBGImg);
 	pBackground->SetScale(fPoint((float)m_pBGImg->GetWidth(), (float)m_pBGImg->GetHeight()));
 	AddObject(pBackground, GROUP_GAMEOBJ::BACKGROUND_FIXED);
+
+	CGameManager::GetInst()->SetGameStart(false);
 }
 
 void CScene_End::Exit()

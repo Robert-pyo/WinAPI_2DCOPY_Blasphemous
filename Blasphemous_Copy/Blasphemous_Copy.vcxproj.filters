@@ -178,6 +178,12 @@
     <Filter Include="Engine\Component\AI\State\Sleep">
       <UniqueIdentifier>{86d5a489-6dc6-40aa-a9d2-427301a36cf4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\Component\AI\State\Attack\BossPatern">
+      <UniqueIdentifier>{006b9bb3-6ab4-42ae-aa73-dd69b4a651e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Effect\Piedad">
+      <UniqueIdentifier>{978d66f7-2fb9-4c5f-8bb5-50c903f9fc4e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -408,6 +414,12 @@
     <ClInclude Include="CState_Sleep.h">
       <Filter>Engine\Component\AI\State\Sleep</Filter>
     </ClInclude>
+    <ClInclude Include="CBossPatern_GroundSmash.h">
+      <Filter>Engine\Component\AI\State\Attack\BossPatern</Filter>
+    </ClInclude>
+    <ClInclude Include="CEffect_GroundSmash.h">
+      <Filter>Object\Effect\Piedad</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CCore.cpp">
@@ -613,6 +625,12 @@
     </ClCompile>
     <ClCompile Include="CState_Sleep.cpp">
       <Filter>Engine\Component\AI\State\Sleep</Filter>
+    </ClCompile>
+    <ClCompile Include="CBossPatern_GroundSmash.cpp">
+      <Filter>Engine\Component\AI\State\Attack\BossPatern</Filter>
+    </ClCompile>
+    <ClCompile Include="CEffect_GroundSmash.cpp">
+      <Filter>Object\Effect\Piedad</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

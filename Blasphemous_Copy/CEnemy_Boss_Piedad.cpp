@@ -3,6 +3,8 @@
 #include "CCollider.h"
 #include "CAnimator.h"
 #include "CAnimation.h"
+#include "CEffect_GroundSmash.h"
+#include "CEffect.h"
 
 CEnemy_Boss_Piedad::CEnemy_Boss_Piedad()
 {
@@ -16,15 +18,16 @@ CEnemy_Boss_Piedad::CEnemy_Boss_Piedad()
 	info.fAttRange = 1000.f;
 	info.fAttDelayTime = 3.f;
 	info.fRecogRange = 1000.f;
-	info.fVelocity = 0.f;
+	info.fVelocity = 200.f;
+	info.fMaxVelocity = 200.f;
 	info.fInvTime = 0.1f;
 	info.iMoney = 20;
 	info.pWeapon = nullptr;
 	SetEnemyInfo(info);
 
 	CreateCollider();
-	GetCollider()->SetScale(fPoint(140.f, 90.f));
-	GetCollider()->SetOffsetPos(fPoint(0.f, 30.f));
+	GetCollider()->SetScale(GetScale() * 2.f);
+	GetCollider()->SetOffsetPos(fPoint(0.f, 70.f));
 
 	Init_Animation();
 }
@@ -44,16 +47,21 @@ void CEnemy_Boss_Piedad::update()
 
 	GetAnimator()->update();
 
+	CEnemy::update();
+
 	if (GetAI()->GetCurState()->GetState() == ENEMY_STATE::SLEEP)
 	{
+		if (CSceneManager::GetInst()->GetCurrentScene()->GetSceneGroup() == GROUP_SCENE::BOSS)
+			GetAnimator()->FindAnimation(L"Piedad_CutScene")->SetFrame(0);
+
 		if (GetAnimator()->FindAnimation(L"Piedad_CutScene")->IsAnimDone())
 		{
+			if (GetAnimator()->FindAnimation(L"Piedad_CutScene2")->IsAnimDone())
+				CGameManager::GetInst()->SetDisableControl(false);
+
 			GetAnimator()->Play(L"Piedad_CutScene2");
 		}
-		return;
 	}
-
-	CEnemy::update();
 }
 
 void CEnemy_Boss_Piedad::render()
@@ -65,7 +73,21 @@ void CEnemy_Boss_Piedad::Update_Animation()
 {
 	if (GetAI()->GetPrevState() != nullptr &&
 		GetAI()->GetCurState()->GetState() == GetAI()->GetPrevState()->GetState())
+	{
+		switch (GetAI()->GetCurState()->GetState())
+		{
+		case ENEMY_STATE::TRACE:
+			if (GetDir().x > 0.f)
+			{
+				GetAnimator()->Play(L"Piedad_Walk_Right");
+			}
+			else
+			{
+				GetAnimator()->Play(L"Piedad_Walk_Left");
+			}
+		}
 		return;
+	}
 
 	switch (GetAI()->GetCurState()->GetState())
 	{
@@ -98,6 +120,20 @@ void CEnemy_Boss_Piedad::Update_Animation()
 		else
 		{
 			GetAnimator()->Play(L"Piedad_Walk_Left");
+		}
+	}break;
+	case ENEMY_STATE::BOSSPATERN1:
+	{
+		GetAnimator()->FindAnimation(L"Piedad_GroundSmash_Left")->SetFrame(0);
+		GetAnimator()->FindAnimation(L"Piedad_GroundSmash_Right")->SetFrame(0);
+
+		if (GetDir().x > 0.f)
+		{
+			GetAnimator()->Play(L"Piedad_GroundSmash_Right");
+		}
+		else
+		{
+			GetAnimator()->Play(L"Piedad_GroundSmash_Left");
 		}
 	}break;
 	case ENEMY_STATE::DEAD:
@@ -161,72 +197,77 @@ void CEnemy_Boss_Piedad::Init_Animation()
 
 	CreateAnimator();
 	GetAnimator()->CreateAnimation(L"Piedad_CutScene",
-		GetImage(), fPoint(12.f, 32.f), fPoint(260.f, 286.f), fPoint(260.f, 0.f), 8, 0.3f, 48, false, false);
+		GetImage(), fPoint(0.f, 0.f), fPoint(500.f, 272.f), fPoint(500.f, 0.f), 10, 0.15f, 48, false, false);
 	GetAnimator()->CreateAnimation(L"Piedad_CutScene2",
-		m_pCutScenePart2, fPoint(0.f, 0.f), fPoint(500.f, 272.f), fPoint(500.f, 0.f), 10, 0.1f, 39, false, false);
+		m_pCutScenePart2, fPoint(0.f, 0.f), fPoint(500.f, 272.f), fPoint(500.f, 0.f), 10, 0.13f, 39, false, false);
 
 	GetAnimator()->CreateAnimation(L"Piedad_Idle_Right",
-		m_pIdleImg, fPoint(0.f, 0.f), fPoint(382.f, 300.f), fPoint(382.f, 0.f), 5, 0.05f, 13, false, false);
+		m_pIdleImg, fPoint(0.f, 0.f), fPoint(382.f, 300.f), fPoint(382.f, 0.f), 5, 0.1f, 13, false, false);
 	GetAnimator()->CreateAnimation(L"Piedad_Idle_Left",
-		m_pIdleImg, fPoint(0.f, 0.f), fPoint(382.f, 300.f), fPoint(382.f, 0.f), 5, 0.05f, 13, false, true);
+		m_pIdleImg, fPoint(0.f, 0.f), fPoint(382.f, 300.f), fPoint(382.f, 0.f), 5, 0.1f, 13, false, true);
 
 
 	GetAnimator()->CreateAnimation(L"Piedad_Walk_Right",
-		m_pWalkImg, fPoint(0.f, 0.f), fPoint(382.f, 300.f), fPoint(382.f, 0.f), 4, 0.05f, 16, false, false);
+		m_pWalkImg, fPoint(0.f, 0.f), fPoint(382.f, 300.f), fPoint(382.f, 0.f), 4, 0.1f, 16, true, false);
 	GetAnimator()->CreateAnimation(L"Piedad_Walk_Left",
-		m_pWalkImg, fPoint(0.f, 0.f), fPoint(382.f, 300.f), fPoint(382.f, 0.f), 4, 0.05f, 16, false, true);
+		m_pWalkImg, fPoint(0.f, 0.f), fPoint(382.f, 300.f), fPoint(382.f, 0.f), 4, 0.1f, 16, true, true);
 
 	GetAnimator()->CreateAnimation(L"Piedad_WalkToIdle_Right",
-		m_pWalkToIdleImg, fPoint(0.f, 0.f), fPoint(382.f, 300.f), fPoint(382.f, 0.f), 5, 0.05f, 10, false, false);
+		m_pWalkToIdleImg, fPoint(0.f, 0.f), fPoint(382.f, 300.f), fPoint(382.f, 0.f), 5, 0.1f, 10, false, false);
 	GetAnimator()->CreateAnimation(L"Piedad_WalkToIdle_Left",
-		m_pWalkToIdleImg, fPoint(0.f, 0.f), fPoint(382.f, 300.f), fPoint(382.f, 0.f), 5, 0.05f, 10, false, true);
+		m_pWalkToIdleImg, fPoint(0.f, 0.f), fPoint(382.f, 300.f), fPoint(382.f, 0.f), 5, 0.1f, 10, false, true);
 
 	GetAnimator()->CreateAnimation(L"Piedad_GroundSmash_Right",
-		m_pGroundSmashImg, fPoint(0.f, 0.f), fPoint(382.f, 300.f), fPoint(382.f, 0.f), 10, 0.05f, 50, false, false);
+		m_pGroundSmashImg, fPoint(0.f, 0.f), fPoint(382.f, 300.f), fPoint(382.f, 0.f), 10, 0.1f, 50, false, false);
 	GetAnimator()->CreateAnimation(L"Piedad_GroundSmash_Left",
-		m_pGroundSmashImg, fPoint(0.f, 0.f), fPoint(382.f, 300.f), fPoint(382.f, 0.f), 10, 0.05f, 50, false, true);
+		m_pGroundSmashImg, fPoint(0.f, 0.f), fPoint(382.f, 300.f), fPoint(382.f, 0.f), 10, 0.1f, 50, false, true);
 
 	GetAnimator()->CreateAnimation(L"Piedad_Slash_Right",
-		m_pSlashImg, fPoint(0.f, 0.f), fPoint(382.f, 300.f), fPoint(382.f, 0.f), 10, 0.05f, 52, false, false);
+		m_pSlashImg, fPoint(0.f, 0.f), fPoint(382.f, 300.f), fPoint(382.f, 0.f), 10, 0.1f, 52, false, false);
 	GetAnimator()->CreateAnimation(L"Piedad_Slash_Left",
-		m_pSlashImg, fPoint(0.f, 0.f), fPoint(382.f, 300.f), fPoint(382.f, 0.f), 10, 0.05f, 52, false, true);
+		m_pSlashImg, fPoint(0.f, 0.f), fPoint(382.f, 300.f), fPoint(382.f, 0.f), 10, 0.1f, 52, false, true);
 
 	GetAnimator()->CreateAnimation(L"Piedad_SpitLoop_Right",
-		m_pSpitImg, fPoint(0.f, 0.f), fPoint(382.f, 300.f), fPoint(382.f, 0.f), 10, 0.05f, 15, false, false);
+		m_pSpitImg, fPoint(0.f, 0.f), fPoint(382.f, 300.f), fPoint(382.f, 0.f), 10, 0.1f, 15, false, false);
 	GetAnimator()->CreateAnimation(L"Piedad_SpitLoop_Left",
-		m_pSpitImg, fPoint(0.f, 0.f), fPoint(382.f, 300.f), fPoint(382.f, 0.f), 10, 0.05f, 15, false, true);
+		m_pSpitImg, fPoint(0.f, 0.f), fPoint(382.f, 300.f), fPoint(382.f, 0.f), 10, 0.1f, 15, false, true);
 
 	GetAnimator()->CreateAnimation(L"Piedad_SpitBackToIdle_Right",
-		m_pSpitBackIdleImg, fPoint(0.f, 0.f), fPoint(382.f, 300.f), fPoint(382.f, 0.f), 0, 0.05f, 5, false, false);
+		m_pSpitBackIdleImg, fPoint(0.f, 0.f), fPoint(382.f, 300.f), fPoint(382.f, 0.f), 0, 0.1f, 5, false, false);
 	GetAnimator()->CreateAnimation(L"Piedad_SpitBackToIdle_Left",
-		m_pSpitBackIdleImg, fPoint(0.f, 0.f), fPoint(382.f, 300.f), fPoint(382.f, 0.f), 0, 0.05f, 5, false, true);
+		m_pSpitBackIdleImg, fPoint(0.f, 0.f), fPoint(382.f, 300.f), fPoint(382.f, 0.f), 0, 0.1f, 5, false, true);
 
 	GetAnimator()->CreateAnimation(L"Piedad_SpitStart_Right",
-		m_pSpitStartImg, fPoint(0.f, 0.f), fPoint(382.f, 300.f), fPoint(382.f, 0.f), 0, 0.05f, 10, false, false);
+		m_pSpitStartImg, fPoint(0.f, 0.f), fPoint(382.f, 300.f), fPoint(382.f, 0.f), 0, 0.1f, 10, false, false);
 	GetAnimator()->CreateAnimation(L"Piedad_SpitStart_Left",
-		m_pSpitStartImg, fPoint(0.f, 0.f), fPoint(382.f, 300.f), fPoint(382.f, 0.f), 0, 0.05f, 10, false, true);
+		m_pSpitStartImg, fPoint(0.f, 0.f), fPoint(382.f, 300.f), fPoint(382.f, 0.f), 0, 0.1f, 10, false, true);
 
 	GetAnimator()->CreateAnimation(L"Piedad_Stomp_Right",
-		m_pStompImg, fPoint(0.f, 0.f), fPoint(382.f, 300.f), fPoint(382.f, 0.f), 7, 0.05f, 19, false, false);
+		m_pStompImg, fPoint(0.f, 0.f), fPoint(382.f, 300.f), fPoint(382.f, 0.f), 7, 0.1f, 19, false, false);
 	GetAnimator()->CreateAnimation(L"Piedad_Stomp_Left",
-		m_pStompImg, fPoint(0.f, 0.f), fPoint(382.f, 300.f), fPoint(382.f, 0.f), 7, 0.05f, 19, false, true);
+		m_pStompImg, fPoint(0.f, 0.f), fPoint(382.f, 300.f), fPoint(382.f, 0.f), 7, 0.1f, 19, false, true);
 
 	GetAnimator()->CreateAnimation(L"Piedad_Turn_Right",
-		m_pTurnAroundImg, fPoint(0.f, 0.f), fPoint(382.f, 300.f), fPoint(382.f, 0.f), 5, 0.05f, 13, false, false);
+		m_pTurnAroundImg, fPoint(0.f, 0.f), fPoint(382.f, 300.f), fPoint(382.f, 0.f), 5, 0.1f, 13, false, false);
 	GetAnimator()->CreateAnimation(L"Piedad_Turn_Left",
-		m_pTurnAroundImg, fPoint(0.f, 0.f), fPoint(382.f, 300.f), fPoint(382.f, 0.f), 5, 0.05f, 13, false, true);
+		m_pTurnAroundImg, fPoint(0.f, 0.f), fPoint(382.f, 300.f), fPoint(382.f, 0.f), 5, 0.1f, 13, false, true);
 
 	GetAnimator()->CreateAnimation(L"Piedad_Death_Right",
-		m_pDeathImg, fPoint(0.f, 0.f), fPoint(382.f, 300.f), fPoint(382.f, 0.f), 7, 0.05f, 37, false, false);
+		m_pDeathImg, fPoint(0.f, 0.f), fPoint(382.f, 300.f), fPoint(382.f, 0.f), 7, 0.1f, 37, false, false);
 	GetAnimator()->CreateAnimation(L"Piedad_Death_Left",
-		m_pDeathImg, fPoint(0.f, 0.f), fPoint(382.f, 300.f), fPoint(382.f, 0.f), 7, 0.05f, 37, false, true);
+		m_pDeathImg, fPoint(0.f, 0.f), fPoint(382.f, 300.f), fPoint(382.f, 0.f), 7, 0.1f, 37, false, true);
 
 #pragma endregion
 
 	CAnimation* pAnim = GetAnimator()->FindAnimation(L"Piedad_CutScene");
 	for (int i = 0; i < 48; ++i)
 	{
-		pAnim->GetFrame(i).fptOffset.y -= 16.f;
+		pAnim->GetFrame(i).fptOffset.x -= 7.f;
+		pAnim->GetFrame(i).fptOffset.y -= 67.f;
+	}
+	for (int i = 0; i < 16; ++i)
+	{
+		pAnim->GetFrame(i).fDuration = 0.04f;
 	}
 
 	pAnim = GetAnimator()->FindAnimation(L"Piedad_CutScene2");
@@ -239,4 +280,42 @@ void CEnemy_Boss_Piedad::Init_Animation()
 
 void CEnemy_Boss_Piedad::Attack()
 {
+	if (GetAI()->GetCurState()->GetState() == ENEMY_STATE::BOSSPATERN1)
+	{
+		float iMoveStartTime = GetAnimator()->GetCurAnim()->GetFrame(0).fDuration * 30;
+
+		if (GetAttCount() == 0)
+		{
+			m_fAtkAccTime += fDeltaTime;
+
+			if (iMoveStartTime <= m_fAtkAccTime)
+			{
+				CEffect_GroundSmash* pFx = new CEffect_GroundSmash;
+				pFx->SetOwnerObj(this);
+				pFx->SetPos(fPoint(GetPos().x - 130.f, GetPos().y + 170.f));
+				pFx->SetDuration(0.3f);
+				CreateObj(pFx, GROUP_GAMEOBJ::ENEMY_ATT_FX);
+
+				CEffect_GroundSmash* pFx2 = new CEffect_GroundSmash;
+				pFx2->SetOwnerObj(this);
+				pFx2->SetPos(fPoint(GetPos().x + 130.f, GetPos().y + 170.f));
+				pFx2->SetDuration(0.3f);
+				CreateObj(pFx2, GROUP_GAMEOBJ::ENEMY_ATT_FX);
+
+				CSoundManager::GetInst()->Play(L"Piedad_SmashVoice");
+				CSoundManager::GetInst()->Play(L"Piedad_Smash");
+
+				SetAttCount(1);
+				m_fAtkAccTime = 0;
+			}
+		}
+	}
+	else if (GetAI()->GetCurState()->GetState() == ENEMY_STATE::BOSSPATERN2)
+	{
+
+	}
+	else if (GetAI()->GetCurState()->GetState() == ENEMY_STATE::BOSSPATERN3)
+	{
+
+	}
 }
