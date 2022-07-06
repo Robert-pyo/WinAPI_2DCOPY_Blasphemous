@@ -30,7 +30,7 @@ void CScene_Church::init()
 {
 	SpawnObjects(this, "Stoner");
 
-	CCameraManager::GetInst()->FollowTargetObj(CPlayer::GetPlayer(), true, true);
+	CCameraManager::GetInst()->FollowTargetObj(CPlayer::GetPlayer(), true, true); 
 }
 
 void CScene_Church::Enter()

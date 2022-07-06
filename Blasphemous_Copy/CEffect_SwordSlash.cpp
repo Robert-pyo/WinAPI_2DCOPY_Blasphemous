@@ -151,10 +151,38 @@ void CEffect_SwordSlash::render()
 	component_render();
 }
 
+void CEffect_SwordSlash::PlaySlashSfx()
+{
+	srand(time(NULL));
+
+	USHORT randNum = rand() % 4;
+
+	switch (randNum)
+	{
+	case 0:
+		CSoundManager::GetInst()->Play(L"Enemy_Hit1");
+		break;
+	case 1:
+		CSoundManager::GetInst()->Play(L"Enemy_Hit2");
+		break;
+	case 2:
+		CSoundManager::GetInst()->Play(L"Enemy_Hit3");
+		break;
+	case 3:
+		CSoundManager::GetInst()->Play(L"Enemy_Hit4");
+		break;
+	default:
+		assert(nullptr);
+		break;
+	}
+}
+
 void CEffect_SwordSlash::OnCollisionEnter(CCollider* other)
 {
 	if (GROUP_GAMEOBJ::ENEMY == other->GetOwnerObj()->GetObjGroup())
 	{
+		PlaySlashSfx();
+
 		CCameraManager::GetInst()->Impulse(2.f, 100.f);
 
 		CEnemy* enemy = (CEnemy*)other->GetOwnerObj();
@@ -166,29 +194,5 @@ void CEffect_SwordSlash::OnCollisionEnter(CCollider* other)
 
 		enemy->Hit(user);
 		user->SetAttackCount(user->GetAttackCount() + 1);
-		GetCollider()->SetScale(fPoint(0.f, 0.f));
-
-		srand(time(NULL));
-
-		USHORT randNum = rand() % 4;
-
-		switch (randNum)
-		{
-		case 0:
-			CSoundManager::GetInst()->Play(L"Enemy_Hit1");
-			break;
-		case 1:
-			CSoundManager::GetInst()->Play(L"Enemy_Hit2");
-			break;
-		case 2:
-			CSoundManager::GetInst()->Play(L"Enemy_Hit3");
-			break;
-		case 3:
-			CSoundManager::GetInst()->Play(L"Enemy_Hit4");
-			break;
-		default:
-			assert(nullptr);
-			break;
-		}
 	}
 }

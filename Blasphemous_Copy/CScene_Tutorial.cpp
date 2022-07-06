@@ -69,11 +69,17 @@ void CScene_Tutorial::Enter()
 
 	if (CSceneManager::GetInst()->GetPrevScene() != nullptr &&
 		CSceneManager::GetInst()->GetPrevScene()->GetName() == L"Church")
-		CPlayer::GetPlayer()->SetPos(fPoint(warpToChurch->GetPos().x + 150.f, warpToChurch->GetPos().y - 100.f));
+	{
+		CPlayer::GetPlayer()->SetPos(fPoint(warpToChurch->GetPos().x + 150.f, warpToChurch->GetPos().y - 50.f));
+		CCameraManager::GetInst()->InitCameraPos(CPlayer::GetPlayer()->GetPos() + fPoint(500.f, -200.f));
+	}
+	else
+	{
+		CCameraManager::GetInst()->InitCameraPos(CPlayer::GetPlayer()->GetPos() - fPoint(500.f, 200.f));
+	}
 
 	CCameraManager::GetInst()->FadeIn(2.f);
 
-	CCameraManager::GetInst()->InitCameraPos(CPlayer::GetPlayer()->GetPos() - fPoint(500.f, 200.f));
 	//CCameraManager::GetInst()->FollowTargetObj(CPlayer::GetPlayer(), true, true);
 	CCameraManager::GetInst()->SetBoundary(pMap->GetPos(), fPoint((float)m_pBgImage->GetWidth() * 2.f, (float)m_pBgImage->GetHeight() * 2.f));
 }

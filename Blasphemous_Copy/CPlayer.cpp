@@ -1016,14 +1016,6 @@ void CPlayer::OnCollisionEnter(CCollider* target)
 			}
 		}
 	}
-
-	if (target->GetOwnerObj()->GetObjGroup() == GROUP_GAMEOBJ::ENEMY)
-	{
-		if (!m_bIsInvincible)
-		{
-			Hit(10.f);
-		}
-	}
 }
 
 void CPlayer::OnCollisionExit(CCollider* target)

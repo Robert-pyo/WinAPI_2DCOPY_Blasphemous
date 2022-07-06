@@ -245,4 +245,12 @@ void CEnemy::OnCollision(CCollider* target)
 
 void CEnemy::OnCollisionEnter(CCollider* target)
 {
+	if (target->GetOwnerObj()->GetObjGroup() == GROUP_GAMEOBJ::PLAYER)
+	{
+		CPlayer* pPlayer = (CPlayer*)target->GetOwnerObj();
+		if (!pPlayer->IsInvincible())
+		{
+			pPlayer->Hit(m_tEnmInfo.fAtt * 0.8f);
+		}
+	}
 }

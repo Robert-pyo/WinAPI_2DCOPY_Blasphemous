@@ -98,8 +98,7 @@ void CScene_Boss::Exit()
 {
 	for (UINT i = 0; i < (UINT)GROUP_GAMEOBJ::SIZE; ++i)
 	{
-		if ((GROUP_GAMEOBJ)i == GROUP_GAMEOBJ::PLAYER || (GROUP_GAMEOBJ)i == GROUP_GAMEOBJ::ENEMY
-			|| (GROUP_GAMEOBJ)i == GROUP_GAMEOBJ::WEAPON) continue;
+		if ((GROUP_GAMEOBJ)i == GROUP_GAMEOBJ::PLAYER || (GROUP_GAMEOBJ)i == GROUP_GAMEOBJ::WEAPON) continue;
 
 		ClearGroup((GROUP_GAMEOBJ)i);
 	}

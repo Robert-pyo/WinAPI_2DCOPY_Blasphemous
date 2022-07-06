@@ -22,6 +22,9 @@ public:
 	void SetAttCount(UINT count) { m_iAttCount = count; }
 
 public:
+	void PlaySlashSfx();
+
+public:
 	virtual void OnCollisionEnter(CCollider* other);
 };
 
