@@ -68,7 +68,7 @@ void CScene_Tutorial::Enter()
 
 	if (CSceneManager::GetInst()->GetPrevScene() != nullptr &&
 		CSceneManager::GetInst()->GetPrevScene()->GetName() == L"Church")
-		CPlayer::GetPlayer()->SetPos(fPoint(warpToChurch->GetPos().x - 100.f, warpToChurch->GetPos().y));
+		CPlayer::GetPlayer()->SetPos(fPoint(warpToChurch->GetPos().x + 150.f, warpToChurch->GetPos().y - 100.f));
 
 	CCameraManager::GetInst()->FadeIn(2.f);
 

@@ -189,8 +189,12 @@ void CPlayer::update_state()
 		{
 			GetAnimator()->FindAnimation(L"Player_Dodge_Right")->SetFrame(0);
 			GetAnimator()->FindAnimation(L"Player_Dodge_Left")->SetFrame(0);
-			GetCollider()->SetScale(fPoint(GetCollider()->GetScale().x * 2.f, GetCollider()->GetScale().y / 2.f));
-			GetCollider()->SetOffsetPos(fPoint(GetCollider()->GetOffsetPos().x, GetCollider()->GetOffsetPos().y * 2.f));
+
+			if (GetCollider()->GetScale() == PLAYER_COLLIDER_SIZE)
+			{
+				GetCollider()->SetScale(fPoint(GetCollider()->GetScale().x * 2.f, GetCollider()->GetScale().y / 2.f));
+				GetCollider()->SetOffsetPos(fPoint(GetCollider()->GetOffsetPos().x, GetCollider()->GetOffsetPos().y * 2.f));
+			}
 		}
 
 		m_eCurState = PLAYER_STATE::DODGE;
@@ -208,8 +212,7 @@ void CPlayer::update_state()
 
 	m_fAtkAccTime += fDeltaTime;
 	// K 입력 시 공격
-	if (PRESS_KEY_DOWN('K') && m_fAttackDelay <= m_fAtkAccTime
-		&& m_eCurState != PLAYER_STATE::CLIMB)
+	if (PRESS_KEY_DOWN('K') && m_fAttackDelay <= m_fAtkAccTime && m_eCurState != PLAYER_STATE::CLIMB)
 	{
 		if (m_eCurState == PLAYER_STATE::DODGE)
 			InitDodgeState();
@@ -228,7 +231,7 @@ void CPlayer::update_state()
 
 		if (m_iComboCount == 3)
 		{
-			m_iComboCount %= 3;
+			m_iComboCount = 0;
 			m_fAttackDelay = GetAnimator()->FindAnimation(L"Player_Attack_Combo1_R")->GetAnimDuration();
 		}
 
@@ -555,7 +558,6 @@ void CPlayer::debug_render()
 	fPoint fptRenderPos = CCameraManager::GetInst()->GetRenderPos(GetCollider()->GetFinalPos());
 
 	// TODO : 이 부분에서 자꾸 메모리 누수 발생하는데 어디서 렌더 텍스트에 발생할만한 곳이 어딘지를 모르겠음
-	// 분명 다 release 해줬는데..
 	CRenderManager::GetInst()->RenderText(strCurState,
 		fptRenderPos.x - GetScale().x * 2.f,
 		fptRenderPos.y - GetScale().y / 1.5f,
@@ -580,13 +582,24 @@ void CPlayer::debug_render()
 		fptRenderPos.y,
 		13, RGB(0, 255, 0));
 
+	static WCHAR combo[5];
+	swprintf_s(combo, L"%4d", (int)m_iComboCount);
+	wstring strAttCount = L"ACount : ";
+	strAttCount += combo;
+	CRenderManager::GetInst()->RenderText(strAttCount,
+		fptRenderPos.x - GetScale().x * 2.5f,
+		fptRenderPos.y + GetScale().y / 1.5f,
+		fptRenderPos.x + GetScale().x,
+		fptRenderPos.y,
+		13, RGB(0, 255, 0));
+
 	static WCHAR hp[5];
 	swprintf_s(hp, L"%4d", (int)m_tAbility.fCurHp);
 	wstring strHp = L"Current HP : ";
 	strHp += hp;
 	CRenderManager::GetInst()->RenderText(strHp,
 		fptRenderPos.x - GetScale().x,
-		fptRenderPos.y + GetScale().y / 1.5f,
+		fptRenderPos.y + GetScale().y * 1.5f,
 		fptRenderPos.x + GetScale().x,
 		fptRenderPos.y,
 		15, RGB(0, 255, 0));
@@ -611,8 +624,8 @@ void CPlayer::InitDodgeState()
 	m_fDodgeAccTime = 0.f;
 	m_fDodgeDelayAccTime = 0.f;
 	m_fMaxVelocity = MAX_SPEED;
-	GetCollider()->SetScale(fPoint(GetCollider()->GetScale().x / 2.f, GetCollider()->GetScale().y * 2.f));
-	GetCollider()->SetOffsetPos(fPoint(GetCollider()->GetOffsetPos().x, GetCollider()->GetOffsetPos().y / 2.f));
+	GetCollider()->SetScale(PLAYER_COLLIDER_SIZE);
+	GetCollider()->SetOffsetPos(PLAYER_COLLIDER_OFFSET);
 }
 
 void CPlayer::Hit(CGameObject* other)

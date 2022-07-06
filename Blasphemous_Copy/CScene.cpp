@@ -318,6 +318,10 @@ CGameObject* CScene::SpawnObjects(CScene* targetScene, const string objName)
 				pPlayer->SetPos(iter->second);
 				AddObject(pPlayer, GROUP_GAMEOBJ::PLAYER);
 			}
+
+			pPlayer->GetCollider()->SetOffsetPos(PLAYER_COLLIDER_OFFSET);
+			pPlayer->GetCollider()->SetScale(PLAYER_COLLIDER_SIZE);
+
 			return pPlayer;
 		}
 
@@ -377,6 +381,10 @@ CGameObject* CScene::SpawnObjects(const wstring& sceneName, const string objName
 				pPlayer->SetPos(iter->second);
 				AddObject(pPlayer, GROUP_GAMEOBJ::PLAYER);
 			}
+			
+			pPlayer->GetCollider()->SetOffsetPos(PLAYER_COLLIDER_OFFSET);
+			pPlayer->GetCollider()->SetScale(PLAYER_COLLIDER_SIZE);
+
 			return pPlayer;
 		}
 

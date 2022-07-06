@@ -2,6 +2,8 @@
 #include "CGameObject.h"
 
 #define MAX_SPEED (300.f)
+#define PLAYER_COLLIDER_SIZE (fPoint(36.f, 96.f))
+#define PLAYER_COLLIDER_OFFSET (fPoint(30.f, 20.f))
 
 class CD2DImage;
 class CPlayerSword;
