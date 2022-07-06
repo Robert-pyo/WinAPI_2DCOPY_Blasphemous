@@ -40,6 +40,9 @@ void CEnemy::update()
 	{
 		m_pAI->update();
 	}
+
+	if (GetAI()->GetCurState()->GetState() == ENEMY_STATE::DEAD)
+		return;
 	
 	if (CGameManager::GetInst()->IsDisableControl()) return;
 
@@ -169,6 +172,7 @@ void CEnemy::Hit(CGameObject* pPlayer)
 
 void CEnemy::Die()
 {
+	GetCollider()->SetScale(fPoint(0.f, 0.f));
 	ChangeAIState(m_pAI, ENEMY_STATE::DEAD);
 }
 

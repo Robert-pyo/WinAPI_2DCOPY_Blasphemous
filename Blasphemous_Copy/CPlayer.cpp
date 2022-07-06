@@ -699,8 +699,8 @@ void CPlayer::InitAbility()
 	pSword->SetOwnerObj(this);
 	m_pSword = pSword;
 
-	m_tAbility.fMaxHp = 100.f;
-	m_tAbility.fCurHp = 100.f;
+	m_tAbility.fMaxHp = 300.f;
+	m_tAbility.fCurHp = 300.f;
 	m_tAbility.fMaxMp = 100.f;
 	m_tAbility.fCurMp = 100.f;
 

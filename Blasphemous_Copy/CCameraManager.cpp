@@ -11,6 +11,9 @@ CCameraManager::CCameraManager()
 	m_fTime = 2.f;
 	m_fAccTime = m_fTime;
 	m_fSpeed = 500.f;
+	m_fptLookAtOrigin = {};
+	m_fImpulsePower = 0.f;
+	m_bPowerReverse = false;
 
 	m_pImg = nullptr;
 }
@@ -50,6 +53,29 @@ void CCameraManager::update()
 	}
 
 	CalcDiff();
+
+	/*if (CAM_EFFECT::NONE == m_eEffect) return;
+
+	m_fCurTime += (float)fDeltaTime;
+	if (m_fEffectDuration < m_fCurTime)
+	{
+		m_eEffect = CAM_EFFECT::NONE;
+		return;
+	}
+
+	if (CAM_EFFECT::IMPULSE == m_eEffect)
+	{
+		float fRatio = m_fCurTime / m_fEffectDuration;
+		m_fImpulsePower -= fRatio;
+		if (m_bPowerReverse)
+		{
+			SetLookAt(fPoint(CPlayer::GetPlayer()->GetPos().x - m_fImpulsePower, CPlayer::GetPlayer()->GetPos().y));
+		}
+		else
+		{
+			SetLookAt(fPoint(CPlayer::GetPlayer()->GetPos().x + m_fImpulsePower, CPlayer::GetPlayer()->GetPos().y));
+		}
+	}*/
 }
 
 void CCameraManager::render()
@@ -229,4 +255,13 @@ void CCameraManager::FadeOut(float duration)
 	m_eEffect = CAM_EFFECT::FADE_OUT;
 	m_fEffectDuration = duration;
 	m_fCurTime = 0.f;
+}
+
+void CCameraManager::Impulse(float duration, float power)
+{
+	m_eEffect = CAM_EFFECT::IMPULSE;
+	m_fEffectDuration = duration;
+	m_fCurTime = 0.f;
+	m_fImpulsePower = power;
+	m_bPowerReverse = false;
 }

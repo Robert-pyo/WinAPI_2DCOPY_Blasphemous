@@ -155,6 +155,8 @@ void CEffect_SwordSlash::OnCollisionEnter(CCollider* other)
 {
 	if (GROUP_GAMEOBJ::ENEMY == other->GetOwnerObj()->GetObjGroup())
 	{
+		CCameraManager::GetInst()->Impulse(2.f, 100.f);
+
 		CEnemy* enemy = (CEnemy*)other->GetOwnerObj();
 
 		CPlayerSword* ownerObj = (CPlayerSword*)GetOwnerObj();
@@ -163,8 +165,8 @@ void CEffect_SwordSlash::OnCollisionEnter(CCollider* other)
 		CPlayer* user = dynamic_cast<CPlayer*>(ownerObj->GetOwnerObj());
 
 		enemy->Hit(user);
-
 		user->SetAttackCount(user->GetAttackCount() + 1);
+		GetCollider()->SetScale(fPoint(0.f, 0.f));
 
 		srand(time(NULL));
 

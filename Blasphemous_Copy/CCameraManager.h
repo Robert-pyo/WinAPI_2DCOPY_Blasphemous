@@ -5,6 +5,7 @@ enum class CAM_EFFECT
 {
 	FADE_IN,
 	FADE_OUT,
+	IMPULSE,
 
 	NONE,
 };
@@ -17,6 +18,7 @@ private:
 	fPoint m_fptLookAt;			// 카메라가 가리킬 위치
 	fPoint m_fptCurLookAt;		// 카메라가 지금 보고있는 위치
 	fPoint m_fptPrevLookAt;		// 카메라가 이전에 보던 위치
+	fPoint m_fptLookAtOrigin;
 
 	CGameObject* m_pTargetObj;	// 추적할 게임 오브젝트
 	bool		 m_bFollowX;
@@ -40,6 +42,8 @@ private:
 	CTexture*	m_pImg;
 	float		m_fEffectDuration;
 	float		m_fCurTime;
+	float		m_fImpulsePower;
+	bool		m_bPowerReverse;
 
 	void	CalcDiff();
 public:
@@ -62,6 +66,8 @@ public:
 
 	void FadeIn(float duration);
 	void FadeOut(float duration);
+
+	void Impulse(float duration, float power);
 
 	void LerpDiff(fPoint targetPos);
 	void CheckBoundary();

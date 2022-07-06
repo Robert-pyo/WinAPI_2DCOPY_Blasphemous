@@ -21,8 +21,8 @@ void CCore::update()
 	CKeyManager::GetInst()->update();
 	CSoundManager::GetInst()->update();
 	CSceneManager::GetInst()->update();
-	CGameManager::GetInst()->update();
 	CCameraManager::GetInst()->update();
+	CGameManager::GetInst()->update();
 	CUIManager::GetInst()->update();
 	CCollisionManager::GetInst()->update();
 }

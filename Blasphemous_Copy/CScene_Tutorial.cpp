@@ -32,6 +32,7 @@ void CScene_Tutorial::update()
 void CScene_Tutorial::init()
 {
 	SpawnObjects(this, "Acolyte");
+	SpawnObjects(this, "Stoner");
 }
 
 void CScene_Tutorial::Enter()
