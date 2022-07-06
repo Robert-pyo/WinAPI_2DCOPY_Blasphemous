@@ -22,6 +22,7 @@ void CUIManager::update()
 	{
 		pTargetUI->MouseOn();
 
+		if (m_bIsKeyControl) return;
 		if (PRESS_KEY_DOWN(VK_LBUTTON))
 		{
 			pTargetUI->MouseLBtnDown();

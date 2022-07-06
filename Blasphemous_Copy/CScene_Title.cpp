@@ -37,7 +37,7 @@ void CScene_Title::update()
 void CScene_Title::Enter()
 {
 	// 시작 시 커서 없애기
-	//ShowCursor(false);
+	ShowCursor(false);
 
 	CCameraManager::GetInst()->FadeIn(2.f);
 

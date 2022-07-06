@@ -19,7 +19,7 @@ CPlayer::CPlayer()
 
 	InitObject(fPoint(700.f, 0.f), fPoint(134.f, 144.f));
 	SetName(L"Player");
-	m_fvCurDir		= {1.0f, 0.f};
+	m_fvCurDir		= {-1.0f, 0.f};
 	m_fvPrevDir		= {};
 	m_fVelocity		= 0.f;
 	m_fMaxVelocity	= MAX_SPEED;
@@ -700,7 +700,7 @@ void CPlayer::InitAbility()
 	m_pSword = pSword;
 
 	m_tAbility.fMaxHp = 300.f;
-	m_tAbility.fCurHp = 300.f;
+	m_tAbility.fCurHp = 1.f;
 	m_tAbility.fMaxMp = 100.f;
 	m_tAbility.fCurMp = 100.f;
 
