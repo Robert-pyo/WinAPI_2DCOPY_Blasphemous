@@ -11,7 +11,8 @@ struct tEnemyInfo
 {
 	float fVelocity;
 	float fMaxVelocity;
-	float fHP;
+	float fCurHp;
+	float fMaxHp;
 	float fRecogRange;
 	float fAttRange;
 	float fAtt;

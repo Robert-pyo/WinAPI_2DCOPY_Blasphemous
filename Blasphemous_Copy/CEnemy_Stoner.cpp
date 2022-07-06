@@ -14,7 +14,8 @@ CEnemy_Stoner::CEnemy_Stoner()
 	m_fAtkAccTime = 0.f;
 
 	tEnemyInfo info = {};
-	info.fHP = 100.f;
+	info.fCurHp = 100.f;
+	info.fMaxHp = 100.f;
 	info.fAtt = 15.f;
 	info.fAttRange = 1000.f;
 	info.fAttDelayTime = 3.f;

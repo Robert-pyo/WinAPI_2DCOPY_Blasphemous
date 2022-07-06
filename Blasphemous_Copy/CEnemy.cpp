@@ -15,7 +15,7 @@ CEnemy::CEnemy()
 	m_fvCurDir = {};
 	m_fvPrevDir = {GetPos().x, GetPos().y};
 
-	m_tEnmInfo.fHP = 0.f;
+	m_tEnmInfo.fCurHp = 0.f;
 	m_tEnmInfo.fAtt = 0.f;
 	m_tEnmInfo.fAttRange = 0.f;
 	m_tEnmInfo.fAttDelayTime = 0.f;
@@ -118,7 +118,7 @@ void CEnemy::debug_render()
 		13, RGB(0, 255, 0));
 
 	WCHAR hp[5];
-	swprintf_s(hp, L"%4d", (int)m_tEnmInfo.fHP);
+	swprintf_s(hp, L"%4d", (int)m_tEnmInfo.fCurHp);
 	wstring strHp = L"HP : ";
 	strHp += hp;
 	CRenderManager::GetInst()->RenderText(strHp,
@@ -153,11 +153,11 @@ void CEnemy::SetAI(AI* pAI)
 void CEnemy::Hit(CGameObject* pPlayer)
 {
 	CPlayer* player = (CPlayer*)pPlayer;
-	m_tEnmInfo.fHP -= player->GetPlayerAbility().fAtt;
+	m_tEnmInfo.fCurHp -= player->GetPlayerAbility().fAtt;
 
 	if (GetAI()->GetCurState()->GetState() == ENEMY_STATE::DEAD) return;
 
-	if (m_tEnmInfo.fHP <= 0.f)
+	if (m_tEnmInfo.fCurHp <= 0.f)
 	{
 		Die();
 		return;

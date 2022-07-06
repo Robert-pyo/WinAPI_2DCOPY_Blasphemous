@@ -125,6 +125,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>framework.h</PrecompiledHeaderFile>
+      <LanguageStandard>Default</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -166,6 +167,7 @@
     <ClInclude Include="CEffect_Rock.h" />
     <ClInclude Include="CEffect_Spear.h" />
     <ClInclude Include="CEffect_SwordSlash.h" />
+    <ClInclude Include="CEffect_WoodThorn.h" />
     <ClInclude Include="CEnemy.h" />
     <ClInclude Include="CEnemyFactory.h" />
     <ClInclude Include="CEnemy_Acolyte.h" />
@@ -248,6 +250,7 @@
     <ClCompile Include="CEffect_Rock.cpp" />
     <ClCompile Include="CEffect_Spear.cpp" />
     <ClCompile Include="CEffect_SwordSlash.cpp" />
+    <ClCompile Include="CEffect_WoodThorn.cpp" />
     <ClCompile Include="CEnemy.cpp" />
     <ClCompile Include="CEnemyFactory.cpp" />
     <ClCompile Include="CEnemy_Acolyte.cpp" />

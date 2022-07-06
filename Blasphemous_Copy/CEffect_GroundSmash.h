@@ -1,5 +1,6 @@
-#pragma once
+﻿#pragma once
 #include "CEffect.h"
+
 class CEffect_GroundSmash : public CEffect
 {
 private:
@@ -16,6 +17,8 @@ public:
 	virtual void render() final;
 
 public:
+	void SpawnThorns(int thornCount);
+
+public:
 	virtual void OnCollisionEnter(CCollider* other);
 };
-

@@ -420,6 +420,9 @@
     <ClInclude Include="CEffect_GroundSmash.h">
       <Filter>Object\Effect\Piedad</Filter>
     </ClInclude>
+    <ClInclude Include="CEffect_WoodThorn.h">
+      <Filter>Object\Effect\Piedad</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CCore.cpp">
@@ -630,6 +633,9 @@
       <Filter>Engine\Component\AI\State\Attack\BossPatern</Filter>
     </ClCompile>
     <ClCompile Include="CEffect_GroundSmash.cpp">
+      <Filter>Object\Effect\Piedad</Filter>
+    </ClCompile>
+    <ClCompile Include="CEffect_WoodThorn.cpp">
       <Filter>Object\Effect\Piedad</Filter>
     </ClCompile>
   </ItemGroup>

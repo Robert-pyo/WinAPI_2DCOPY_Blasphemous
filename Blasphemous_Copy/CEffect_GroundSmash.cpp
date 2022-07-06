@@ -1,5 +1,6 @@
 #include "framework.h"
 #include "CEffect_GroundSmash.h"
+#include "CEffect_WoodThorn.h"
 #include "CCollider.h"
 
 CEffect_GroundSmash::CEffect_GroundSmash()
@@ -37,6 +38,26 @@ void CEffect_GroundSmash::update()
 void CEffect_GroundSmash::render()
 {
 	component_render();
+}
+
+void CEffect_GroundSmash::SpawnThorns(int thornCount)
+{
+	for (int i = 1; i <= thornCount; ++i)
+	{
+		CEffect_WoodThorn* thornFx = new CEffect_WoodThorn();
+		thornFx->SetOwnerObj(GetOwnerObj());
+
+		if (GetPos().x > GetOwnerObj()->GetPos().x)
+		{
+			thornFx->SetPos(fPoint(GetPos().x + (i * thornFx->GetScale().x + 20.f), GetPos().y));
+		}
+		else
+		{
+			thornFx->SetPos(fPoint(GetPos().x - (i * thornFx->GetScale().x + 20.f), GetPos().y));
+		}
+
+		CreateObj(thornFx, GROUP_GAMEOBJ::ENEMY_ATT_FX);
+	}
 }
 
 void CEffect_GroundSmash::OnCollisionEnter(CCollider* other)

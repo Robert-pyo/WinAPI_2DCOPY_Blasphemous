@@ -13,7 +13,8 @@ CEnemy_Boss_Piedad::CEnemy_Boss_Piedad()
 	m_fAtkAccTime = 0.f;
 
 	tEnemyInfo info = {};
-	info.fHP = 1000.f;
+	info.fCurHp = 1000.f;
+	info.fMaxHp = 1000.f;
 	info.fAtt = 20.f;
 	info.fAttRange = 1000.f;
 	info.fAttDelayTime = 3.f;
@@ -280,7 +281,9 @@ void CEnemy_Boss_Piedad::Init_Animation()
 
 void CEnemy_Boss_Piedad::Attack()
 {
-	if (GetAI()->GetCurState()->GetState() == ENEMY_STATE::BOSSPATERN1)
+	switch (GetAI()->GetCurState()->GetState())
+	{
+	case ENEMY_STATE::BOSSPATERN1:
 	{
 		float iMoveStartTime = GetAnimator()->GetCurAnim()->GetFrame(0).fDuration * 30;
 
@@ -305,17 +308,31 @@ void CEnemy_Boss_Piedad::Attack()
 				CSoundManager::GetInst()->Play(L"Piedad_SmashVoice");
 				CSoundManager::GetInst()->Play(L"Piedad_Smash");
 
+				if (GetEnemyInfo().fCurHp / GetEnemyInfo().fMaxHp > 0.7f)
+				{
+					pFx->SpawnThorns(3);
+					pFx2->SpawnThorns(3);
+				}
+				else if (GetEnemyInfo().fCurHp / GetEnemyInfo().fMaxHp > 0.4f)
+				{
+					pFx->SpawnThorns(4);
+					pFx2->SpawnThorns(4);
+				}
+				else
+				{
+					pFx->SpawnThorns(5);
+					pFx2->SpawnThorns(5);
+				}
+
 				SetAttCount(1);
 				m_fAtkAccTime = 0;
 			}
 		}
 	}
-	else if (GetAI()->GetCurState()->GetState() == ENEMY_STATE::BOSSPATERN2)
-	{
-
-	}
-	else if (GetAI()->GetCurState()->GetState() == ENEMY_STATE::BOSSPATERN3)
-	{
-
+	break;
+	case ENEMY_STATE::BOSSPATERN2:
+		break;
+	case ENEMY_STATE::BOSSPATERN3:
+		break;
 	}
 }

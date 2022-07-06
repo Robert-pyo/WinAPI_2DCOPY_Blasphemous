@@ -582,7 +582,7 @@ void CPlayer::debug_render()
 		fptRenderPos.y,
 		13, RGB(0, 255, 0));
 
-	static WCHAR combo[5];
+	/*static WCHAR combo[5];
 	swprintf_s(combo, L"%4d", (int)m_iComboCount);
 	wstring strAttCount = L"ACount : ";
 	strAttCount += combo;
@@ -591,7 +591,7 @@ void CPlayer::debug_render()
 		fptRenderPos.y + GetScale().y / 1.5f,
 		fptRenderPos.x + GetScale().x,
 		fptRenderPos.y,
-		13, RGB(0, 255, 0));
+		13, RGB(0, 255, 0));*/
 
 	static WCHAR hp[5];
 	swprintf_s(hp, L"%4d", (int)m_tAbility.fCurHp);
@@ -700,7 +700,7 @@ void CPlayer::InitAbility()
 	m_pSword = pSword;
 
 	m_tAbility.fMaxHp = 300.f;
-	m_tAbility.fCurHp = 1.f;
+	m_tAbility.fCurHp = 300.f;
 	m_tAbility.fMaxMp = 100.f;
 	m_tAbility.fCurMp = 100.f;
 
