@@ -147,9 +147,11 @@ enum class ENEMY_STATE
 #define CreateObj(OBJ, GROUP)		CEventManager::GetInst()->EventCreateObj(OBJ, GROUP)
 #define DeleteObj(OBJ)				CEventManager::GetInst()->EventDeleteObj(OBJ)
 #define ChangeToNextScene(SCENE)	CEventManager::GetInst()->EventChangeScene(SCENE)
-#define ChangeAIState(AI, State)	CEventManager::GetInst()->EventChangeAIState(AI, State);
+#define ChangeAIState(AI, State)	CEventManager::GetInst()->EventChangeAIState(AI, State)
 
 #define GRAVITY						(1500.f)
+
+#define KEY_MANUAL					L"이동 : A, D / 점프 : SPACE / 공격 : K / 회피 : SHIFT"
 
 //========================================
 //## 전역변수(인스턴스, 윈도우 핸들)	##

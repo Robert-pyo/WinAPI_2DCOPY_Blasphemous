@@ -19,10 +19,12 @@ void CScene_Boss::update()
 {
 	CScene::update();
 
+#ifdef _DEBUG
 	if (PRESS_KEY_DOWN(VK_TAB))
 	{
 		ChangeToNextScene(GROUP_SCENE::TOOL);
 	}
+#endif
 }
 
 void CScene_Boss::init()

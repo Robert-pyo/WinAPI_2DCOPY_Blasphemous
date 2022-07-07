@@ -46,6 +46,8 @@ void CCore::render()
 	CRenderManager::GetInst()->RenderText(strFPS, WINSIZE_X - 50, 10, WINSIZE_X, 50, 12, RGB(0, 0, 0));
 #endif
 
+	CRenderManager::GetInst()->RenderText(KEY_MANUAL, WINSIZE_X - 100, WINSIZE_Y * 1.8f, 100, 100, 18, RGB(255, 255, 255));
+
 	CRenderManager::GetInst()->GetRenderTarget()->EndDraw();
 }
 

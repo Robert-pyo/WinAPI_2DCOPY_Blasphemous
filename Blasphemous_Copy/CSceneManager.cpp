@@ -106,7 +106,7 @@ void CSceneManager::init()
 	m_arrScene[(int)GROUP_SCENE::END]->SetGroup(GROUP_SCENE::END);
 	m_arrScene[(int)GROUP_SCENE::END]->init();
 
-	m_pCurScene = m_arrScene[(int)GROUP_SCENE::BOSS];
+	m_pCurScene = m_arrScene[(int)GROUP_SCENE::TITLE];
 	m_pCurScene->Enter();
 }
 
